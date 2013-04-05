@@ -48,3 +48,14 @@
               logOutputPeriod: 10
               consoleOutput: false
               consoleOutputPeriod: 10
+
+### Использование
+Для того, чтобы включить профилирование у Актера, необходимо в его описание в файле настроек добавить строку profilerConfig: <имя профайлера>, например:
+
+    actor:
+      - PiDecider:
+          actorInterface: ru.taskurotta.recipes.parallel.decider.PiDecider
+          runtimeConfig: MainRuntimeConfig
+          spreaderConfig: MainTaskSpreaderConfig
+          profilerConfig: MainProfilerConfig
+          count: 1
