@@ -1,4 +1,4 @@
-angular.module('markdown', []).
+angular.module('markdownMod', []).
     directive('markdown', function ($http) {
         var converter = new Showdown.converter();
         return {
