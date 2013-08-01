@@ -1,0 +1,22 @@
+---
+layout: default.hbs
+title: План
+app: road_map
+tags:
+- markdown
+- navigation
+
+---
+
+<!-- Page content -->
+<div class="row">
+    <div class="span3 col-lg-3">
+        <div class="bs-sidebar">
+            <ul class="nav bs-sidenav" ui-view="sideBar">
+            </ul>
+        </div>
+    </div>
+    <!-- Doc content -->
+    <div class="span9 col-lg-9" ui-view>
+    </div>
+</div>

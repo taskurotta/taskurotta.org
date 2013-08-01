@@ -1,0 +1,24 @@
+<!-- JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+{{#if production}}
+<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+{{/if}}
+
+<!--<script src="{{assets}}/js/holder/holder.js"></script>-->
+<!--<script src="{{assets}}/js/highlight.js"></script>-->
+<!--<script src="{{assets}}/js/application.js"></script>-->
+
+<script src="vendor/angular/angular.js"></script>
+<script src="vendor/angular-ui-router/release/angular-ui-router.js"></script>
+<script src="vendor/showdown/compressed/showdown.js"></script>
+<script src="vendor/jquery/jquery.js"></script>
+<script src="vendor/bootstrap/dist/js/bootstrap.js"></script>
+{{#if tags}}
+{{#tags}}
+<script src="mod/{{tag}}/scripts/mod.js"></script>
+{{/tags}}
+{{/if}}
+{{#if app}}
+<script src="app/{{app}}/scripts/app.js"></script>
+{{/if}}

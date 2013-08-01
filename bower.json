@@ -15,5 +15,6 @@
 		"angular-mocks": "~1.0.7",
         "angular-scenario": "~1.0.7"
 	}
+
 }
 

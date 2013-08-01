@@ -3,16 +3,16 @@ var page = {
     views: {
         "navBar": {
             controller: "navigationCtrl",
-            templateUrl: "mod_navigation/views/navigation.html"
+            templateUrl: "mod/navigation/views/navigation.html"
         },
         "hero": {
-            templateUrl: "_index/views/hero.html"
+            templateUrl: "app/index/views/hero.html"
         },
         "": {
-            templateUrl: "_index/views/content.html"
+            templateUrl: "app/index/views/content.html"
         },
         "footer": {
-            templateUrl: "mod_footer/views/footer.html"
+            templateUrl: "mod/footer/views/footer.html"
         }
     }
 };
