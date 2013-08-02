@@ -1,6 +1,6 @@
-navigationMod = angular.module('navigationMod', []);
 
-var menu = {
+var navigationConfig = {
+    template: 'mod/navigation/0.1.0/views/navigation.html',
     dropdown: true,
     items: [
         {id: "rootnav_index", href: "index.html", name: "Taskurotta" },
@@ -21,9 +21,9 @@ var menu = {
     ]
 };
 
-
+navigationMod = angular.module('navigationMod', []);
 navigationMod.provider('$navigationMod', function () {
-    this.configParams = menu;
+    this.configParams = navigationConfig;
     this.config = function (params) {
         this.configParams = params;
     }
@@ -35,12 +35,22 @@ navigationMod.provider('$navigationMod', function () {
             }
         }
     };
-})
-navigationMod.controller('navigationCtrl', ['$scope','$navigationMod', function ($scope,$navigationMod) {
-    $scope.menu = $navigationMod.config();
-    $scope.hasChild = function(item){
-       return ((item.items) && item.items.length>0);
-    }
+});
+navigationMod.directive('navigation', function ($http,$navigationMod) {
+        var config = $navigationMod.config();
+        return {
+            restrict: 'A',
+            templateUrl: config.template,
+            controller: function(){
+                this.hasChild = function(item){
+                    return ((item.items) && item.items.length>0);
+                }
+            },
+            scope: false,
+            link: function (scope, element, attrs) {
+                scope.menu = config;
+            }
+        }
 
-}]);
+});
 
