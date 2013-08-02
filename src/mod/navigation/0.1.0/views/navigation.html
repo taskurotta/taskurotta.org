@@ -1,0 +1,19 @@
+    <div class="container" ng-controller="navigationCtrl">
+        <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <div class="nav-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li id="{{item.id}}" ng-repeat="item in menu.items" class="dropdown">
+                    <a href="{{item.href}}" ng-hide="hasChild(item)">{{item.name}}</a>
+                    <a href="{{item.href}}" ng-show="hasChild(item)" class="dropdown-toggle" data-toggle="dropdown">{{item.name}}</a>
+                    <ul class="dropdown-menu" ng-show="hasChild(item)">
+                        <li id="{{child.id}}"><a href="{{child.href}}" ng-repeat="child in item.items">{{child.name}}</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+

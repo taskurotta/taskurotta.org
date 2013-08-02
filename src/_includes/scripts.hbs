@@ -14,11 +14,12 @@
 <script src="vendor/showdown/compressed/showdown.js"></script>
 <script src="vendor/jquery/jquery.js"></script>
 <script src="vendor/bootstrap/dist/js/bootstrap.js"></script>
-{{#if tags}}
-{{#tags}}
-<script src="mod/{{tag}}/scripts/mod.js"></script>
-{{/tags}}
-{{/if}}
 {{#if app}}
-<script src="app/{{app}}/scripts/app.js"></script>
+<script src="app/{{app}}/scripts/app.min.js"></script>
+{{/if}}
+
+{{#if mods}}
+{{#mods}}
+<script src="mod/{{mod.name}}/{{mod.version}}/scripts/mod.min.js"></script>
+{{/mods}}
 {{/if}}

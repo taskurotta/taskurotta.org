@@ -1,9 +1,8 @@
 var page = {
-    url: "^", // root route
+    url: "", // root route
     views: {
         "navBar": {
-            controller: "navigationCtrl",
-            templateUrl: "mod/navigation/views/navigation.html"
+            templateUrl: "mod/navigation/0.1.0/views/navigation.html"
         },
         "hero": {
             templateUrl: "app/index/views/hero.html"
@@ -12,12 +11,13 @@ var page = {
             templateUrl: "app/index/views/content.html"
         },
         "footer": {
-            templateUrl: "mod/footer/views/footer.html"
+            templateUrl: "mod/footer/0.1.0/views/footer.html"
         }
     }
 };
 
-var app = angular.module('app',['markdownMod','navigationMod','ui.state']);
-app.config( function($stateProvider){
-    $stateProvider.state('page', page );
+var app = angular.module('app',['navigationMod','ui.state']);
+app.config( function($stateProvider, $locationProvider){
+   // $locationProvider.html5Mode(true);
+    $stateProvider.state('index', page );
 });
