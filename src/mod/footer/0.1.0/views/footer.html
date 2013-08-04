@@ -1,7 +1,14 @@
-<p>&copy; Taskurotta Team 2013</p>
-
-<ul class="footer-links">
-    <li><a href="https://github.com/taskurotta/taskurotta.org">Blog</a></li>
-    <li class="muted">&middot;</li>
-    <li><a href="https://github.com/taskurotta/taskurotta.org/issues?state=open">Issues</a></li>
-</ul>
+<div class="container narrow row-fluid">
+    <div class="span4">
+    </div>
+    <div class="span3">
+        <p>&copy; {{ footer.copyright }}</p>
+    </div>
+    <div class="span5">
+        <ul class="footer-links">
+            <li id="{{item.id}}" ng-repeat="item in footer.links">
+                <a href="{{item.href}}">{{item.name}}</a>
+            </li>
+        </ul>
+    </div>
+</div>

@@ -4,38 +4,49 @@ module.exports = function(grunt){
         pkg:grunt.file.readJSON('package.json'),
         src: 'src',
         build: 'build',
+        mods: ['app', 'footer','navigation','markdown'],
+        apps: ['get_started', 'index', 'road_map'],
+
         banner: '/**\n' +
             ' * <%= pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
             ' * <%= pkg.homepage %>\n' +
             ' */\n',
         concat: {
-            compile_appjs: {
-                options: {
-                    banner: '<%= banner %>'
-                },
-                files: [
-                    {
-                        expand: true,     // Enable dynamic expansion.
-                        cwd: '<%= src %>/app/',      // Src matches are relative to this path.
-                        src: ['**/*.js'], // Actual pattern(s) to match.
-                        dest: '<%= build %>/app/',   // Destination path prefix.
-                        ext: '.min.js'   // Dest filepaths will have this extension.
-                    }
-                ]
+            options: {
+                banner: '<%= banner %>',
+                separator: '\n /* ------------- */ \n',
+                nonull: true
+
+            }
+        },
+        jshint: {
+            options: {
+                jshintrc: '.jshintrc'
             },
-            compile_modjs: {
-                options: {
-                    banner: '<%= banner %>'
-                },
-                files: [
-                    {
-                        expand: true,     // Enable dynamic expansion.
-                        cwd: '<%= src %>/mod/',      // Src matches are relative to this path.
-                        src: ['**/*.js'], // Actual pattern(s) to match.
-                        dest: '<%= build %>/mod/',   // Destination path prefix.
-                        ext: '.min.js'   // Dest filepaths will have this extension.
-                    }
-                ]
+            all: [
+               'Gruntfile.js',
+                '<%= src %>/app/*/scripts/{,*/}*.js',
+                '<%= src %>/mod/*/*/scripts/{,*/}*.js'
+            ]
+        },
+        ngmin: {
+            app: {
+                files: [{
+                    expand: true,
+                    cwd: '<%= build %>/app',
+                    src: [ '**/*.js' ,'!**/*.min.js'],
+                    dest: '<%= build %>/app/',
+                    ext: '.min.js'
+                }]
+            },
+            mod: {
+                files: [{
+                    expand: true,
+                    cwd: '<%= build %>/mod',
+                    src: [ '**/*.js' ,'!**/*.min.js'],
+                    dest: '<%= build %>/mod/',
+                    ext: '.min.js'
+                }]
             }
         },
         copy: {
@@ -59,7 +70,7 @@ module.exports = function(grunt){
                     }
                 ]
             },
-            apphtml: {
+            htmlApp: {
                 files: [
                     {
                         src: [ '**/*.html' ],
@@ -69,7 +80,7 @@ module.exports = function(grunt){
                     }
                 ]
             },
-            modhtml: {
+            htmlMod: {
                 files: [
                     {
                         src: [ '**/*.html' ],
@@ -123,29 +134,65 @@ module.exports = function(grunt){
                 files: ['!src/*.html','src/**/*.js','src/**/*.html','src/**/*.css','src/**/*.yml','src/**/*.hbs'],
                 tasks: ['design']
             }
+        },
+        clean: {
+            dist: {
+                files: [{
+                    dot: true,
+                    src: [
+                        '.tmp',
+                        '<%= build %>/*',
+                        '!<%= build %>/vendor'
+                    ]
+                }]
+            },
+            server: '.tmp'
         }
     });
 
-    grunt.loadNpmTasks('grunt-contrib-connect');
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-contrib-concat');
-    grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-open');
+    require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
     grunt.loadNpmTasks('assemble');
 
+    grunt.registerTask('concat_scripts', 'concat scripts', function() {
+        grunt.file.expand({filter:'isDirectory',cwd:'src'},
+            'mod/*/*').forEach(function (dir) {
+            var concat = grunt.config.get('concat') || {};
+            concat[dir] = {
+                src: ['<%= src %>/'+dir + '/scripts/*.js'],
+                dest: '<%= build %>/'+dir + '/scripts/mod.js'
+            };
+            grunt.config.set('concat', concat);
+        });
+        grunt.file.expand({filter:'isDirectory',cwd:'src'},
+            'app/*').forEach(function (dir) {
+            var concat = grunt.config.get('concat') || {};
+            concat[dir] = {
+                src: ['<%= src %>/'+dir + '/scripts/*.js'],
+                dest: '<%= build %>/'+dir + '/scripts/app.js'
+            };
+            grunt.config.set('concat', concat);
+        });
+        grunt.task.run('concat');
+    });
+
     grunt.registerTask('server', [
-        'concat',
+        'concat_scripts',
+        'jshint',
         'assemble',
         'copy',
+        //'uglify',
+        'ngmin',
         'connect:server',
         'open:server',
         'watch'
     ]);
     grunt.registerTask('design', [
-        'concat',
+        'concat_scripts',
+        'jshint',
         'assemble',
-        'copy'
+        'copy',
+        //'uglify
+        'ngmin'
     ]);
 
 };
