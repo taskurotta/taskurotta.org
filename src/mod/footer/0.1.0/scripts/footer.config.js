@@ -1,4 +1,4 @@
-footerMod = angular.module('footerMod', []);
+footerMod = angular.module('footerMod', ['mod/footer/0.1.0/views']);
 footerMod.value('footerModConfig', {
     template: 'mod/footer/0.1.0/views/footer.html',
     copyright: 'Taskurotta Team 2013',

@@ -1,4 +1,4 @@
-var navigationMod = angular.module('navigationMod', []);
+var navigationMod = angular.module('navigationMod', ['mod/navigation/0.1.0/views']);
 navigationMod.value('navigationModConfig', {
     template: 'mod/navigation/0.1.0/views/navigation.html',
     menu: {

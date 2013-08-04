@@ -1,4 +1,5 @@
-var roadMapApp = angular.module('road_mapApp',['appMod','ui.state','markdownMod']);
+var roadMapApp = angular.module('road_mapApp',
+    ['appMod','ui.state','markdownMod','app/road_map/views']);
 roadMapApp.config( function($stateProvider,$markdownModProvider){
     var markdownParams = {
         src: 'md/road_map.md'
@@ -27,6 +28,6 @@ roadMapApp.config( function($stateProvider,$markdownModProvider){
         }
     };
     $stateProvider.state('road_map',page);
-    $stateProvider.state('road_map_cahpter',chapter);
+   // $stateProvider.state('road_map_cahpter',chapter);
     $markdownModProvider.config(markdownParams);
 });

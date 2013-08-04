@@ -19,6 +19,10 @@ module.exports = function(grunt){
 
             }
         },
+        html2js: {
+            options: {
+            }
+        },
         jshint: {
             options: {
                 jshintrc: '.jshintrc'
@@ -174,12 +178,36 @@ module.exports = function(grunt){
         });
         grunt.task.run('concat');
     });
+    grunt.registerTask('html2js_scripts', 'html2js scripts', function() {
+        grunt.file.expand({filter:'isDirectory',cwd:'src'},
+            'mod/*/*').forEach(function (dir) {
+                var html2js = grunt.config.get('html2js') || {};
+                html2js[dir] = {
+                    src: ['<%= src %>/'+dir + '/views/**/*.html'],
+                    dest: '<%= build %>/'+dir + '/scripts/mod-templates.js',
+                    module: dir+'/views'
+                };
+                grunt.config.set('html2js', html2js);
+            });
+        grunt.file.expand({filter:'isDirectory',cwd:'src'},
+            'app/*').forEach(function (dir) {
+                var html2js = grunt.config.get('html2js') || {};
+                html2js[dir] = {
+                    src: ['<%= src %>/'+dir + '/views/**/*.html'],
+                    dest: '<%= build %>/'+dir + '/scripts/app-templates.js',
+                    module: dir+'/views'
+                };
+                grunt.config.set('html2js', html2js);
+            });
+        grunt.task.run('html2js');
+    });
 
     grunt.registerTask('server', [
         'concat_scripts',
         'jshint',
         'assemble',
         'copy',
+        'html2js_scripts',
         //'uglify',
         'ngmin',
         'connect:server',
@@ -191,6 +219,7 @@ module.exports = function(grunt){
         'jshint',
         'assemble',
         'copy',
+        'html2js_scripts',
         //'uglify
         'ngmin'
     ]);

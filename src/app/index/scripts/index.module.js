@@ -1,4 +1,5 @@
-var indexApp = angular.module('indexApp',['appMod','ui.state']);
+var indexApp = angular.module('indexApp',
+    ['appMod','ui.state','app/index/views']);
 indexApp.config( function($stateProvider){
     var page = {
         url: '', // root route

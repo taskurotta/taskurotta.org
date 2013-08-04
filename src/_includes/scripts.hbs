@@ -16,10 +16,11 @@
 <script src="vendor/bootstrap/dist/js/bootstrap.js"></script>
 {{#if app}}
 <script src="app/{{app}}/scripts/app.js"></script>
+<script src="app/{{app}}/scripts/app-templates.js"></script>
 {{/if}}
-
 {{#if mods}}
 {{#mods}}
 <script src="mod/{{mod.name}}/{{mod.version}}/scripts/mod.js"></script>
+<script src="mod/{{mod.name}}/{{mod.version}}/scripts/mod-templates.js"></script>
 {{/mods}}
 {{/if}}
