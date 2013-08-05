@@ -1,4 +1,4 @@
-navigationMod.directive('footer', function ($http,$footerMod) {
+footerMod.directive('footer', function ($http,$footerMod) {
     var config = $footerMod.config();
     return {
         templateUrl: config.template,

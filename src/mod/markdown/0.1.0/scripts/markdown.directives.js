@@ -1,4 +1,5 @@
 markdownMod.directive('markdown', function ($http,$markdownMod) {
+        console.log('markdownMod.directive');
         var config = $markdownMod.config();
         return {
             restrict: 'E',

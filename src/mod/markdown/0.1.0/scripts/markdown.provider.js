@@ -1,14 +1,19 @@
 markdownMod.provider('$markdownMod', function() {
+    console.log('markdownMod.provider');
         var converter = new Showdown.converter();
+        var self = this;
         this.params = null;
         this.config = function (params) {
             this.params = params;
         };
         this.$get = function(markdownModConfig,$http) {
-            var params = (this.params!==null)?this.params:markdownModConfig;
+            console.log('markdownMod.provider.$get');
+            if(self.params===null){
+                self.params = markdownModConfig;
+            }
             return {
                 config: function(){
-                    return params;
+                    return self.params;
                 },
                 markup: function (text){
                     return converter.makeHtml(text);

@@ -1,13 +1,16 @@
 navigationMod.provider('$navigationMod',function () {
+    var self = this;
     this.params = null;
     this.config = function (params) {
         this.params = params;
     };
     this.$get = function (navigationModConfig) {
-        var params = (this.params!==null)?this.params:navigationModConfig;
+        if(self.params===null){
+            self.params = navigationModConfig;
+        }
         return {
             config: function () {
-                return params;
+                return self.params;
             }
         };
     };

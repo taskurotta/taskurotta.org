@@ -1,7 +1,6 @@
-var getStartedApp = angular.module('get_startedApp',
-    ['appMod','ui.state','markdownMod','app/get_started/views']);
+var getStartedApp = angular.module('get_startedApp',['appMod','markdownMod','app/get_started/views']);
 getStartedApp.config( function($stateProvider,$markdownModProvider){
-
+    console.log('getStartedApp.config');
     var markdownParams = {
         src: 'md/get_started.md'
     };

@@ -1,6 +1,6 @@
-var roadMapApp = angular.module('road_mapApp',
-    ['appMod','ui.state','markdownMod','app/road_map/views']);
+var roadMapApp = angular.module('road_mapApp',['appMod','markdownMod','app/road_map/views']);
 roadMapApp.config( function($stateProvider,$markdownModProvider){
+    console.log('roadMapApp.config');
     var markdownParams = {
         src: 'md/road_map.md'
     };

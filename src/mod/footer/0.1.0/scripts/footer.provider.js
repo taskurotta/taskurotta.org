@@ -1,13 +1,16 @@
 footerMod.provider('$footerMod', function () {
+    var self = this;
     this.params = null;
     this.config = function (params) {
         this.params = params;
     };
     this.$get = function (footerModConfig) {
-        var params = (this.params!==null)?this.params:footerModConfig;
+        if(self.params===null){
+            self.params = footerModConfig;
+        }
         return {
             config: function () {
-                return params;
+                return self.params;
             }
         };
     };
