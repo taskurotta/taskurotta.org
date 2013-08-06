@@ -24,10 +24,8 @@ module.exports = function (grunt) {
             all: [
                 'Gruntfile.js',
                 'scripts/*.js',
-                '<%= src.app %>/*/<%= file.scripts %>',
-                '<%= src.app %>/*/<%= file.tests %>',
-                '<%= src.mod %>/*/*/<%= file.scripts %>',
-                '<%= src.mod %>/*/*/<%= file.tests %>'
+                '<%= src.app %>/{,*/}*.js',
+                '<%= src.mod %>/{,*/}*.js'
             ]
         },
         ngmin: {
@@ -108,6 +106,7 @@ module.exports = function (grunt) {
                     layout: 'default.hbs',
                     data: [
                         '<%= src.app %>/*.{json,yml}',
+                     //   '<%= src.app %>/*/*.{json,yml}',
                         'package.json'
                     ],
                     partials: [
@@ -168,95 +167,56 @@ module.exports = function (grunt) {
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
     grunt.loadNpmTasks('assemble');
 
+
+    function createSubtask(name, src, build, sub, srcPattern, buildFile) {
+        var dir = src + '/' + sub;
+        var pattern = srcPattern.join('/');
+        var items = grunt.file.expand({filter: 'isFile', cwd: (dir) }, pattern);
+        console.log(name + '_match:' + dir + '/' + pattern + ' = ' + items.length);
+        if (items.length > 0) {
+            var task = grunt.config.get(name) || {};
+            task[dir] = {
+                src: [dir + '/' + pattern],
+                dest: build + '/' + sub + '/' + buildFile,
+                module: sub + '/' + srcPattern[0]
+            };
+            grunt.config.set(name, task);
+        }
+    }
+
     grunt.registerTask('concat_scripts', 'concat scripts', function () {
         console.log('concat_scripts');
-        grunt.file.expand({filter: 'isDirectory', cwd: 'src/mod'}, '*/*').forEach(function (subDir) {
-            console.log(subDir);
-            var concat = grunt.config.get('concat') || {};
-            var modDir = '<%= src.mod %>/' + subDir;
-            var buildModDir = '<%= build.mod %>/' + subDir ;
-            var scripts = modDir + '/<%= file.scripts %>';
-            var units = modDir + '/<%= file.units %>';
-            var e2e = modDir + '/<%= file.e2e %>';
-//            if (grunt.file.exists(units)) {
-                concat['mod_scripts_' + subDir ] = {
-                    src: [scripts],
-                    dest: buildModDir+ '/<%= file.mod.script %>'
-                };
-//            }
-            //if (grunt.file.isMatch(units)) {
-                concat['mod_units_' + subDir ] = {
-                    src: [units],
-                    dest: buildModDir  + '/<%= file.mod.unit %>'
-                };
-            //}
-            //if (grunt.file.isMatch(e2e)) {
-                concat['mod_e2e_' + subDir] = {
-                    src: [e2e],
-                    dest: buildModDir  + '/<%= file.mod.e2e %>'
-                };
-            //}
-            grunt.config.set('concat', concat);
+        var task = 'concat',src = 'src',build = 'build',js = '{,*/}*.js';
+        grunt.file.expand({filter: 'isDirectory', cwd: src}, 'mod/*/*').forEach(function (mod) {
+            createSubtask(task,src,build,mod+'/'+'scripts',[js],'mod.js');
+            createSubtask(task,src,build,mod+'/'+'tests',['unit',js],'mod-unit.spec.js');
+            createSubtask(task,src,build,mod+'/'+'tests',['e2e',js],'mod-e2e.spec.js');
         });
-        grunt.file.expand({filter: 'isDirectory', cwd: 'src/app'}, '*').forEach(function (subDir) {
-            console.log(subDir);
-            var concat = grunt.config.get('concat') || {};
-            var appDir = '<%= src.app %>/' + subDir;
-            var buildAppDir = '<%= build.app %>/' + subDir ;
-            var scripts = appDir + '/<%= file.scripts %>';
-            console.log(scripts);
-            var units = appDir + '/<%= file.units %>';
-            var e2e = appDir + '/<%= file.e2e %>';
-//            if (grunt.file.exists(units)) {
-                concat['app_scripts_' + subDir ] = {
-                    src: [scripts],
-                    dest: buildAppDir + '/<%= file.app.script %>'
-                };
-//            }
-            //if (grunt.file.isMatch(units)) {
-                concat['app_units_' + subDir ] = {
-                    src: [units],
-                    dest: buildAppDir  + '/<%= file.app.unit %>'
-                };
-            //}
-            //if (grunt.file.isMatch(e2e)) {
-                concat['app_e2e_' + subDir] = {
-                    src: [e2e],
-                    dest: buildAppDir  + '/<%= file.app.e2e %>'
-                };
-            //}
-            grunt.config.set('concat', concat);
+        grunt.file.expand({filter: 'isDirectory', cwd: src}, 'app/*').forEach(function (app) {
+            createSubtask(task,src,build,app+'/'+'scripts',[js],'app.js');
+            createSubtask(task,src,build,app+'/'+'tests',['unit',js],'app-unit.spec.js');
+            createSubtask(task,src,build,app+'/'+'tests',['e2e',js],'app-e2e.spec.js');
         });
-        grunt.task.run('concat');
+        grunt.task.run(task);
     });
+
     grunt.registerTask('html2js_scripts', 'html2js scripts', function () {
-        grunt.file.expand({filter: 'isDirectory', cwd: 'src/mod'}, '*/*').forEach(function (subDir) {
-            var html2js = grunt.config.get('html2js') || {};
-            html2js['mod_' + subDir] = {
-                src: ['<%= src.mod %>/' + subDir + '/<%= file.views %>'],
-                dest: '<%= build.mod %>/' + subDir + '/<%= file.mod.templates %>',
-                module: 'mod/' + subDir + '/views'
-            };
-            grunt.config.set('html2js', html2js);
+        var task = 'html2js',src = 'src',build = 'build'; html = '{,*/}*.html';
+        grunt.file.expand({filter: 'isDirectory', cwd: src}, 'mod/*/*').forEach(function (mod) {
+            createSubtask(task,src,build,mod,['views',html],'scripts/mod-templates.js');
         });
-        grunt.file.expand({filter: 'isDirectory', cwd: 'src/app'}, '*').forEach(function (subDir) {
-            var html2js = grunt.config.get('html2js') || {};
-            html2js['app_' + subDir] = {
-                src: ['<%= src.app %>/' + subDir + '/<%= file.views %>'],
-                dest: '<%= build.app %>/' + subDir + '/<%= file.app.templates %>',
-                module: 'app/' + subDir + '/views'
-            };
-            grunt.config.set('html2js', html2js);
+        grunt.file.expand({filter: 'isDirectory', cwd: src}, 'app/*').forEach(function (app) {
+            createSubtask(task,src,build,app,['views',html],'scripts/app-templates.js');
         });
-        grunt.task.run('html2js');
+        grunt.task.run(task);
     });
 
     grunt.registerTask('server', [
         'concat_scripts',
+        'html2js_scripts',
         'jshint',
         'assemble',
         'copy',
-        'html2js_scripts',
         //'uglify',
         'ngmin',
         'connect:server',
@@ -265,10 +225,10 @@ module.exports = function (grunt) {
     ]);
     grunt.registerTask('design', [
         'concat_scripts',
+        'html2js_scripts',
         'jshint',
         'assemble',
         'copy',
-        'html2js_scripts',
         //'uglify
         'ngmin'
     ]);
