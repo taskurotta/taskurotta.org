@@ -1,5 +1,10 @@
 module.exports = function (grunt) {
     var userConfig = require('./scripts/build.conf.js');
+    var src = 'src',
+        build = 'build';
+    var jsFiles = '{,*/}*.js';
+    var htmlFiles = '{,*/}*.html';
+
     var taskConfig = {
         pkg: grunt.file.readJSON('package.json'),
         banner: '/**\n' +
@@ -11,6 +16,15 @@ module.exports = function (grunt) {
                 banner: '<%= banner %>',
                 separator: '\n /* ------------- */ \n',
                 nonull: true
+            },
+            yaml : {
+                src: ['<%= src.app %>/{,*/}*.yml','<%= src.mod %>/{,*/}*.yml'],
+                dest: '<%= build.app %>/config.yml',
+                options: {
+                    banner: '#config',
+                    separator: '\n # -------------  \n',
+                    nonull: true
+                }
             }
         },
         html2js: {
@@ -23,18 +37,19 @@ module.exports = function (grunt) {
             },
             all: [
                 'Gruntfile.js',
-                'scripts/*.js',
-                '<%= src.app %>/{,*/}*.js',
-                '<%= src.mod %>/{,*/}*.js'
+                //'scripts/*.js',
+                '<%= src.app %>/**/*.js',
+                '<%= src.mod %>/**/*.js'
             ]
         },
+
         ngmin: {
             app: {
                 files: [
                     {
                         expand: true,
                         cwd: '<%= build.app %>',
-                        src: [ '**/*.js' , '!**/*.min.js', '!**/*.spec.js'],
+                        src: [ jsFiles , '!**/*.min.js', '!**/*.spec.js'],
                         dest: '<%= build.app %>/',
                         ext: '.min.js'
                     }
@@ -45,7 +60,7 @@ module.exports = function (grunt) {
                     {
                         expand: true,
                         cwd: '<%= build.mod %>',
-                        src: [ '**/*.js' , '!**/*.min.js', '!**/*.spec.js'],
+                        src: [ jsFiles , '!**/*.min.js', '!**/*.spec.js'],
                         dest: '<%= build.mod %>/',
                         ext: '.min.js'
                     }
@@ -77,7 +92,7 @@ module.exports = function (grunt) {
                 files: [
                     {
                         cwd: '<%= src.app %>/',
-                        src: [ '**/*.html' ],
+                        src: [ htmlFiles ],
                         dest: '<%= build.app %>/',
                         expand: true
                     }
@@ -87,7 +102,7 @@ module.exports = function (grunt) {
                 files: [
                     {
                         cwd: '<%= src.mod %>',
-                        src: [ '**/*.html' ],
+                        src: [ htmlFiles ],
                         dest: '<%= build.mod %>/',
                         expand: true
                     }
@@ -95,6 +110,16 @@ module.exports = function (grunt) {
             }
 
         },
+//        'bower-install': {
+//            // Point to the html file that should be updated
+//            // when you run `grunt bower-install`
+//            html: 'src/_includes/scripts.hbs',
+//
+//            // Optional:
+//            // If your scripts shouldn't contain a certain
+//            // portion of a url, it can be excluded
+//            ignorePath: 'app/'
+//        } ,
         assemble: {
             pages: {
                 options: {
@@ -142,7 +167,7 @@ module.exports = function (grunt) {
         },
         watch: {
             livereload: {
-                files: ['!src/*.html', 'src/**/*.js', 'src/**/*.html', 'src/**/*.css', 'src/**/*.yml', 'src/**/*.hbs'],
+                files: ['src/**/*.js', 'src/**/*.html', 'src/**/*.css', 'src/**/*.yml', 'src/**/*.hbs'],
                 tasks: ['design']
             }
         },
@@ -186,33 +211,48 @@ module.exports = function (grunt) {
 
     grunt.registerTask('concat_scripts', 'concat scripts', function () {
         console.log('concat_scripts');
-        var task = 'concat',src = 'src',build = 'build',js = '{,*/}*.js';
-        grunt.file.expand({filter: 'isDirectory', cwd: src}, 'mod/*/*').forEach(function (mod) {
-            createSubtask(task,src,build,mod+'/'+'scripts',[js],'mod.js');
-            createSubtask(task,src,build,mod+'/'+'tests',['unit',js],'mod-unit.spec.js');
-            createSubtask(task,src,build,mod+'/'+'tests',['e2e',js],'mod-e2e.spec.js');
-        });
+        var task = 'concat';
         grunt.file.expand({filter: 'isDirectory', cwd: src}, 'app/*').forEach(function (app) {
-            createSubtask(task,src,build,app+'/'+'scripts',[js],'app.js');
-            createSubtask(task,src,build,app+'/'+'tests',['unit',js],'app-unit.spec.js');
-            createSubtask(task,src,build,app+'/'+'tests',['e2e',js],'app-e2e.spec.js');
+            createSubtask(task,src,build,app+'/'+'scripts',[jsFiles],'app.js');
+            createSubtask(task,src,build,app+'/'+'tests',['unit',jsFiles],'app-unit.spec.js');
+            createSubtask(task,src,build,app+'/'+'tests',['e2e',jsFiles],'app-e2e.spec.js');
+        });
+        grunt.file.expand({filter: 'isDirectory', cwd: src}, 'mod/*/*').forEach(function (mod) {
+            createSubtask(task,src,build,mod+'/'+'scripts',[jsFiles],'mod.js');
+            createSubtask(task,src,build,mod+'/'+'tests',['unit',jsFiles],'mod-unit.spec.js');
+            createSubtask(task,src,build,mod+'/'+'tests',['e2e',jsFiles],'mod-e2e.spec.js');
         });
         grunt.task.run(task);
     });
 
+    grunt.registerTask('yaml_scripts', 'yaml scripts', function () {
+        try {
+            var doc = grunt.file.readYAML(build+'/app/config.yml');
+            grunt.file.write(build+'/app/config.json',doc,{
+                encoding: 'UTF-8'
+            });
+            //var doc = re/quire('./'+build+'/app/config.yml');
+            //var obj = yaml.load(doc);
+            console.log(doc);
+        } catch (e) {
+            console.log(e);
+        }
+    });
+
     grunt.registerTask('html2js_scripts', 'html2js scripts', function () {
-        var task = 'html2js',src = 'src',build = 'build'; html = '{,*/}*.html';
+        var task = 'html2js';
         grunt.file.expand({filter: 'isDirectory', cwd: src}, 'mod/*/*').forEach(function (mod) {
-            createSubtask(task,src,build,mod,['views',html],'scripts/mod-templates.js');
+            createSubtask(task,src,build,mod,['views',htmlFiles],'scripts/mod-templates.js');
         });
         grunt.file.expand({filter: 'isDirectory', cwd: src}, 'app/*').forEach(function (app) {
-            createSubtask(task,src,build,app,['views',html],'scripts/app-templates.js');
+            createSubtask(task,src,build,app,['views',htmlFiles],'scripts/app-templates.js');
         });
         grunt.task.run(task);
     });
 
     grunt.registerTask('server', [
         'concat_scripts',
+        'yaml_scripts',
         'html2js_scripts',
         'jshint',
         'assemble',
@@ -225,6 +265,7 @@ module.exports = function (grunt) {
     ]);
     grunt.registerTask('design', [
         'concat_scripts',
+        'yaml_scripts',
         'html2js_scripts',
         'jshint',
         'assemble',

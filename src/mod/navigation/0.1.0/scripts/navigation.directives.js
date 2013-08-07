@@ -1,8 +1,9 @@
-navigationMod.directive('navigation', function ($navigationMod) {
-    var config = $navigationMod.config();
+navigationMod.directive('navigation', function (navigationMod,$log) {
+    $log.info('navigation.directive');
+    console.log(navigationMod.getTemplate());
     return {
         restrict: 'A',
-        templateUrl: config.template,
+        templateUrl: navigationMod.getTemplate(),
         controller: function () {
 
         },
@@ -14,7 +15,8 @@ navigationMod.directive('navigation', function ($navigationMod) {
             var current = attrs.navigation;
             scope.current = current;
             scope.hasChild = hasChild;
-            scope.navigation = {menu: config.menu};
+            scope.menu = navigationMod.getMenu();
+            $log.log(scope.menu);
             scope.isActive = function (item) {
                 return (item.href.substr(0, current.length) === current);
             };

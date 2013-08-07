@@ -1,13 +1,6 @@
-markdownMod = angular.module('markdownMod', []);
-markdownMod.value('markdownModConfig',{
-    src: 'md/index.md'
-});
-markdownMod.run(function(){
-    console.log('markdownMod.run');
-});
-markdownMod.service('markdownModService',function(){
-    console.log('markdownMod.service');
-});
-markdownMod.config(function(){
+markdownMod = angular.module('markdownMod', ['markdownModProvider']);
+markdownMod.config(function(markdownModProvider){
     console.log('markdownMod.config');
+    markdownModProvider.setBasePath('/');
+    markdownModProvider.setSource('md/index.md');
 });

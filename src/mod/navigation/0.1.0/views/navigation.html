@@ -6,7 +6,7 @@
         </button>
         <div class="nav-collapse collapse">
             <ul class="nav navbar-nav">
-                <li id="{{item.id}}" ng-repeat="item in navigation.menu.items" ng-class="{active: isActive(item), dropdown: hasChild(item)}">
+                <li id="{{item.id}}" ng-repeat="item in menu.items" ng-class="{active: isActive(item), dropdown: hasChild(item)}">
                     <a href="{{item.href}}" ng-hide="hasChild(item)" ng-class="{active: isActive(item)}">{{item.name}}</a>
                     <a href="{{item.href}}" ng-show="hasChild(item)" ng-class="{active: isActive(item), 'dropdown-toggle':true}" data-toggle="dropdown">{{item.name}}</a>
                     <ul class="dropdown-menu" ng-show="hasChild(item)">

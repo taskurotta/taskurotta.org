@@ -39,6 +39,7 @@ describe('Navigation menu tests ',function(){
 //        }
 //    ));
 
+
         it('The menu config mast be defined',function(){
             var element = compile('<div class="navbar-inner" navigation="index"></div>')(rootScope);
             expect(configParams).toBeDefined();

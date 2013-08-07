@@ -1,7 +1,7 @@
-# Page params
-title: Введение
-app: get_started
-mods:
+title: Taskurotta
+version: 0.1.0
+app:
+  mods:
     - name: app
       version: 0.1.0
     - name: markdown

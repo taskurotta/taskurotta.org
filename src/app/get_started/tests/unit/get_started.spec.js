@@ -6,8 +6,8 @@ describe('Get started app tests ',function(){
     var rootScope = null;
     beforeEach(module('get_startedApp'));
     beforeEach(inject(function($compile,$rootScope){
-        compile1 = $compile;
-        rootScope1 = $rootScope;
+        compile = $compile;
+        rootScope = $rootScope;
     }));
     it('Loaded get started page',function(){
         expect(2+2).toBe(4);

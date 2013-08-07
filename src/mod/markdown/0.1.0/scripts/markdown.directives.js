@@ -1,6 +1,5 @@
-markdownMod.directive('markdown', function ($http,$markdownMod) {
-        console.log('markdownMod.directive');
-        var config = $markdownMod.config();
+markdownMod.directive('markdown', function (markdownMod,$log) {
+        $log.info('markdown.directive');
         return {
             restrict: 'E',
             scope: {
@@ -14,19 +13,18 @@ markdownMod.directive('markdown', function ($http,$markdownMod) {
                         $(this).affix('refresh');
                     });
                 }
-
                 if(element.html()){
-                    element.html($markdownMod.markup(element.html()));
+                    element.html(markdownMod.markup(element.html()));
                 }
                 else {
                     var src = attrs.src;
-                    if(!src){ src = config.src;}
-                    $markdownMod.load(src,reloadHtml);
+                    if(!src){ src = markdownMod.getSource();}
+                    markdownMod.load(src,reloadHtml);
                 }
 
                 scope.$watch('src', function (value) {
                     if (attrs.src) {
-                        $markdownMod.load(attrs.src,reloadHtml);
+                        markdownMod.load(attrs.src,reloadHtml);
                     }
                 });
             }

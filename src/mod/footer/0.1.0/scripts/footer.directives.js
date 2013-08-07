@@ -1,11 +1,13 @@
-footerMod.directive('footer', function ($http,$footerMod) {
-    var config = $footerMod.config();
+footerMod.directive('footer', function (footerMod,$log) {
+    $log.info('footer.directive');
     return {
-        templateUrl: config.template,
+        templateUrl: footerMod.getTemplate(),
         restrict: 'A',
         scope: false,
         link: function (scope, element, attrs) {
-            scope.footer = {copyright:config.copyright, links :config.links};
+            scope.footer = {
+                copyright:footerMod.getCopyright(),
+                links :footerMod.getLinks()};
         }
     };
 });

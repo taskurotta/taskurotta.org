@@ -1,0 +1,14 @@
+app:
+  get_started:
+    # Page params
+    title: Введение
+    app: get_started
+    mods:
+      - name: core
+        version: 0.1.0
+      - name: markdown
+        version: 0.1.0
+      - name:  navigation
+        version: 0.1.0
+      - name:  footer
+        version: 0.1.0
