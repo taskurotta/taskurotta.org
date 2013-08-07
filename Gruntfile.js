@@ -1,9 +1,15 @@
 module.exports = function (grunt) {
+    var yaml = require('js-yaml');
     var userConfig = require('./scripts/build.conf.js');
-    var src = 'src',
-        build = 'build';
-    var jsFiles = '{,*/}*.js';
-    var htmlFiles = '{,*/}*.html';
+    var srcDir = 'src',
+        buildDir = 'build';
+    var srcAppDir = srcDir + '/app/';
+    var srcModDir = srcDir + '/mod/';
+    var buildAppDir = buildDir + '/app/';
+    var buildModDir = buildDir + '/mod/';
+    var jsFiles = '**/*.js';
+    var htmlFiles = '**/*.html';
+    var yamlFiles = '**/*.yml';
 
     var taskConfig = {
         pkg: grunt.file.readJSON('package.json'),
@@ -18,13 +24,19 @@ module.exports = function (grunt) {
                 nonull: true
             },
             yaml : {
-                src: ['<%= src.app %>/{,*/}*.yml','<%= src.mod %>/{,*/}*.yml'],
-                dest: '<%= build.app %>/config.yml',
+                src: [
+                    srcModDir+yamlFiles,
+                    srcAppDir+yamlFiles],
+                dest: buildAppDir+'config.yml',
                 options: {
-                    banner: '#config',
+                    banner: '#config\n',
                     separator: '\n # -------------  \n',
                     nonull: true
                 }
+            }
+        },
+        yamlhint: {
+            options: {
             }
         },
         html2js: {
@@ -38,8 +50,8 @@ module.exports = function (grunt) {
             all: [
                 'Gruntfile.js',
                 //'scripts/*.js',
-                '<%= src.app %>/**/*.js',
-                '<%= src.mod %>/**/*.js'
+                srcModDir+jsFiles,
+                srcAppDir+jsFiles
             ]
         },
 
@@ -172,19 +184,17 @@ module.exports = function (grunt) {
             }
         },
         clean: {
-            dist: {
+            build: {
                 files: [
                     {
                         dot: true,
                         src: [
-                            '.tmp',
-                            '<%= build %>/*',
-                            '!<%= build %>/vendor'
+                            buildAppDir + '*',
+                            buildModDir + '*'
                         ]
                     }
                 ]
-            },
-            server: '.tmp'
+            }
         }
     };
     grunt.initConfig(grunt.util._.extend(taskConfig, userConfig));
@@ -212,40 +222,38 @@ module.exports = function (grunt) {
     grunt.registerTask('concat_scripts', 'concat scripts', function () {
         console.log('concat_scripts');
         var task = 'concat';
-        grunt.file.expand({filter: 'isDirectory', cwd: src}, 'app/*').forEach(function (app) {
-            createSubtask(task,src,build,app+'/'+'scripts',[jsFiles],'app.js');
-            createSubtask(task,src,build,app+'/'+'tests',['unit',jsFiles],'app-unit.spec.js');
-            createSubtask(task,src,build,app+'/'+'tests',['e2e',jsFiles],'app-e2e.spec.js');
+        grunt.file.expand({filter: 'isDirectory', cwd: srcDir}, 'app/*').forEach(function (app) {
+            createSubtask(task,srcDir,buildDir,app+'/'+'scripts',[jsFiles],'app.js');
+            createSubtask(task,srcDir,buildDir,app+'/'+'tests',['unit',jsFiles],'app-unit.spec.js');
+            createSubtask(task,srcDir,buildDir,app+'/'+'tests',['e2e',jsFiles],'app-e2e.spec.js');
         });
-        grunt.file.expand({filter: 'isDirectory', cwd: src}, 'mod/*/*').forEach(function (mod) {
-            createSubtask(task,src,build,mod+'/'+'scripts',[jsFiles],'mod.js');
-            createSubtask(task,src,build,mod+'/'+'tests',['unit',jsFiles],'mod-unit.spec.js');
-            createSubtask(task,src,build,mod+'/'+'tests',['e2e',jsFiles],'mod-e2e.spec.js');
+        grunt.file.expand({filter: 'isDirectory', cwd: srcDir}, 'mod/*/*').forEach(function (mod) {
+            createSubtask(task,srcDir,buildDir,mod+'/'+'scripts',[jsFiles],'mod.js');
+            createSubtask(task,srcDir,buildDir,mod+'/'+'tests',['unit',jsFiles],'mod-unit.spec.js');
+            createSubtask(task,srcDir,buildDir,mod+'/'+'tests',['e2e',jsFiles],'mod-e2e.spec.js');
         });
         grunt.task.run(task);
     });
 
     grunt.registerTask('yaml_scripts', 'yaml scripts', function () {
         try {
-            var doc = grunt.file.readYAML(build+'/app/config.yml');
-            grunt.file.write(build+'/app/config.json',doc,{
-                encoding: 'UTF-8'
-            });
-            //var doc = re/quire('./'+build+'/app/config.yml');
-            //var obj = yaml.load(doc);
+            var doc = grunt.file.read(buildAppDir+'config.yml');
+            var obj = yaml.load(doc);
             console.log(doc);
         } catch (e) {
-            console.log(e);
+            grunt.warn(e);
+          //  grunt.task.run(['watch']);
         }
+
     });
 
     grunt.registerTask('html2js_scripts', 'html2js scripts', function () {
         var task = 'html2js';
-        grunt.file.expand({filter: 'isDirectory', cwd: src}, 'mod/*/*').forEach(function (mod) {
-            createSubtask(task,src,build,mod,['views',htmlFiles],'scripts/mod-templates.js');
+        grunt.file.expand({filter: 'isDirectory', cwd: srcDir}, 'mod/*/*').forEach(function (mod) {
+            createSubtask(task,srcDir,buildDir,mod,['views',htmlFiles],'scripts/mod-templates.js');
         });
-        grunt.file.expand({filter: 'isDirectory', cwd: src}, 'app/*').forEach(function (app) {
-            createSubtask(task,src,build,app,['views',htmlFiles],'scripts/app-templates.js');
+        grunt.file.expand({filter: 'isDirectory', cwd: srcDir}, 'app/*').forEach(function (app) {
+            createSubtask(task,srcDir,buildDir,app,['views',htmlFiles],'scripts/app-templates.js');
         });
         grunt.task.run(task);
     });
@@ -283,6 +291,9 @@ module.exports = function (grunt) {
         'ngmin',
         'connect:server',
         'karma'
+    ]);
+    grunt.registerTask('cl', [
+        'clean:build'
     ]);
 
 };

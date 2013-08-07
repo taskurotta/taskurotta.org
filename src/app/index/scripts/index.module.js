@@ -1,5 +1,5 @@
 var indexApp = angular.module('indexApp',
-    ['coreMod','app/index/views']);
+    ['coreMod','footerMod','navigationMod','app/index/views']);
 indexApp.config( function($stateProvider){
     console.log('indexApp.config');
     var page = {

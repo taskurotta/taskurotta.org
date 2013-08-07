@@ -1,3 +1,4 @@
+coreModConfig:
+    html5mod: &coreMod.html5mod false
 coreMod:
-  app:
-    html5mod: false,
+    html5mod: *coreMod.html5mod

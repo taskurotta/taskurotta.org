@@ -20,7 +20,6 @@
     "grunt-karma": "~0.4.5",
     "matchdep": "~0.1.2",
     "assemble": "~0.4.1",
-    "grunt-bower-install": "~0.4.0",
     "js-yaml": "~2.1.0"
   },
   "engines": {

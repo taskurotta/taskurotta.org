@@ -1,10 +1,10 @@
 angular.module('footerModProvider', ['coreMod'])
     .provider('footerMod', function (coreModProvider) {
         console.log('footerMod.provider');
-        var config = coreModProvider.getConfig();
+        var config = coreModProvider.getRef('footerMod');
         this.template = null;
-        this.copyright = config.footerMod.copyright;
-        this.links = config.footerMod.links;
+        this.copyright = config.copyright;
+        this.links = config.links;
         this.setTemplate = function (template) {
             this.template = template;
         };

@@ -24,6 +24,9 @@ angular.module('coreModProvider', ['coreMod'])
         this.getConfig = function () {
             return this.config;
         };
+        this.getRef = function (name) {
+            return this.config[name];
+        };
         this.$get = function ($log) {
             $log.log('coreMod.provider.$get');
             var self = this;

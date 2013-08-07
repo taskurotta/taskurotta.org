@@ -1,5 +1,4 @@
-app:
-  road_map:
+road_mapApp:
     # Page params
     title: План
     mods:

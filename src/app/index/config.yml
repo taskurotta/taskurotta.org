@@ -1,5 +1,4 @@
-app:
-  index:
+indexApp:
     # Page params
     layout: home.hbs
     title: Введение

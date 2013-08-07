@@ -1,9 +1,9 @@
 angular.module('navigationModProvider', ['coreMod'])
     .provider('navigationMod', function (coreModProvider) {
         console.log('navigationMod.provider');
-        var config = coreModProvider.getConfig();
+        var config = coreModProvider.getRef('navigationMod');
         this.template = null;
-        this.menu = config.navigationMod.menu;
+        this.menu = config.menu;
         this.setTemplate = function (template) {
             this.template = template;
         };
@@ -15,6 +15,7 @@ angular.module('navigationModProvider', ['coreMod'])
         };
         this.$get = function ($log) {
             $log.log('navigationMod.provider.$get');
+            $log.info(config);
             var self = this;
             return {
                 getMenu: function () {

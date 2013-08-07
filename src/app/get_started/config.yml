@@ -1,5 +1,4 @@
-app:
-  get_started:
+get_startedApp:
     # Page params
     title: Введение
     app: get_started
@@ -12,3 +11,4 @@ app:
         version: 0.1.0
       - name:  footer
         version: 0.1.0
+    copyright: &footerMod.copyright Taskurotta Team 2013 - Taskurotta the BEST (Введение)!!
