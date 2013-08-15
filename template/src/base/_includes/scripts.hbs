@@ -1,0 +1,21 @@
+<!-- JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+{{#if production}}
+<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+{{/if}}
+{{#if cfg.libs}}
+{{#cfg.libs}}<script src="{{../../assets}}/vendor/{{name}}/{{file}}"></script>
+{{/cfg.libs}}
+{{/if}}
+{{#if app}}<script src="app/{{app.name}}/{{app.key}}/scripts/app.js"></script>
+<script src="app/{{app.name}}/{{app.key}}/scripts/app-templates.js"></script>
+<script src="app/{{app.name}}/{{app.key}}/scripts/app-config.min.js"></script>
+{{/if}}
+{{#if cfg.mods}}
+{{#cfg.mods}}<script src="mod/{{name}}/{{version}}/scripts/mod.js"></script>
+<script src="mod/{{name}}/{{version}}/scripts/mod-templates.js"></script>
+{{/cfg.mods}}
+{{/if}}
+
+

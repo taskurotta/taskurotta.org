@@ -1,0 +1,36 @@
+{
+  "name": "taskurotta.org",
+  "version": "0.0.1",
+  "private": true,
+  "temp": {
+    "mod_core": "C:/Project/taskurotta.org/mod_core",
+    "mod_footer": "C:/Project/taskurotta.org/mod_footer",
+    "mod_markdown": "C:/Project/taskurotta.org/mod_markdown",
+    "mod_navigation": "C:/Project/taskurotta.org/mod_navigation"
+  },
+  "dependencies": {
+    "dirsum": "~0.1.1"
+  },
+  "devDependencies": {
+    "grunt": ">=0.4.1",
+    "grunt-contrib-connect": ">=0.3.0",
+    "grunt-contrib-watch": ">=0.4.0",
+    "grunt-contrib-clean": ">=0.4.1",
+    "grunt-contrib-copy": ">=0.4.1",
+    "grunt-contrib-uglify": ">=0.2.0",
+    "grunt-contrib-concat": ">=0.3.0",
+    "grunt-contrib-jshint": ">=0.6.0",
+    "grunt-ngmin": ">=0.0.3",
+    "grunt-html2js": ">=0.1.6",
+    "grunt-open": ">=0.2.0",
+    "grunt-karma": ">=0.4.5",
+    "matchdep": ">=0.1.2",
+    "assemble": ">=0.4.1",
+    "js-yaml": ">=2.1.0",
+    "node.extend": ">=1.0.7",
+    "generate-key": ">=0.0.6"
+  },
+  "engines": {
+    "node": ">=0.8.0"
+  }
+}

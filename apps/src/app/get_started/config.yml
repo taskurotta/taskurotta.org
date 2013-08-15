@@ -1,0 +1,23 @@
+get_startedApp:
+    # Page params
+    title: Введение
+    app: get_started
+
+mods:
+    - { name: core, version: 0.1.0, src: 'src\mod\core\0.1.0' }
+    - { name: markdown, version: 0.1.0, src: 'src\mod\markdown\0.1.0' }
+    - { name:  navigation, version: 0.1.0, src: 'src\mod\navigation\0.1.0' }
+    - { name:  footer, version: 0.1.0, src: 'src\mod\footer\0.1.0' }
+
+footerModConfig:
+    copyright: &footerMod.copyright Taskurotta Team 2013
+    links: &footerMod.links
+      - id: footnav_blog
+        href: 'https://github.com/taskurotta/taskurotta.org'
+        name: Blog
+      - id: footnav_issue
+        href: 'https://github.com/taskurotta/taskurotta.org/issues?state=open'
+        name: Issues
+footerMod:
+    copyright: *footerMod.copyright
+    links: *footerMod.links

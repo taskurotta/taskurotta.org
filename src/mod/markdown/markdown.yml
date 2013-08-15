@@ -1,4 +1,0 @@
-markdownModConfig:
-    path: &markdownMod.path '\md'
-markdownMod:
-    path: *markdownMod.path

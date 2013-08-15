@@ -1,4 +1,0 @@
-coreModConfig:
-    html5mod: &coreMod.html5mod false
-coreMod:
-    html5mod: *coreMod.html5mod

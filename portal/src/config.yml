@@ -1,0 +1,65 @@
+title: Taskurotta
+version: 0.1.0
+template:
+    name: base
+    src: '..\template\src\base'
+apps:
+    - { name: index, src: '..\apps\src'}
+    - { name: get_started, src: '..\apps\src'}
+    - { name: road_map, src: '..\apps\src'}
+mods:
+    - { name: core, version: 0.1.0, src: '..\mod_core\src' }
+    - { name: markdown, version: 0.1.0, src: '..\mods\src' }
+    - { name: navigation, version: 0.1.0, src: '..\mods\src' }
+    - { name: footer, version: 0.1.0, src: '..\mods\src' }
+libs:
+    - { name: html5shiv, file: dist/html5shiv.js, src: 'bower_components' }
+    - { name: jquery, file: jquery.js, src: 'bower_components' }
+    - { name: angular, file: angular.js, src: 'bower_components' }
+    - { name: angular-ui-router, file: release/angular-ui-router.js, src: 'bower_components' }
+    - { name: showdown, file: compressed/showdown.js, src: 'bower_components' }
+    - { name: bootstrap, file: dist/js/bootstrap.js, src: 'bower_components' }
+
+
+navigationModConfig:
+    search: &navigationMod.search true
+    menu: &navigationMod.menu
+      dropdown: true
+      items: &navigationMod.menu.items
+         - { id: rootnav_index, href: index.html, name: Taskurotta }
+         - { id: rootnav_get_started, href: get_started.html, name: Введение }
+         - { id: rootnav_road_map,  href: road_map.html, name: План }
+         - id: rootnav_doc
+           href: '#'
+           name: Документация (TODO)
+           items:
+              - { id: 1, href: '#', name: Основная концепция }
+              - { id: 2, href: '#', name: Сценарии использования }
+              - { id: 3, delim: true, href: '#', name: Пакеты }
+              - { id: 4, href: '#', name: Аннотации }
+              - { id: 5, href: '#', name: Исключения }
+              - { id: 6, href: '#', name: Мониторинг }
+              - { id: 7, delim: true, href: '#', name: Unit тесты }
+              - { id: 8, href: '#', name: Регрессионное тестирование }
+              - { id: 9, href: '#', name: A/B тестирование }
+navigationMod:
+    search: *navigationMod.search
+    menu: *navigationMod.menu
+
+footerModConfig:
+    copyright: &footerMod.copyright Taskurotta Team 2013
+    links: &footerMod.links
+      - id: footnav_blog
+        href: 'https://github.com/taskurotta/taskurotta.org'
+        name: Blog
+      - id: footnav_issue
+        href: 'https://github.com/taskurotta/taskurotta.org/issues?state=open'
+        name: Issues
+footerMod:
+    copyright: *footerMod.copyright
+    links: *footerMod.links
+
+markdownModConfig:
+    path: &markdownMod.path '\md'
+markdownMod:
+    path: *markdownMod.path
