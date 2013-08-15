@@ -1,0 +1,17 @@
+<!-- JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+{{#if production}}
+<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+{{/if}}
+{{#if app}}
+{{#app.libs}}<script src="{{.}}"></script>
+{{/app.libs}}
+{{#app.urls}}<script src="{{.}}"></script>
+{{/app.urls}}
+{{#app.mods}}<script src="{{.}}"></script>
+{{/app.mods}}
+{{/if}}
+
+
+

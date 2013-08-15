@@ -1,14 +1,14 @@
-indexApp:
-    # Page params
-    layout: home.hbs
+app:
+  index:
     title: Введение
-    app: index
-    mods:
-      - name: app
-        version: 0.1.0
-      - name: markdown
-        version: 0.1.0
-      - name:  navigation
-        version: 0.1.0
-      - name:  footer
-        version: 0.1.0
+
+mods:
+  navigation: { version: 0.1.0, src: '..\mods\src' }
+  footer: { version: 0.1.0, src: '..\mods\src' }
+
+libs:
+  html5shiv: {file: dist/html5shiv.js, src: 'bower_components' }
+
+mod:
+  footer:
+    copyright: Taskurotta Team 2013 Главная

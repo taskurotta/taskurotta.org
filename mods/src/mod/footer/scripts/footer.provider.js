@@ -1,7 +1,7 @@
 angular.module('footerModProvider', ['coreMod'])
     .provider('footerMod', function (coreModProvider) {
         console.log('footerMod.provider');
-        var config = coreModProvider.getRef('footerMod');
+        var config = coreModProvider.getMod('footer');
         this.template = null;
         this.copyright = config.copyright;
         this.links = config.links;
