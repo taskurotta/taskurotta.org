@@ -148,7 +148,6 @@ module.exports = function (grunt) {
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
     grunt.loadNpmTasks('assemble');
 
-
     function createSubtaskCall(name, subname, dir, pattern, callback) {
         console.log('SubtaskCall ' + name + ':' + subname);
         var task = grunt.config.get(name) || {};
