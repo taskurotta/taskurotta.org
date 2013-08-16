@@ -8,7 +8,7 @@ mods:
 
 mod:
   footer:
-    copyright: Taskurotta Team 2013 Введение
+    copyright: Taskurotta Team 2013
     links:
       - id: footnav_blog
         href: 'https://github.com/taskurotta/taskurotta.org'

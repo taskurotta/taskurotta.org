@@ -9,7 +9,6 @@
     "mod_navigation": "C:/Project/taskurotta.org/mod_navigation"
   },
   "dependencies": {
-    "dirsum": "~0.1.1"
   },
   "devDependencies": {
     "grunt": ">=0.4.1",
@@ -28,7 +27,8 @@
     "assemble": ">=0.4.1",
     "js-yaml": ">=2.1.0",
     "node.extend": ">=1.0.7",
-    "generate-key": ">=0.0.6"
+    "dirsum": "~0.1.1",
+    "shorthash": ">=0.0.2"
   },
   "engines": {
     "node": ">=0.8.0"
