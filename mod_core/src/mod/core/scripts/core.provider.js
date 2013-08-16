@@ -11,13 +11,13 @@ angular.module('coreModProvider', ['coreMod'])
             return this.config.mod[name];
         };
         this.$get = function ($log) {
-            $log.log('coreMod.provider.$get');
-            var self = this;
-            return {
-                getMod: function (name) {
-                    return self.config.mod[name];
-                }
-            };
+//            $log.log('coreMod.provider.$get');
+//            var self = this;
+//            return {
+//                getMod: function (name) {
+//                    return self.config.mod[name];
+//                }
+//            };
         };
         this.$get.$inject = ['$log'];
     });

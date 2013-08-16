@@ -1,0 +1,11 @@
+mod:
+  footer:
+    version: 0.1.0
+    copyright: Taskurotta Team 2013
+    links:
+      - id: footnav_blog
+        href: 'https://github.com/taskurotta/taskurotta.org'
+        name: Blog
+      - id: footnav_issue
+        href: 'https://github.com/taskurotta/taskurotta.org/issues?state=open'
+        name: Issues
