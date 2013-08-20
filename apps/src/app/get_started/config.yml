@@ -1,10 +1,6 @@
 app:
-  get_started:
-    title: Введение
-
-mods:
-  navigation: { version: 0.1.0, src: '..\mods\src' }
-  footer: { version: 0.1.0, src: '..\mods\src' }
+  name: get_started
+  title: Введение
 
 mod:
   footer:

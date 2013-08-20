@@ -1,13 +1,6 @@
 {
   "name": "taskurotta.org",
   "version": "0.0.1",
-  "private": true,
-  "temp": {
-    "mod_core": "C:/Project/taskurotta.org/mod_core",
-    "mod_footer": "C:/Project/taskurotta.org/mod_footer",
-    "mod_markdown": "C:/Project/taskurotta.org/mod_markdown",
-    "mod_navigation": "C:/Project/taskurotta.org/mod_navigation"
-  },
   "dependencies": {
   },
   "devDependencies": {

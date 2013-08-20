@@ -1,10 +1,9 @@
-mod:
-  navigation:
-    version: 0.1.0
-    search: true
-    menu:
-      dropdown: true
-      items:
+name: navigation
+version: 0.1.0
+search: true
+menu:
+  dropdown: true
+  items:
          - { id: rootnav_index, href: index.html, name: Taskurotta }
          - { id: rootnav_get_started, href: get_started.html, name: Введение }
          - { id: rootnav_road_map,  href: road_map.html, name: План }

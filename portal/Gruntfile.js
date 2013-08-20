@@ -6,7 +6,7 @@ module.exports = function (grunt) {
     var extend = require('node.extend');
     var userConfig = require('./scripts/build.conf.js');
     var srcDir = 'src',
-         buildDir = 'build';
+        buildDir = 'build';
     var buildAppDir = buildDir + '/app/';
     var buildModDir = buildDir + '/mod/';
     var buildAssetsDir = buildDir + '/assets/';
@@ -15,10 +15,10 @@ module.exports = function (grunt) {
     var hbsFiles = '**/*.hbs';
     var pngFiles = '**/*.png';
     var cssFiles = '**/*.css';
+    var hashes = {};
 
     var taskConfig = {
         pkg: grunt.file.readJSON('package.json'),
-        cfg: grunt.file.readYAML(srcDir + '/config.yml'),
         banner: '/**\n' +
             ' * <%= pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
             ' * <%= pkg.homepage %>\n' +
@@ -88,16 +88,6 @@ module.exports = function (grunt) {
                 ]
             }
         },
-//        'bower-install': {
-//            // Point to the html file that should be updated
-//            // when you run `grunt bower-install`
-//            html: 'src/_includes/scripts.hbs',
-//
-//            // Optional:
-//            // If your scripts shouldn't contain a certain
-//            // portion of a url, it can be excluded
-//            ignorePath: 'app/'
-//        } ,
         assemble: {
         },
         connect: {
@@ -148,129 +138,217 @@ module.exports = function (grunt) {
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
     grunt.loadNpmTasks('assemble');
 
-    function createSubtaskCall(name, subname, dir, pattern, callback) {
-        console.log('SubtaskCall ' + name + ':' + subname);
+    function fileExists(dir, pattern, callback) {
+        var items = grunt.file.expand({filter: 'isFile', cwd: (dir) }, pattern);
+        if (Array.isArray(pattern)) {
+            source = [];
+            pattern.map(function (item) {
+                source.push(dir + '/' + item);
+            });
+            console.log('match:' + source.toString() + ' = ' + items.length);
+        } else {
+            source = dir + '/' + pattern;
+            console.log('match:' + source + ' = ' + items.length);
+        }
+        if (items.length > 0) {
+            callback(source);
+        }
+    }
+
+    function createSubtask(name, subname, config) {
         var task = grunt.config.get(name) || {};
         if (!task.hasOwnProperty(subname)) {
-            var items = grunt.file.expand({filter: 'isFile', cwd: (dir) }, pattern);
-            var source;
-            if (Array.isArray(pattern)) {
-                source = [];
-                pattern.map(function (item) {
-                    source.push(dir + '/' + item);
-                });
-                console.log(name + ':' + subname + ' match:' + source.toString() + ' = ' + items.length);
-            } else {
-                source = dir + '/' + pattern;
-                console.log(name + ':' + subname + ' match:' + source + ' = ' + items.length);
-            }
-            if (items.length > 0) {
-                task[subname] = callback(source);
-                grunt.config.set(name, task);
-            }
+            console.log('SubtaskCall ' + name + ':' + subname);
+            //console.log(config);
+            task[subname] = config;
+            grunt.config.set(name, task);
         }
     }
 
     function iterate(object, callback) {
-        console.log('iterate object');
         for (var property in object) {
             if (object.hasOwnProperty(property)) {
-                console.log('object field:' + property);
+                console.log('name:' + property);
                 callback(property, object[property]);
             }
         }
     }
 
-    function readConfig(path, callback) {
-        var config = {};
-        if (grunt.file.exists(path + '/config.yml')) {
-            console.log('read ' + path + '/config.yml');
-            config = grunt.file.readYAML(path + '/config.yml');
-            if (typeof(callback) !== 'undefined') {
-                callback(config);
-            }
+    function getFile(path, name) {
+        if (grunt.file.exists(path + '/' + name)) {
+            console.log('read ' + path + '/' + name);
+        } else {
+            grunt.fail.fatal('File ' + path + '/' + name + ' not found');
         }
-        return config;
+        return path + '/' + name;
     }
 
-    function readBower(path, callback) {
-        var config = null;
-        if (grunt.file.exists(path + '/.bower.json')) {
-            console.log('read ' + path + '/.bower.json');
-            config = grunt.file.readJSON(path + '/.bower.json');
-            if (typeof(callback) !== 'undefined') {
-                callback(config);
-            }
-        }
-        return config;
+    function readConfigFile(path) {
+        return grunt.file.readYAML(getFile(path, 'config.yml'));
     }
 
-    function dirHash(path,callback){
-        dirsum.digest(path, 'md5', function (err, hashes) {
-            if (err) {
-                throw err;
-            }
-            var hash = sh.unique(hashes.hash);
-            console.log(hash + ' =hash '+ hashes.hash);
-            callback(hash);
-        });
+    function readSettingFile(path) {
+        return grunt.file.readYAML(getFile(path, 'settings.yml'));
+    }
+
+    function readBowerFile(path) {
+        return grunt.file.readJSON(getFile(path, '.bower.json'));
+    }
+
+    function saveConfigFile(filePath, appConfig) {
+        var content = JSON.stringify(appConfig);
+        var obj = JSON.parse(content);
+        var template = 'var appConfig = ' + content + ';';
+        grunt.file.write(filePath, template);
+        //grunt.file.write(appDest + '/scripts/app-config.yml', yaml.dump(appConfig));
+    }
+
+    function dirHash(path, callback) {
+        var key = 'dir'+path;
+        if (hashes.hasOwnProperty(key)) {
+            callback(hashes[key]);
+        }
+        else {
+            dirsum.digest(path, 'md5', function (err, dirHashes) {
+                if (err) {
+                    grunt.fail.fatal(err);
+                }
+                var hash = sh.unique(dirHashes.hash);
+                hashes[key] = hash;
+                console.log(hash + ' =hash ' + dirHashes.hash);
+                callback(hash);
+            });
+        }
     }
 
     grunt.registerTask('generate_configs', 'generate_configs', function () {
         console.log('generate_configs');
         var done = this.async();
         var threads = 1;
-        var baseConfig = grunt.config.get('cfg');
+        var baseSettings = readSettingFile(srcDir);
+        if (!baseSettings.app) {
+            grunt.fail.fatal('Portal application not exist');
+        }
+        var applications = baseSettings.app;
+        var baseConfig = readConfigFile(srcDir);
 
         function threadDone() {
             threads--;
             if (threads === 0) {
-                grunt.config.set('cfg', baseConfig);
+                grunt.config.set('apps', applications);
                 done();
             }
         }
 
-        var template = baseConfig.template;
-        readConfig(template.src, function (templateConfig) {
-            extend(true, baseConfig, templateConfig);
-        });
-        threads++;
-        dirHash(template.src,function (hash) {
-            template.key = hash;
-            threadDone();
-        });
-
         //iterate apps
-        iterate(baseConfig.apps, function (appName, app) {
+        console.log('iterate apps');
+        iterate(applications, function (appName, app) {
             console.log('app:' + appName);
+            if (!app.src) {
+                grunt.fail.fatal('Unknown app:' + appName + ' source');
+            }
             var appSrc = app.src + '/app/' + appName;
+            var appSettings = readSettingFile(appSrc);
+            var appConfig = readConfigFile(appSrc);
+
+            //application configuration
+            extend(true, appSettings, baseSettings, appSettings);
+            if (baseConfig.hasOwnProperty('app')) {
+                if (baseConfig.app.hasOwnProperty(appName)) {
+                    extend(true, appConfig.app, baseConfig.app[appName], appConfig.app);
+                }
+            }
+            console.log('app config:');
+            console.log(appConfig);
+            //checksum for application src
             threads++;
-            dirHash(appSrc,function (hash) {
-                app.key = hash;
+            dirHash(appSrc, function (hash) {
+                appSettings.app.key = hash;
                 threadDone();
             });
-            console.log('0');
-            var appLoadedConfig = readConfig(appSrc);
-            console.log('1');
-            var appConfig = extend(true, {}, baseConfig, appLoadedConfig);
-            console.log('2');
-            iterate(appConfig.mods, function (modName, mod) {
+
+            //template configuration
+            if (!appSettings.template.src) {
+                grunt.fail.fatal('Unknown template source');
+            }
+            var templateSrc = appSettings.template.src;
+            threads++;
+            dirHash(templateSrc, function (hash) {
+                appSettings.template.key = hash;
+                threadDone();
+            });
+            var templateConfig = readConfigFile(templateSrc);
+            if (baseConfig.hasOwnProperty('template')) {
+                extend(true, templateConfig, baseConfig.template);
+            }
+            if (appConfig.hasOwnProperty('template')) {
+                extend(true, templateConfig, appConfig.template);
+            }
+            appConfig.template = templateConfig;
+            console.log('template config:');
+            console.log(appConfig.template);
+
+            //mods configuration
+            console.log('app ' + appName + ' iterate mods:');
+            iterate(appSettings.mod, function (modName, mod) {
                 console.log('mod:' + modName);
+                if (!mod.src) {
+                    grunt.fail.fatal('Unknown mod:' + modName + ' source');
+                }
                 var modSrc = mod.src + '/mod/' + modName;
-                readConfig(modSrc, function (modConfig) {
-                    appConfig = extend(true, {}, modConfig, appConfig);
-                });
+                var modConfig = readConfigFile(modSrc);
+                console.log('default mod ' + modName + ' config:');
+                console.log(modConfig);
+                if (!modConfig.version) {
+                    grunt.fail.fatal('Unknown mod version for ' + modSrc);
+                }
+                if (modConfig.name !== modName) {
+                    grunt.fail.fatal('Error mod name for ' + modSrc);
+                }
+                //extend mod properties
+                mod.version = modConfig.version;
+                if (baseConfig.hasOwnProperty('mod')) {
+                    if (baseConfig.mod.hasOwnProperty(modName)) {
+                        extend(true, modConfig, baseConfig.mod[modName]);
+                        if (modConfig[mod.version]) {
+                            extend(true, modConfig, modConfig[mod.version]);
+                            delete modConfig[mod.version];
+                        }
+
+
+                    }
+                }
+                console.log('1 merged mod ' + modName + ' config:');
+                console.log(modConfig);
+                if (appConfig.hasOwnProperty('mod')) {
+                    if (appConfig.mod.hasOwnProperty(modName)) {
+                        extend(true, modConfig, appConfig.mod[modName]);
+                    }
+                } else {
+                    appConfig.mod = {};
+                }
+                appConfig.mod[modName] = modConfig;
+                console.log('all merged mod ' + modName + ' config:');
+                console.log(appConfig.mod[modName]);
             });
 
-            iterate(appConfig.libs, function (libName, lib) {
-                //Copy libs css,js files
+            //libs configuration
+            console.log('app ' + appName + ' iterate libs:');
+            iterate(appSettings.lib, function (libName, lib) {
+                console.log('lib:' + libName);
+                if (!lib.src) {
+                    grunt.fail.fatal('Unknown lib:' + libName + ' source');
+                }
                 var libSrc = lib.src + '/' + libName;
-                readBower(libSrc, function (libConfig) {
-                    lib.version = libConfig.version;
-                });
+                var libConfig = readBowerFile(libSrc);
+                if (!libConfig.version) {
+                    grunt.fail.fatal('Unknown lib version for ' + libSrc);
+                }
+                lib.version = libConfig.version;
             });
 
             grunt.config.set('config:' + appName, appConfig);
+            grunt.config.set('settings:' + appName, appSettings);
             console.log(grunt.config.get('config:' + appName));
         });
 
@@ -278,137 +356,161 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('save_configs', 'generate_configs', function () {
-        var baseConfig = grunt.config.get('cfg');
         //iterate apps
-        iterate(baseConfig.apps, function (appName, app) {
-            console.log(appName);
-            var appDest = path.join(buildDir, 'app', appName, app.key);
+        iterate(grunt.config.get('apps'), function (appName, app) {
+            var appSettings = grunt.config.get('settings:' + appName);
+            console.log('app:' + appName);
             var appConfig = grunt.config.get('config:' + appName);
-            var content = JSON.stringify(appConfig);
-            var obj = JSON.parse(content);
-            var template = 'var appConfig = ' + content + ';';
-            grunt.file.write(appDest + '/scripts/app-config.js', template);
-            grunt.file.write(appDest + '/scripts/app-config.yml', yaml.dump(appConfig));
+            var appRef = 'app/' + appName + '/' + appSettings.app.key;
+            var appDest = buildDir + '/' + appRef;
+            saveConfigFile(appDest + '/scripts/app-config.js', appConfig);
+            //add script url
+            appSettings.scripts = [appRef + '/scripts/app-config.js'];
+            grunt.config.set('settings:' + appName, appSettings);
         });
     });
 
     grunt.registerTask('concat_scripts', 'concat scripts', function () {
         console.log('concat_scripts');
         var task = 'concat';
-        var baseConfig = grunt.config.get('cfg');
-        iterate(baseConfig.apps, function (appName, app) {
-            console.log(appName);
-            var appSrc = path.join(app.src, 'app', appName);
-            var appDest = path.join(buildDir, 'app', appName, app.key);
-            createSubtaskCall(task, 'app_' + appName + '_scripts', appSrc + '/scripts', jsFiles, function (pattern) {
-                app.scripts = app.scripts || [];
-                app.scripts.push(appDest + '/scripts/app.js');
-                return { dest: appDest + '/scripts/app.js', src: pattern};
+        iterate(grunt.config.get('apps'), function (appName, app) {
+            var appSettings = grunt.config.get('settings:' + appName);
+            console.log('app:' + appName);
+            var appSrc = app.src + '/app/' + appName;
+            var appRef = 'app/' + appName + '/' + appSettings.app.key;
+            var appDest = buildDir + '/' + appRef;
+            fileExists(appSrc + '/scripts', jsFiles, function (pattern) {
+                //add script url
+                appSettings.scripts.push(appRef + '/scripts/app.js');
+                createSubtask(task, 'app_' + appName + '_scripts', {
+                    dest: appDest + '/scripts/app.js', src: pattern
+                });
             });
-            createSubtaskCall(task, 'app_' + appName + '_units', appSrc + '/tests/unit', jsFiles, function (pattern) {
-                return { dest: appDest + '/tests/app-unit.spec.js', src: pattern  };
+            fileExists(appSrc + '/tests/unit', jsFiles, function (pattern) {
+                createSubtask(task, 'app_' + appName + '_units', {
+                    dest: appDest + '/tests/app-unit.spec.js', src: pattern
+                });
             });
-            createSubtaskCall(task, 'app_' + appName + '_e2e', appSrc + '/tests/e2e', jsFiles, function (pattern) {
-                return {  dest: appDest + '/tests/app-e2e.spec.js', src: pattern };
+            fileExists(appSrc + '/tests/e2e', jsFiles, function (pattern) {
+                createSubtask(task, 'app_' + appName + '_e2e', {
+                    dest: appDest + '/tests/app-e2e.spec.js', src: pattern
+                });
             });
 
             //iterate mods for applications
-            var appConfig = grunt.config.get('config:' + appName);
-            iterate(appConfig.mods, function (modName, mod) {
-                console.log(modName + ':' + mod.version);
-                var modDest = path.join(buildDir, 'mod', modName, mod.version);
-                var modSrc = path.join(mod.src, 'mod', modName);
-                createSubtaskCall(task, 'mod_' + modName + mod.version + '_scripts', modSrc + '/scripts', jsFiles, function (pattern) {
-                    mod.scripts = mod.scripts || [];
-                    mod.scripts.push(modDest + '/scripts/mod.js');
-                    return { dest: modDest + '/scripts/mod.js', src: pattern  };
+            console.log('app ' + appName + ' iterate mods:');
+            iterate(appSettings.mod, function (modName, mod) {
+                console.log('mod:' + modName + ':' + mod.version);
+                var modSrc = mod.src + '/mod/' + modName;
+                var modPath = 'mod/' + modName + '/' + mod.version;
+                var modDest = buildDir + '/' + modPath;
+                fileExists(modSrc + '/scripts', jsFiles, function (pattern) {
+                    //add script url
+                    appSettings.scripts.push(modPath + '/scripts/mod.js');
+                    createSubtask(task, 'mod_' + modName + mod.version + '_scripts', {
+                        dest: modDest + '/scripts/mod.js', src: pattern
+                    });
                 });
-                createSubtaskCall(task, 'mod_' + modName + mod.version + '_units', modSrc + '/tests/unit', jsFiles, function (pattern) {
-                    return { dest: modDest + '/tests/mod-unit.spec.js', src: pattern };
+                fileExists(modSrc + '/tests/unit', jsFiles, function (pattern) {
+                    createSubtask(task, 'mod_' + modName + mod.version + '_units', {
+                        dest: modDest + '/tests/mod-unit.spec.js', src: pattern
+                    });
                 });
-                createSubtaskCall(task, 'mod_' + modName + mod.version + '_e2e', modSrc + '/tests/e2e', jsFiles, function (pattern) {
-                    return { dest: modDest + '/tests/mod-e2e.spec.js', src: pattern };
+                fileExists(modSrc + '/tests/e2e', jsFiles, function (pattern) {
+                    createSubtask(task, 'mod_' + modName + mod.version + '_e2e', {
+                        dest: modDest + '/tests/mod-e2e.spec.js', src: pattern
+                    });
                 });
+
             });
-
+            grunt.config.set('settings:' + appName, appSettings);
         });
-
-
-        grunt.config.set('cfg', baseConfig);
         grunt.task.run(task);
     });
 
     grunt.registerTask('html2js_scripts', 'html2js scripts', function () {
         var task = 'html2js';
-        var baseConfig = grunt.config.get('cfg');
-        iterate(baseConfig.apps, function (appName, app) {
-            console.log(appName);
-            var appSrc = path.join(app.src, 'app', appName);
-            createSubtaskCall(task, 'app_' + appName + '_views', appSrc + '/views', htmlFiles, function (pattern) {
-                var appDest = path.join(buildDir, 'app', appName, app.key);
-                //app.scripts.push(appDest + '/scripts/app-templates.js');
-                return { dest: appDest + '/scripts/app-templates.js', src: pattern,
-                    options: { base: app.src, module: 'app/' + appName + '/views' }
-                };
-            });
-
-            //iterate mods for applications
-            var appConfig = grunt.config.get('config:' + appName);
-            iterate(appConfig.mods, function (modName, mod) {
-                console.log(modName + ':' + mod.version);
-                var modSrc = path.join(mod.src, 'mod', modName);
-                createSubtaskCall(task, 'mod_' + modName + mod.version + '_views', modSrc + '/views', htmlFiles, function (pattern) {
-                    var modDest = path.join(buildDir, 'mod', modName, mod.version);
-                    //mod.scripts.push(modDest + '/scripts/mod-templates.js');
-                    return { dest: modDest + '/scripts/mod-templates.js', src: pattern,
-                        options: { base: mod.src, module: 'mod/' + modName + '/views' }
-                    };
+        iterate(grunt.config.get('apps'), function (appName, app) {
+            var appSettings = grunt.config.get('settings:' + appName);
+            console.log('app:' + appName);
+            var appSrc = app.src + '/app/' + appName;
+            var appRef = 'app/' + appName + '/' + appSettings.app.key;
+            var appDest = buildDir + '/' + appRef;
+            fileExists(appSrc + '/views', htmlFiles, function (pattern) {
+                //add script url
+                appSettings.scripts.push(appRef + '/scripts/app-templates.js');
+                createSubtask(task, 'app_' + appName + '_views', {
+                    dest: appDest + '/scripts/app-templates.js', src: pattern,
+                    options: { base: app.src, module: 'app/' + appName + '/views'}
                 });
             });
-
+            //iterate mods for applications
+            console.log('app ' + appName + ' iterate mods:');
+            iterate(appSettings.mod, function (modName, mod) {
+                console.log(modName + ':' + mod.version);
+                var modSrc = mod.src + '/mod/' + modName;
+                var modPath = 'mod/' + modName + '/' + mod.version;
+                var modDest = buildDir + '/' + modPath;
+                fileExists(modSrc + '/views', htmlFiles, function (pattern) {
+                    //add script url
+                    appSettings.scripts.push(modPath + '/scripts/mod-templates.js');
+                    createSubtask(task, 'mod_' + modName + mod.version + '_views', {
+                        dest: modDest + '/scripts/mod-templates.js', src: pattern,
+                        options: { base: mod.src, module: 'mod/' + modName + '/views' }
+                    });
+                });
+            });
+            grunt.config.set('settings:' + appName, appSettings);
         });
-
-        grunt.config.set('cfg', baseConfig);
+        //grunt.config.set('build_base', baseBuild);
         grunt.task.run(task);
     });
 
     grunt.registerTask('copy_files', 'copy files', function () {
         var task = 'copy';
-        var baseConfig = grunt.config.get('cfg');
-        console.log(baseConfig);
-        iterate(baseConfig.apps, function (appName, app) {
-            console.log(appName);
-            var template = baseConfig.template;
-            var templateSrc = template.src;
-            console.log(templateSrc);
-            var appSrc = path.join(app.src, 'app', appName);
-            var appDest = path.join(buildDir, 'app', appName, app.key);
-            var assetsDest = path.join(buildDir, 'assets');
-            var templateDest = path.join(assetsDest, template.key);
-            console.log(template);
+        iterate(grunt.config.get('apps'), function (appName, app) {
+            var appSettings = grunt.config.get('settings:' + appName);
+            console.log('app:' + appName);
+            var templateSrc = appSettings.template.src;
+            var appSrc = app.src + '/app/' + appName;
+            var appDest = buildDir + '/app/' + appName + '/' + appSettings.app.key;
+            var assetsDest = buildDir + '/assets';
+            var assetsKeyDest = assetsDest + '/' + appSettings.template.key;
             //Copy templates hbs files
-            createSubtaskCall(task, 'app_' + appName + '_template_hbs', templateSrc, hbsFiles, function () {
-                return { expand: true, cwd: templateSrc, src: hbsFiles, dest: appDest };
+            fileExists(templateSrc, hbsFiles, function () {
+                createSubtask(task, 'app_' + appName + '_template_hbs', {
+                    expand: true, cwd: templateSrc, src: hbsFiles, dest: appDest
+                });
             });
             //Copy application hbs files
-            createSubtaskCall(task, 'app_' + appName + '_app_hbs', appSrc, hbsFiles, function () {
-                return { expand: true, cwd: appSrc, src: hbsFiles, dest: appDest };
+            fileExists(appSrc, hbsFiles, function () {
+                createSubtask(task, 'app_' + appName + '_app_hbs', {
+                    expand: true, cwd: appSrc, src: hbsFiles, dest: appDest
+                });
             });
             //Copy templates css,png files  @todo
-            createSubtaskCall(task, 'template_css', templateSrc, [cssFiles, pngFiles], function () {
-                return { expand: true, cwd: templateSrc, src: [cssFiles, pngFiles], dest: templateDest };
+            fileExists(templateSrc, [cssFiles, pngFiles], function () {
+                createSubtask(task, 'template_css', {
+                    expand: true, cwd: templateSrc, src: [cssFiles, pngFiles], dest: assetsKeyDest
+                });
             });
 
             //iterate libs for applications
-            var appConfig = grunt.config.get('config:' + appName);
-            iterate(appConfig.libs, function (libName, lib) {
+            console.log('app ' + appName + ' iterate libs:');
+            appSettings.vendors = [];
+            iterate(appSettings.lib, function (libName, lib) {
                 //Copy libs css,js files
                 var libSrc = lib.src + '/' + libName;
-                createSubtaskCall(task, 'lib_' + libName + lib.version, libSrc, lib.file, function () {
-                    return { expand: true, cwd: libSrc, src: lib.file,
-                        dest: assetsDest + '/vendor/' + libName + '/'+lib.version};
+                fileExists(libSrc, lib.file, function () {
+                    //add script url
+                    appSettings.vendors.push('assets/vendor/' + libName + '/' + lib.version + '/' + lib.file);
+                    createSubtask(task, 'lib_' + libName + lib.version, {
+                        expand: true, cwd: libSrc, src: lib.file,
+                        dest: assetsDest + '/vendor/' + libName + '/' + lib.version
+                    });
                 });
             });
+            grunt.config.set('settings:' + appName, appSettings);
         });
         grunt.task.run(task);
 
@@ -416,64 +518,42 @@ module.exports = function (grunt) {
 
     grunt.registerTask('prepare_assemble', 'prepare assemble scripts', function () {
         var task = 'assemble';
-        var baseConfig = grunt.config.get('cfg');
-        iterate(baseConfig.apps, function (appName, app) {
-            console.log(appName);
-            var appSrc = path.join(app.src, 'app', appName);
-            var appDest = path.join(buildDir, 'app', appName, app.key);
+        iterate(grunt.config.get('apps'), function (appName, app) {
+            var appSettings = grunt.config.get('settings:' + appName);
             var appConfig = grunt.config.get('config:' + appName);
-            var template = baseConfig.template;
-            var assetsDest = path.join(buildDir, 'assets', template.key);
-
-            app.name = appName;
-            app.urls = [];
-            app.urls.push('app/' + appName + '/' + app.key + '/scripts/app-config.min.js');
-            app.urls.push('app/' + appName + '/' + app.key + '/scripts/app.js');
-            app.urls.push('app/' + appName + '/' + app.key + '/scripts/app-templates.js');
-            app.mods = [];
-            iterate(appConfig.mods, function (modName, mod) {
-                app.mods.push('mod/' + modName + '/' + mod.version + '/scripts/mod.js');
-                app.mods.push('mod/' + modName + '/' + mod.version + '/scripts/mod-templates.js');
-            });
-            app.libs = [];
-            iterate(appConfig.libs, function (libName, lib) {
-                app.libs.push('assets/vendor/' + libName + '/' + lib.version + '/' + lib.file);
-            });
-
-            createSubtaskCall(task, 'app_' + appName, appDest, hbsFiles, function () {
-                return {
+            console.log('app:' + appName);
+            var appSrc = app.src + '/app/' + appName;
+            var appDest = buildDir + '/app/' + appName + '/' + appSettings.app.key;
+            var assetsDest = buildDir + '/assets/' + appSettings.template.key;
+            fileExists(appDest, hbsFiles, function () {
+                createSubtask(task, 'app_' + appName, {
                     options: {
-                        cfg: appConfig,
-                        app: app,
+                        config: appConfig,
+                        settings: appSettings,
+                        app: appConfig.app,
                         flatten: true,
                         assets: assetsDest,
                         layoutdir: appDest + '/_layouts',
                         layout: 'default.hbs',
                         partials: [
                             appDest + '/_includes/*.hbs'
-                        ],
-                        data: [
-                            appSrc + '/*.yml',
-                            appDest + '/*.yml'
                         ]
                     },
                     files: {
-                        '<%= build.dir %>/': [appDest + '/*.hbs']
+                        '<%= build.dir %>/': [appDest + '/' + appName + '.hbs']
                     }
-                };
+                });
             });
         });
-        grunt.config.set('cfg', baseConfig);
-
     });
 
     grunt.registerTask('watch_apps', 'prepare assemble scripts', function () {
         var task = 'watch';
-        var baseConfig =  grunt.config.get('cfg');
-        iterate(baseConfig.apps,function (appName,app) {
-            createSubtaskCall(task, 'app_' + appName, app.src,
-                [jsFiles, htmlFiles, cssFiles, '**/*.yml', hbsFiles], function (pattern) {
-                return { files: pattern, tasks: ['design'] };
+        iterate(grunt.config.get('apps'), function (appName, app) {
+            fileExists(app.src, [jsFiles, htmlFiles, cssFiles, '**/*.yml', hbsFiles], function (pattern) {
+                createSubtask(task, 'app_' + appName, {
+                    files: pattern, tasks: ['design']
+                });
             });
         });
         grunt.task.run(task);

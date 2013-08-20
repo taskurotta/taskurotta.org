@@ -1,4 +1,3 @@
-mod:
-  markdown:
-    version: 0.1.0
-    path: '/md'
+name: markdown
+version: 0.1.0
+path: '/md'

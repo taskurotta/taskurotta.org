@@ -1,7 +1,3 @@
 app:
-  road_map:
-    title: План
-
-mods:
-  navigation: { version: 0.1.0, src: '..\mods\src' }
-  footer: { version: 0.1.0, src: '..\mods\src' }
+  name: road_map
+  title: План

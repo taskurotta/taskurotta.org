@@ -1,14 +1,6 @@
 app:
-  index:
-    title: Введение
-
-mods:
-  core: { version: 0.2.0, src: '..\mods\src' }
-  navigation: { version: 0.1.0, src: '..\mods\src' }
-  footer: { version: 0.1.0, src: '..\mods\src' }
-
-libs:
-  html5shiv: {file: dist/html5shiv.js, src: 'bower_components' }
+  name: index
+  title: Введение
 
 mod:
   footer:

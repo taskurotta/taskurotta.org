@@ -1,0 +1,20 @@
+#portal theme
+template: { src: '../template/src' }
+app:
+  index: { src: '../apps/src'}
+  get_started: { src: '../apps/src'}
+  road_map: { src: '../apps/src'}
+mod:
+  core: { src: '../mod_core/src' }
+  markdown: { src: '../mods/src' }
+  navigation: { src: '../mods/src' }
+  footer: { src : '../mods/src' }
+lib:
+  html5shiv: { file: dist/html5shiv.js, src: 'bower_components' }
+  jquery: { file: jquery.js, src: 'bower_components' }
+  angular: { file: angular.js, src: 'bower_components' }
+  angular-ui-router: { file: release/angular-ui-router.js, src: 'bower_components' }
+  showdown: { file: compressed/showdown.js, src: 'bower_components' }
+  bootstrap: { file: dist/js/bootstrap.js, src: 'bower_components' }
+
+

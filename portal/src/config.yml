@@ -1,26 +1,5 @@
 title: Taskurotta
 version: 0.1.0
-#base
-apps:
-  index: { src: '../apps/src', template: 'base' }
-  get_started: { src: '../apps/src', template: 'base' }
-  road_map: { src: '../apps/src', template: 'base' }
-mods:
-  core: { version: 0.1.0, src: '../mod_core/src' }
-  markdown: { version: 0.1.0, src: '../mods/src' }
-  navigation: { version: 0.1.0, src: '../mods/src' }
-  footer: { version: 0.1.0, src: '../mods/src' }
-libs:
-  html5shiv: { file: dist/html5shiv.js, src: 'bower_components' }
-  jquery: { file: jquery.js, src: 'bower_components' }
-  angular: { file: angular.js, src: 'bower_components' }
-  angular-ui-router: { file: release/angular-ui-router.js, src: 'bower_components' }
-  showdown: { file: compressed/showdown.js, src: 'bower_components' }
-  bootstrap: { file: dist/js/bootstrap.js, src: 'bower_components' }
-
-#portal theme
-template: { name: base, src: '../template/src' }
-#individual
 mod:
   navigation:
     search: true
@@ -52,5 +31,14 @@ mod:
       - id: footnav_issue
         href: 'https://github.com/taskurotta/taskurotta.org/issues?state=open'
         name: Issues
+    0.1.0:
+        copyright: Taskurotta Team 2013 0.1.0
+        links:
+          - id: footnav_blog
+            href: 'https://github.com/taskurotta/taskurotta.org'
+            name: Blog
+          - id: footnav_issue
+            href: 'https://github.com/taskurotta/taskurotta.org/issues?state=open'
+            name: Issues
   markdown:
     path: '/md'

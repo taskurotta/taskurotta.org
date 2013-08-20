@@ -1,0 +1,7 @@
+mod:
+  core: { src: '../mods/src' }
+  navigation: { src: '../mods/src' }
+  footer: { src: '../mods/src' }
+
+lib:
+  html5shiv: {file: dist/html5shiv.js, src: 'bower_components' }

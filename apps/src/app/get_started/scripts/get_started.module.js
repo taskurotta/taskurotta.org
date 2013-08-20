@@ -1,4 +1,4 @@
-var getStartedApp = angular.module('get_started',
+var getStartedApp = angular.module('app',
     ['coreMod','markdownMod','navigationMod','footerMod','app/get_started/views']);
 getStartedApp.config( function($stateProvider,markdownModProvider){
     console.log('getStartedApp.config');

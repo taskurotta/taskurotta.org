@@ -1,3 +1,2 @@
-mod:
-  core:
-    version: 0.2.0
+name: core
+version: 0.2.0
