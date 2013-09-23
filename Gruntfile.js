@@ -5,6 +5,7 @@ module.exports = function (grunt) {
     var sh = require('shorthash');
     var extend = require('node.extend');
     var userConfig = require('./configs/build.conf.js');
+    var isFlat = true;
     var srcDir = 'src',
         buildDir = 'build';
     var buildAppDir = buildDir + '/app/';
@@ -205,6 +206,9 @@ module.exports = function (grunt) {
 
     function dirHash(path, callback) {
         var key = 'dir'+path;
+        if(isFlat){
+            callback('');
+        }else
         if (hashes.hasOwnProperty(key)) {
             callback(hashes[key]);
         }
@@ -213,7 +217,7 @@ module.exports = function (grunt) {
                 if (err) {
                     grunt.fail.fatal(err);
                 }
-                var hash = sh.unique(dirHashes.hash);
+                var hash = '/'+sh.unique(dirHashes.hash);
                 hashes[key] = hash;
                 console.log(hash + ' =hash ' + dirHashes.hash);
                 callback(hash);
@@ -361,7 +365,7 @@ module.exports = function (grunt) {
             var appSettings = grunt.config.get('settings:' + appName);
             console.log('app:' + appName);
             var appConfig = grunt.config.get('config:' + appName);
-            var appRef = 'app/' + appName + '/' + appSettings.app.key;
+            var appRef = 'app/' + appName + appSettings.app.key;
             var appDest = buildDir + '/' + appRef;
             saveConfigFile(appDest + '/scripts/app-config.js', appConfig);
             //add script url
@@ -379,7 +383,7 @@ module.exports = function (grunt) {
             var appSettings = grunt.config.get('settings:' + appName);
             console.log('app:' + appName);
             var appSrc = app.src + '/app/' + appName;
-            var appRef = 'app/' + appName + '/' + appSettings.app.key;
+            var appRef = 'app/' + appName + appSettings.app.key;
             var appDest = buildDir + '/' + appRef;
             fileExists(appSrc + '/scripts', jsFiles, function (pattern) {
                 //add script url
@@ -438,7 +442,7 @@ module.exports = function (grunt) {
             var appSettings = grunt.config.get('settings:' + appName);
             console.log('app:' + appName);
             var appSrc = app.src + '/app/' + appName;
-            var appRef = 'app/' + appName + '/' + appSettings.app.key;
+            var appRef = 'app/' + appName + appSettings.app.key;
             var appDest = buildDir + '/' + appRef;
             fileExists(appSrc + '/views', htmlFiles, function (pattern) {
                 //add script url
@@ -477,9 +481,9 @@ module.exports = function (grunt) {
             console.log('app:' + appName);
             var templateSrc = appSettings.template.src;
             var appSrc = app.src + '/app/' + appName;
-            var appDest = buildDir + '/app/' + appName + '/' + appSettings.app.key;
+            var appDest = buildDir + '/app/' + appName + appSettings.app.key;
             var assetsDest = buildDir + '/assets';
-            var assetsKeyDest = assetsDest + '/' + appSettings.template.key;
+            var assetsKeyDest = assetsDest + appSettings.template.key;
             //Copy templates hbs files
             fileExists(templateSrc, hbsFiles, function () {
                 createSubtask(task, 'app_' + appName + '_template_hbs', {
@@ -527,8 +531,8 @@ module.exports = function (grunt) {
             var appConfig = grunt.config.get('config:' + appName);
             console.log('app:' + appName);
             var appSrc = app.src + '/app/' + appName;
-            var appDest = buildDir + '/app/' + appName + '/' + appSettings.app.key;
-            var assetsDest = buildDir + '/assets/' + appSettings.template.key;
+            var appDest = buildDir + '/app/' + appName + appSettings.app.key;
+            var assetsDest = buildDir + '/assets' + appSettings.template.key;
             fileExists(appDest, hbsFiles, function () {
                 createSubtask(task, 'app_' + appName, {
                     options: {

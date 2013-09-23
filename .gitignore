@@ -10,3 +10,7 @@ target/
 *.jar
 *.war
 *.ear
+/node_modules
+/bower_components
+/.idea
+/*.iml
