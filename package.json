@@ -26,7 +26,6 @@
     "node.extend": ">=1.0.7",
     "dirsum": "~0.1.1",
     "shorthash": ">=0.0.2",
-    "bower": "~1.2.6"
   },
   "engines": {
     "node": ">=0.10.0"
