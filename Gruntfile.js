@@ -4,7 +4,7 @@ module.exports = function (grunt) {
     var dirsum = require('dirsum');
     var sh = require('shorthash');
     var extend = require('node.extend');
-    var userConfig = require('./scripts/build.conf.js');
+    var userConfig = require('./configs/build.conf.js');
     var srcDir = 'src',
         buildDir = 'build';
     var buildAppDir = buildDir + '/app/';
@@ -41,7 +41,7 @@ module.exports = function (grunt) {
         },
         jshint: {
             options: {
-                jshintrc: 'scripts/.jshintrc',
+                jshintrc: 'configs/.jshintrc',
                 ignores: ['**/scripts/app-config.js']
             },
             all: [
@@ -103,7 +103,7 @@ module.exports = function (grunt) {
         },
         karma: {
             unit: {
-                configFile: 'scripts/karma.conf.js'
+                configFile: 'configs/karma.conf.js'
                 // singleRun: true
             }
         },

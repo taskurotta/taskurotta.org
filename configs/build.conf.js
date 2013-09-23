@@ -10,7 +10,7 @@ module.exports = {
       layouts :  'src/_layouts',
       includes :  'src/_includes',
       assets : 'src/assets',
-      md : 'src/md'
+      md : 'docs/md'
   },
 
   build:{
