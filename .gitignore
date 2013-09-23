@@ -5,6 +5,7 @@
 .idea/
 target/
 */target/
+node_modules/
 
 # Package Files #
 *.jar
