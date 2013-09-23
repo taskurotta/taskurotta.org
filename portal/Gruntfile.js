@@ -366,6 +366,8 @@ module.exports = function (grunt) {
             saveConfigFile(appDest + '/scripts/app-config.js', appConfig);
             //add script url
             appSettings.scripts = [appRef + '/scripts/app-config.js'];
+            appSettings.units = [];
+            appSettings.e2e = [];
             grunt.config.set('settings:' + appName, appSettings);
         });
     });
@@ -412,11 +414,13 @@ module.exports = function (grunt) {
                     });
                 });
                 fileExists(modSrc + '/tests/unit', jsFiles, function (pattern) {
+                    appSettings.units.push(modPath + '/tests/mod-unit.spec.js');
                     createSubtask(task, 'mod_' + modName + mod.version + '_units', {
                         dest: modDest + '/tests/mod-unit.spec.js', src: pattern
                     });
                 });
                 fileExists(modSrc + '/tests/e2e', jsFiles, function (pattern) {
+                    appSettings.e2e.push(modPath + '/tests/mod-e2e.spec.js');
                     createSubtask(task, 'mod_' + modName + mod.version + '_e2e', {
                         dest: modDest + '/tests/mod-e2e.spec.js', src: pattern
                     });
@@ -589,11 +593,14 @@ module.exports = function (grunt) {
         'ngmin'
     ]);
     grunt.registerTask('test', [
+        'generate_configs',
+        'save_configs',
         'concat_scripts',
+        'html2js_scripts',
+        'copy_files',
+        'prepare_assemble',
         'jshint',
         'assemble',
-        'copy',
-        'html2js_scripts',
         //'uglify',
         'ngmin',
         'connect:server',

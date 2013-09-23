@@ -7,16 +7,16 @@ basePath = 'build';
 files = [
     JASMINE,
     JASMINE_ADAPTER,
-    'vendor/angular/angular.js',
-    'vendor/angular-mocks/angular-mocks.js',
+    'bower_components/angular/angular.js',
+    'bower_components/angular-mocks/angular-mocks.js',
 //    'vendor/angular-scenario/angular-scenario.js',
-    'vendor/angular-ui-router/release/angular-ui-router.js',
-    'mod/*/*/scripts/mod.js',
-    'mod/*/*/scripts/mod-templates.js',
-    'mod/*/*/tests/mod-unit.js',
-    'app/*/scripts/app.js',
-    'app/*/scripts/app-templates.js',
-    'app/*/tests/mod-unit.js'
+    'bower_components/angular-ui-router/release/angular-ui-router.js',
+    'build/mod/*/*/scripts/mod.js',
+    'build/mod/*/*/scripts/mod-templates.js',
+    'build/mod/*/*/tests/mod-unit.js',
+    'build/app/*/scripts/app.js',
+    'build/app/*/scripts/app.js',
+    'build/app/*/scripts/app-templates.js'
 ];
 
 // list of files to exclude
