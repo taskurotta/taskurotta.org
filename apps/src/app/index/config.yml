@@ -1,0 +1,7 @@
+app:
+  name: index
+  title: Введение
+
+mod:
+  footer:
+    copyright: Taskurotta Team 2013 Главная
