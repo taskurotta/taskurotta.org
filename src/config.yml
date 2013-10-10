@@ -10,11 +10,19 @@ mod:
          - { id: rootnav_get_started, href: get_started.html, name: Введение }
          - { id: rootnav_road_map,  href: road_map.html, name: План }
          - id: rootnav_documetation
-           href: '#'
+           href: 'documentation.html'
            name: Документация
            items:
-              - { id: 1, href: 'documentation.html', name: Введение }
-              - { id: 2, href: '#', name: Глава 1 }
+              - { id: 1,
+                  href: 'documentation.html#/intro',
+                  name: Введение }
+              - { id: 2,
+                  href: 'documentation.html#/deployment_common',
+                  name: Варианты развертывания системы }
+              - { id: 3,
+                  href: 'documentation.html#/deployment_1',
+                  name: Вариант 1 }
+
   footer:
     copyright: Taskurotta Team 2013
     links:
