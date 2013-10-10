@@ -4,6 +4,7 @@ app:
   index: { src: 'apps/src'}
   get_started: { src: 'apps/src'}
   road_map: { src: 'apps/src'}
+  documentation: { src: 'apps/src'}
 mod:
   core: { src: 'mods/src' }
   markdown: { src: 'mods/src' }

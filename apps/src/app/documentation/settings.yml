@@ -1,0 +1,3 @@
+mod:
+  navigation: { src: '../mods/src' }
+  footer: { src: '../mods/src' }
