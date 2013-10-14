@@ -19,9 +19,6 @@ mod:
               - { id: 2,
                   href: 'documentation.html#/deployment_common',
                   name: Варианты развертывания системы }
-              - { id: 3,
-                  href: 'documentation.html#/deployment_1',
-                  name: Вариант 1 }
 
   footer:
     copyright: Taskurotta Team 2013
