@@ -34,7 +34,7 @@ mod:
         links:
           - id: footnav_blog
             href: 'https://github.com/taskurotta/taskurotta'
-            name: Blog
+            name: Source
           - id: footnav_issue
             href: 'https://github.com/taskurotta/taskurotta/issues?state=open'
             name: Issues
