@@ -1,83 +1,32 @@
-### Пре-альфа (февраль) - done <section id="pre-alfa"> &nbsp;</section>
+**Taskurotta** it’s convinient and comparable solution with [Amazon SWF](http://aws.amazon.com/swf/).
 
-Выполнен общий дизайн сервиса. Выполнены модули хранения данных в памяти. Выполняются тестовые приложения.
-Можно начинать переработку текущих процессов с использованием сервиса.
+Main features
 
-- реализована среда выполнения задач (модуль wf-core) и метод unit тестирования актеров.
-- реализован модуль запуска актеров (wf-bootstrap) в виде fat jar
-- реализовано API для взаимодействия клиентов с сервером задач (wf-client)
-- реализована архитектура и логика модулей сервера, API доступа к хранилищу данных, реализация API для хранения задачей в памяти.
-- реализован пример работы процесса (wf-example). Пример описан в разделе [Введение]
-- задачи хранятся в памяти
-- реальное асинхронное взаимодействие компонент
-- сереализация и десереализация передаваемых объектов между клиентом и сервером
-- реализованы тесты производительности для mongo-db (wf-mongotest)
-- реализован PoC процесса хранения данных в mклиентовongodb
-- реализован PoC клиент-серверного взаимодействия с помощью jenkins и dropwisard
+- Dynamic process creation
+- Simple run and control of processes
+- Reusable Actors in processes(Workers and Coordinators)
+- Regression tests based on actors and archive data
+- Handy creation of actors
+- Handy scalability of actors and servers
+- Fault-tolerance and load-balancing
+- Process Scheduler
 
-[Введение]: get_started.html
+**Taskurotta** has comparable architecture with [Amazon SWF](http://aws.amazon.com/swf/). Common idea that you need concentrate only on business logic. All business-logic should be implemented in reusable components - «Workers».  Workers can be organized to work in one JVM instance or in different JVM instances. This is very flexible solution which can be used for fault-tolerance or load-balancing.
 
-### Альфа (апрель) <section id="alfa"> &nbsp;</section>
+All parameters of actors and their work results are stored for a future analysis. It’s very convenient to have archive of data for operational analysis and regression tests.
 
-Сервис работает с базой данных. Реализован основной функционал. Сервис готов к тестированию на не критичных задачах,
-например для рассылки уведомлений по почте.
+Actors can work as in existed application server and as in special useful wrapper - **«Taskurotta.bootstrap»**. **Taskurotta** server has simple REST interface for interaction between actors and clients which can start process in the system. Process creation can be implemented in common Java-style coding. All you need it’s just work with object who has implementation of business interface.
 
-- реализация [@NoWait и @Wait]
-- реализованы именованные списки задач для балансировки нагрузки на актеров (и распределения задач по
-конкретным серверам)
-- реализована идентификация актеров перед получением задач
-- сервер предполагает возможное наличие timer у задач. Осуществляет выборку задач с учетом текущего времени.
-- у каждой задачи есть id клиентского процесса (или иной способ поиска всех задач процесса)
-- реализована устойчивость и сохранение ошибок, полученных в процессе выполнения задач
-- реализован контекст выполнения задачи (текущее время и информация о повторном запуске)
-- <s>добавлены метрики для актеров и доступ к ним по JMX</s>
-- добавлено фиксирование реального времени выполнения задачи
-- Добавлен custom_id для процесса.
-- Реализованы тесты и получены результаты по различным конфигурациям (тестовая в памяти, с добавление клиент-сервера
-на http/json, с добавлением Oracle DB)
-- БД сконфигурирована в HA режиме. Реализован тест бешеных обезьян. Подтверждена стабильность системы. Разработаны регламенты
-небходимых действий при критических ситуациях.
-- реализована сущность Процесс и ее создание при старте процесса. (? кандидан на перенос в Бета)
-- реализован сервис работы и хранения файлов. (? кандидан на перенос в Бета или Релиз-кандидат)
-- реализована консоль мониторинга (просмотр состояния очередей. конкретного процесса или задач)(? кандидан на перенос в Бета)
+**Taskurotta** has using Hazelcast Framework for creating shared memory and runtime enviroment between **Taskurotta** servers. This framework allow us create transparent scalability. All nodes has auto-discovery feature which helps register new node and distribute memory from other nodes on this node.
 
-[@NoWait и @Wait]: http://docs.aws.amazon.com/amazonswf/latest/awsflowguide/annotations.html#annotations.waitnowait
+Processes which should run by schedule can be used with Process Scheduler who has configuration based on cron-expressions. Process Scheduler also as all of components has fault-tolerance feature and can be run on one of live **Taskurotta** server after system crash.
 
+Web-console helps to control all process. It’s can be accessed on every node of **Taskurotta** servers.
+Web-console main features
 
-### Бета (май) <section id="beta"> &nbsp;</section>
+- Show all information about process
+- Statuses of all tasks in queues
+- Metrics(for example: estimated time of task, execution duration of task by actor, processing time of task by server etc.)
+- Managing Process Scheduler
 
-Сервис готов к опытной эксплуатации на маленьких задачах, таких как ФЛК. Реализация новых процессов на базе сервиса.
-Исправлены все критические и средние ошибки.
-
-- реализована политика повторения задач [@ExponentialRetry]
-- реализованы интерфейсы для работы с mongodb
-- реализован механизм восстановления состояния задач после сбоя
-- реализована регистрация актеров
-- реализован timer для запуска отложенных задач - выполнения задач по расписанию
-- старт\стоп обработки задач актерами
-- старт\стоп запуска процессов
-- реализация архитектуры взаимодействия с актерами закрытыми средствами firewall (не могут сами забирать задачи)
-- максимально повышена устойчивость актеров к сбоям
-- реализован механизм перезапуска процесса после сбоя
-
-[@ExponentialRetry]: http://docs.aws.amazon.com/amazonswf/latest/awsflowguide/annotations.html#annotations.exponentialretry
-
-### Релиз-кандидат (июнь) <section id="pre-release"> &nbsp;</section>
-
-Старт миграции существующих процессов на сервис.
-
-- анализ клиент-серверной архитектуры, возможное планирование и переход от poll к push взаимодействию.
-
-
-### Релиз (июль) <section id="release"> &nbsp;</section>
-
-Сервис готов к использованию в процессах со стадиями, требующими взаимодействия с пользователями. Реализованы механизмы
-тестирования новых версий Актеров и их поэтапный ввод в эксплуатацию.
-
-- реализация [@ManualActivityCompletion]
-- разработан механизм регрессионного тестирования новых версий актеров по имеющимся данным
-- разработан механизм поэтапного внедрения новых версий актеров (A/B Testing).
-- управление планированием задач по расписанию с использованием консоли.
-- реализации подписки клиента на результат выполнения процесса (необходимость под вопросом)
-
-[@ManualActivityCompletion]: http://docs.aws.amazon.com/amazonswf/latest/awsflowguide/annotations.html#annotations.manualactivitycompletion
+We are going to open source with all stuff in the end of the year. https://github.com/taskurotta/taskurotta
