@@ -8,17 +8,17 @@ mod:
       items:
          - { id: rootnav_index, href: index.html, name: Taskurotta }
          - { id: rootnav_road_map,  href: road_map.html, name: Info }
-         - { id: rootnav_get_started, href: get_started.html, name: Введение }
+         - { id: rootnav_get_started, href: get_started.html, name: Get started }
          - id: rootnav_documetation
            href: 'documentation.html'
-           name: Документация
+           name: Documentation
            items:
               - { id: 1,
                   href: 'documentation.html#/intro',
-                  name: Введение }
+                  name: Introduction }
               - { id: 2,
                   href: 'documentation.html#/deployment_common',
-                  name: Варианты развертывания системы }
+                  name: Deployment models }
 
   footer:
     copyright: Taskurotta Team 2013
@@ -33,10 +33,10 @@ mod:
         copyright: Taskurotta Team 2013 0.1.0
         links:
           - id: footnav_blog
-            href: 'https://github.com/taskurotta/taskurotta.org'
+            href: 'https://github.com/taskurotta/taskurotta'
             name: Blog
           - id: footnav_issue
-            href: 'https://github.com/taskurotta/taskurotta.org/issues?state=open'
+            href: 'https://github.com/taskurotta/taskurotta/issues?state=open'
             name: Issues
   markdown:
     path: '/md'

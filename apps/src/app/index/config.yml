@@ -4,4 +4,11 @@ app:
 
 mod:
   footer:
-    copyright: Taskurotta Team 2013 Главная
+    copyright: Taskurotta Team 2013
+    links:
+      - id: footnav_blog
+        href: 'https://github.com/taskurotta/taskurotta'
+        name: Blog
+      - id: footnav_issue
+        href: 'https://github.com/taskurotta/taskurotta/issues?page=1&state=open'
+        name: Issues
