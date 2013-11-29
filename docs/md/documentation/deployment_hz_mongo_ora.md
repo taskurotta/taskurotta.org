@@ -16,6 +16,13 @@
 6. Oracle 11g
 7. Объем дискового пространства для Oracle 10GB+
 
+#####Сборка
+
+При сборке инструментом Maven нужно обязательно указывать профиль oracle-env.
+
+######Пример
+    mvn -P oracle-env install
+
 #####Пример файла конфигурации
 
 	#Location of Spring application context:
