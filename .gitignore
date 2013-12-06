@@ -7,7 +7,7 @@ target/
 */target/
 node_modules/
 bower_components/
-build/
+
 
 # Package Files #
 *.jar
