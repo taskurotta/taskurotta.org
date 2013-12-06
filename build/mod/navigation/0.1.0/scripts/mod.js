@@ -1,5 +1,5 @@
 /**
- * taskurotta.org - v0.0.1 - 2013-09-23
+ * taskurotta.org - v0.0.1 - 2013-12-06
  * 
  */
 var navigationMod = angular.module('navigationMod',

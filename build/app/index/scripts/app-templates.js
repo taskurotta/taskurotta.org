@@ -2,31 +2,33 @@ angular.module('app/index/views', ['app/index/views/content.html', 'app/index/vi
 
 angular.module('app/index/views/content.html', []).run(['$templateCache', function($templateCache) {
   $templateCache.put('app/index/views/content.html',
-    '<div class="span4">\n' +
-    '    <h2>Вышла пре-альфа</h2>\n' +
-    '    <p>26 февраля вышла пре-альфа версия продукта. По случаю, добавлен план.</p>\n' +
-    '    <p><a class="btn" href="road_map.html">План &raquo;</a></p>\n' +
-    '</div>\n' +
-    '<div class="span4">\n' +
-    '    <h2>Первый запуск</h2>\n' +
-    '    <p>14 февраля, в 18 часов 30 минут произведен старт ракетоносителя с Первым исскуственным спутником земли\n' +
-    '        (ws-example). Спутник успешно облетел землю и вернулся на базу. Логи приборов показали штатный режим\n' +
-    '        работы. Урааа! :)\n' +
+    '<div>\n' +
+    '    <p>\n' +
+    '        Taskurotta uses <a href="http://www.hazelcast.com/">Hazelcast Framework</a> for creating shared memory and runtime environment between Taskurotta servers. This framework allows us to create transparent scalability.\n' +
+    '        All nodes have auto-discovery feature which helps to register new node and distribute memory from one node to another.\n' +
     '    </p>\n' +
-    '    <p><a class="btn" href="get_started.html">Введение &raquo;</a></p>\n' +
-    '    <!--<p><a class="btn" href="#">View details &raquo;</a></p>-->\n' +
+    '\n' +
+    '    <p>\n' +
+    '        Main features:\n' +
+    '    <ul>\n' +
+    '        <li>Dynamic process creation</li>\n' +
+    '        <li>Simple run and control of processes</li>\n' +
+    '        <li>Reusable Actors in processes(Workers and Coordinators)</li>\n' +
+    '        <li>Regression tests based on actors and archive data</li>\n' +
+    '        <li>Handy creation of actors</li>\n' +
+    '        <li>Handy scalability of actors and servers</li>\n' +
+    '        <li>Fault-tolerance and load-balancing</li>\n' +
+    '        <li>Process Scheduler</li>\n' +
+    '    </ul>\n' +
+    '    </p>\n' +
     '</div>\n' +
-    '<div class="span4">\n' +
-    '    <h2>Начаты работы</h2>\n' +
-    '    <p>Жили-были и когда-то очень давно... SWF или откуда ноги растут.</p>\n' +
-    '    <p><a class="btn" href="http://aws.amazon.com/swf/">SWF &raquo;</a></p>\n' +
-    '</div>');
+    '');
 }]);
 
 angular.module('app/index/views/hero.html', []).run(['$templateCache', function($templateCache) {
   $templateCache.put('app/index/views/hero.html',
     '<h1>Taskurotta</h1>\n' +
-    '<p>Cервис для построения масштабируемых приложений, реализующих процессы с асинхронным\n' +
-    '    выполнением задач.</p>\n' +
-    '<p><a href="get_started.html" class="btn btn-primary btn-large">Введение &raquo;</a></p>');
+    '<p>Taskurotta - Distributed process runtime enviroment\n' +
+    '</p>\n' +
+    '<p><a href="road_map.html" class="btn btn-primary btn-large">More info &raquo;</a></p>');
 }]);

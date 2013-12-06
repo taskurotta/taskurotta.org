@@ -33,4 +33,4 @@ Web-console main features
 - Metrics(for example: estimated time of task, execution duration of task by actor, processing time of task by server etc.)
 - Managing Process Scheduler
 
-We are going to open source with all stuff in the end of the year. https://github.com/taskurotta/taskurotta
+We are going to open [source](https://github.com/taskurotta/taskurotta) with all stuff in the end of the year.
