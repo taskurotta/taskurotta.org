@@ -1,155 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>Taskurotta</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+---
+layout: default
+title: Taskurotta
+weight: 1
+---
 
-    <!-- Le styles -->
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <link href="css/pygments.css" rel="stylesheet">
-    <style type="text/css">
-        body {
-            padding-top: 60px;
-            padding-bottom: 40px;
-        }
-    </style>
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
 
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-    <script src="js/html5shiv.js"></script>
-    <![endif]-->
+<!-- Main component -->
+<div class="jumbotron">
 
-    <!-- Fav and touch icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
-    <link rel="shortcut icon" href="../assets/ico/favicon.png">
+    <div class="row">
+        <div class="col-md-8">
+            <h1>Taskurotta</h1>
 
-    <script src="js/jquery.js"></script>
-
-    <!--
-    <link rel="stylesheet" href="css/highlight_github.css">
-    <script src="js/highlight.pack.js"></script>
-    -->
-
-</head>
-
-<body>
-
-<!--
-<script>hljs.initHighlightingOnLoad();</script>
--->
-
-<div class="navbar navbar-inverse navbar-fixed-top">
-    <div class="navbar-inner">
-        <div class="container">
-            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <div class="nav-collapse collapse">
-                <ul class="nav">
-                    <li id="rootnav_index"><a href="index.html">Taskurotta</a></li>
-                    <li id="rootnav_get_started"><a href="get_started.html">Введение</a></li>
-                    <li id="rootnav_road_map"><a href="road_map.html">План</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Документация (TODO) <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Основная концепция</a></li>
-                            <li><a href="#">Сценарии использования</a></li>
-                            <li class="divider"></li>
-                            <li><a href="#">Пакеты</a></li>
-                            <li><a href="#">Аннотации</a></li>
-                            <li><a href="#">Исключения</a></li>
-                            <li><a href="#">Мониторинг</a></li>
-                            <li class="divider"></li>
-                            <li><a href="#">Unit тесты</a></li>
-                            <li><a href="#">Регрессионное тестирование</a></li>
-                            <li><a href="#">A/B тестирование</a></li>
-                            <!--<li id="rootnav_requirements"><a href="requirements.html">Requirements</a></li>-->
-                        </ul>
-                    </li>
-                </ul>
-            </div><!--/.nav-collapse -->
+            <p>Open source coordination of distributed processes for Java.</p>
+            <p>
+                <a class="btn btn-lg btn-primary" href="/getting-started/" role="button">Getting Started &raquo;</a>
+            </p>
+        </div>
+        <div class="col-md-4">
+            <p>
+            <ul style="font-size: 65%; line-height: 18px;">
+                <li>Simple run and control of distributed processes</li>
+                <li>Reusable actors (Workers and Deciders)</li>
+                <li>Creation of actors in native Java-style</li>
+                <li>Handy scalability of actors and servers</li>
+                <li>Full control through Web-console</li>
+                <li>Failover scheduling of processes</li>
+            </ul>
+            </p>
         </div>
     </div>
+
+
 </div>
 
 
-<div class="container">
-
-    <script>
-    $("#rootnav_index").attr("class", "active");
-</script>
-
-
-    <!-- Main hero unit for a primary marketing message or call to action -->
-    <div class="hero-unit">
-        <h1>Taskurotta</h1>
-        <p>Cервис для построения масштабируемых приложений, реализующих процессы с асинхронным
-            выполнением задач.</p>
-        <p><a href="get_started.html" class="btn btn-primary btn-large">Введение &raquo;</a></p>
-    </div>
-
-    <!-- Example row of columns -->
-    <div class="row">
-        <div class="span4">
-            <h2>Вышла пре-альфа</h2>
-            <p>26 февраля вышла пре-альфа версия продукта. По случаю, добавлен план.</p>
-            <p><a class="btn" href="road_map.html">План &raquo;</a></p>
-        </div>
-        <div class="span4">
-            <h2>Первый запуск</h2>
-            <p>14 февраля, в 18 часов 30 минут произведен старт ракетоносителя с Первым исскуственным спутником земли
-                (ws-example). Спутник успешно облетел землю и вернулся на базу. Логи приборов показали штатный режим
-                работы. Урааа! :)
-            </p>
-            <p><a class="btn" href="get_started.html">Введение &raquo;</a></p>
-            <!--<p><a class="btn" href="#">View details &raquo;</a></p>-->
-        </div>
-        <div class="span4">
-            <h2>Начаты работы</h2>
-            <p>Жили-были и когда-то очень давно... SWF или откуда ноги растут.</p>
-            <p><a class="btn" href="http://aws.amazon.com/swf/">SWF &raquo;</a></p>
-        </div>
-    </div>
-
-    <hr>
-
-    <footer>
-        <p>&copy; Taskurotta Team 2013</p>
-    </footer>
-
-</div> <!-- /container -->
-
-<!-- Le javascript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-        <!--
-<script src="js/bootstrap-transition.js"></script>
-<script src="js/bootstrap-alert.js"></script>
-<script src="js/bootstrap-modal.js"></script>
-<script src="js/bootstrap-dropdown.js"></script>
-<script src="js/bootstrap-scrollspy.js"></script>
-<script src="js/bootstrap-tab.js"></script>
-<script src="js/bootstrap-tooltip.js"></script>
-<script src="js/bootstrap-popover.js"></script>
-<script src="js/bootstrap-button.js"></script>
-<script src="js/bootstrap-collapse.js"></script>
-<script src="js/bootstrap-carousel.js"></script>
-<script src="js/bootstrap-typeahead.js"></script>
--->
-
-<script src="js/bootstrap-dropdown.js"></script>
-
-
-</body>
-</html>
-
-
+{% capture sidebar %}{% include index.md %}{% endcapture %}
+{{ sidebar | markdownify }}

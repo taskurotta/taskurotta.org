@@ -1,5 +1,16 @@
 *.class
 
+# Idea
+*.iml
+.idea/
+target/
+*/target/
+node_modules/
+bower_components/
+build/
+_site/
+Gemfile.lock
+
 # Package Files #
 *.jar
 *.war
