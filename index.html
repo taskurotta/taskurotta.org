@@ -2,7 +2,7 @@
 layout: default
 title: Taskurotta
 weight: 1
-source: _includes/index.md
+markdown: md/index.md
 ---
 
 
@@ -36,5 +36,5 @@ source: _includes/index.md
 </div>
 
 
-{% capture sidebar %}{% include index.md %}{% endcapture %}
+{% capture sidebar %}{% include md/index.md %}{% endcapture %}
 {{ sidebar | markdownify }}

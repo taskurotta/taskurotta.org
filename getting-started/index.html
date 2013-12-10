@@ -1,48 +1,44 @@
 ---
-layout: default
+layout: markdown
 title: Getting Started
 weight: 2
-source: _includes/getting-started.md
+markdown: md/getting-started.md
+submenu:
+  - id: gs-task
+    title: "Task"
+  - id: gs-overview
+    title: "Overview"
+  - id: gs-create-worker
+    title: "Create Workers"
+  - id: gs-create-worker-client
+    title: "Declaration of Interaction Method"
+  - id: gs-create-decider
+    title: "Create Decider"
+  - id: gs-bootstrap
+    title: "Bootstrap"
+  - id: gs-config
+    title: "Config"
+  - id: gs-run-it
+    title: "Run it!"
+    submenu:
+      - id: gs-requirements
+        title: "Requirements"
+      - id: gs-ts-clone
+        title: "Clone Taskurotta repository"
+      - id: gs-ts-install
+        title: "Assemble server"
+      - id: gs-ts-run
+        title: "Run servers"
+      - id: gs-actors-clone
+        title: "Clone pet repository"
+      - id: gs-actors-assemble
+        title: "Assemble it"
+      - id: gs-proc-create
+        title: "Create processes"
+      - id: gs-proc-run-deciders
+        title: "Run decider"
+      - id: gs-proc-run-actors"
+        title: "Run actors"
 ---
 
 
-<div class="row">
-    <div class="col-md-3">
-        <div class="bs-sidebar hidden-print" role="complementary">
-            <ul class="nav bs-sidenav">
-                <li><a href="#gs-task">Task</a></li>
-                <li><a href="#gs-overview">Overview</a></li>
-                <li><a href="#gs-create-worker">Create Workers</a></li>
-                <li><a href="#gs-create-worker-client">Declaration of Interaction Method</a></li>
-                <li><a href="#gs-create-decider">Create Decider</a></li>
-                <li><a href="#gs-bootstrap">Bootstrap</a></li>
-                <li><a href="#gs-config">Config</a></li>
-                <li>
-                    <a href="#gs-run-it">Run it!</a>
-                    <ul class="nav">
-                        <li><a href="#gs-requirements">Requirements</a></li>
-                        <li><a href="#gs-ts-clone">Clone Taskurotta repository</a></li>
-                        <li><a href="#gs-ts-install">Assemble server</a></li>
-                        <li><a href="#gs-ts-run">Run servers</a></li>
-                        <li><a href="#gs-actors-clone">Clone pet repository</a></li>
-                        <li><a href="#gs-actors-assemble">Assemble it</a></li>
-                        <li><a href="#gs-proc-create">Create processes</a></li>
-                        <li><a href="#gs-proc-run-deciders">Run decider</a></li>
-                        <li><a href="#gs-proc-run-actors">Run actors</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="col-md-9" role="main">
-        <!-- Overview
-        ================================================== -->
-
-        <div class="bs-docs-section">
-
-            {% capture sidebar %}{% include getting-started.md %}{% endcapture %}
-            {{ sidebar | markdownify }}
-
-        </div>
-    </div>
-</div>

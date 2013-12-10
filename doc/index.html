@@ -1,7 +1,85 @@
 ---
 layout: default
 title: Documentation
-weight: 4
-source: _includes/doc.md
+weight: 14
+markdown: md/doc.md
+submenu:
+  - id: gs-run-it
+    title: "Run it!"
+    submenu:
+      - id: gs-requirements
+        title: "Requirements"
 ---
 
+<!--submenu:-->
+<!--- { hook: "gs-task",       title: "Task" }-->
+<!--- { hook: "gs-overview", title: "Overview" }-->
+<!--- { hook: "gs-create-worker", title: "Create Workers" }-->
+<!--- { hook: "gs-create-worker-client", title: "Declaration of Interaction Method" }-->
+<!--- { hook: "gs-create-decider", title: "Create Decider" }-->
+<!--- { hook: "gs-bootstrap", title: "Bootstrap" }-->
+<!--- { hook: "gs-config", title: "Config" }-->
+<!--item:-->
+<!--hook: "gs-run-it"-->
+<!--title: "Run it!"-->
+<!--submenu:-->
+<!--- { hook: "gs-requirements", title: "Requirements" }-->
+<!--- { hook: "gs-ts-clone", title: "Clone Taskurotta repository" }-->
+<!--- { hook: "gs-ts-install", title: "Assemble server" }-->
+<!--- { hook: "gs-ts-run", title: "Run servers" }-->
+<!--- { hook: "gs-actors-clone", title: "Clone pet repository" }-->
+<!--- { hook: "gs-actors-assemble", title: "Assemble it" }-->
+<!--- { hook: "gs-proc-create", title: "Create processes" }-->
+<!--- { hook: "gs-proc-run-deciders", title: "Run decider" }-->
+<!--- { hook: "gs-proc-run-actors", title: "Run actors" }-->
+<!--}-->
+<div class="row">
+    <div class="col-md-3">
+        <div class="bs-sidebar hidden-print" role="complementary">
+            <ul class="nav bs-sidenav">
+                <!--<li><a href="#gs-task">Task</a></li>-->
+                <!--<li><a href="#gs-overview">Overview</a></li>-->
+                <!--<li><a href="#gs-create-worker">Create Workers</a></li>-->
+                <!--<li><a href="#gs-create-worker-client">Declaration of Interaction Method</a></li>-->
+                <!--<li><a href="#gs-create-decider">Create Decider</a></li>-->
+                <!--<li><a href="#gs-bootstrap">Bootstrap</a></li>-->
+                <!--<li><a href="#gs-config">Config</a></li>-->
+                <!--<li>-->
+                    <!--<a href="#gs-run-it">Run it!</a>-->
+                    <!--<ul class="nav">-->
+                        <!--<li><a href="#gs-requirements">Requirements</a></li>-->
+                        <!--<li><a href="#gs-ts-clone">Clone Taskurotta repository</a></li>-->
+                        <!--<li><a href="#gs-ts-install">Assemble server</a></li>-->
+                        <!--<li><a href="#gs-ts-run">Run servers</a></li>-->
+                        <!--<li><a href="#gs-actors-clone">Clone pet repository</a></li>-->
+                        <!--<li><a href="#gs-actors-assemble">Assemble it</a></li>-->
+                        <!--<li><a href="#gs-proc-create">Create processes</a></li>-->
+                        <!--<li><a href="#gs-proc-run-deciders">Run decider</a></li>-->
+                        <!--<li><a href="#gs-proc-run-actors">Run actors</a></li>-->
+                    <!--</ul>-->
+                <!--</li>-->
+                {% for item in page.submenu %}
+                <li><a href="#{{ item.id }}">{{ item.title }}</a></li>
+                    {% if item.submenu %}
+                    <ul class="nav">
+                        {% for item1 in item.submenu %}
+                        <li><a href="#{{ item1.id }}">{{ item1.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-9" role="main">
+        <!-- Overview
+        ================================================== -->
+
+        <div class="bs-docs-section">
+
+            {% capture sidebar %}{% include md/doc.md %}{% endcapture %}
+            {{ sidebar | markdownify }}
+
+        </div>
+    </div>
+</div>
