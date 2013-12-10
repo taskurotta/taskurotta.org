@@ -7,7 +7,9 @@ target/
 */target/
 node_modules/
 bower_components/
-
+build/
+Gemfile.lock
+_site/
 
 # Package Files #
 *.jar
