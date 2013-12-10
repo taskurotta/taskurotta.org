@@ -8,8 +8,8 @@ target/
 node_modules/
 bower_components/
 build/
-_site/
 Gemfile.lock
+_site/
 
 # Package Files #
 *.jar
