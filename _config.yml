@@ -1,0 +1,11 @@
+title : Taskurotta
+
+author:
+  name: Taskurotta
+  email: romario13@gmail.com
+  github: romario13
+  twitter: sarrom13
+
+
+markdown: redcarpet
+pygments: true

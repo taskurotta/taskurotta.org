@@ -1,0 +1,67 @@
+---
+layout: default
+title: Install
+weight: 3
+---
+
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="bs-sidebar hidden-print" role="complementary">
+            <ul class="nav bs-sidenav">
+                <li><a href="#d-schemes">Deployment schemes</a></li>
+                <li>
+                    <a href="#d-memory">All Together in Memory</a>
+                    <ul class="nav">
+                        <li><a href="#d-memory-config">Config</a></li>
+                        <li><a href="#d-memory-run">Run</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#d-s-memory">Server in Memory</a>
+                    <ul class="nav">
+                        <li><a href="#d-s-memory-req">Requirements</a></li>
+                        <li><a href="#d-s-memory-conf">Config</a></li>
+                        <li><a href="#d-s-memory-run">Run</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#d-s-hz">Server with Hazelcast</a>
+                    <ul class="nav">
+                        <li><a href="#d-s-hz-req">Requirements</a></li>
+                        <li><a href="#d-s-hz-conf">Config</a></li>
+                        <li><a href="#d-s-hz-run">Run</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#d-s-hzm">Server with Hazelcast and MongoDB</a>
+                    <ul class="nav">
+                        <li><a href="#d-s-hzm-req">Requirements</a></li>
+                        <li><a href="#d-s-hzm-conf">Config</a></li>
+                        <li><a href="#d-s-hzm-run">Run</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#d-s-hzmo">Server with Hazelcast, MongoDB and Oracle</a>
+                    <ul class="nav">
+                        <li><a href="#d-s-hzmo-req">Requirements</a></li>
+                        <li><a href="#d-s-hzmo-assemble">Assemble</a></li>
+                        <li><a href="#d-s-hzmo-config">Config</a></li>
+                        <li><a href="#d-s-hzmo-run">Run</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-9" role="main">
+        <!-- Overview
+        ================================================== -->
+
+        <div class="bs-docs-section">
+
+            {% capture sidebar %}{% include install.md %}{% endcapture %}
+            {{ sidebar | markdownify }}
+
+        </div>
+    </div>
+</div>
