@@ -82,38 +82,31 @@ asynchronous decisions points, in this point we can pass Promise arguments. Foll
      }
 ```
 
-Method start() - this is main method of process. In the next lines we are creating two tasks. First for retrive user profile,
+Method start() - this is the main method of process. In the next lines we are creating two tasks. First for retrive user profile,
 second for sending notification. And in the third line decider creates task on him-self for result analyze(method blockOnFail()).
 By this trick Decider would be wait for result, but without blocking. When task will be solved, Taskurotta invocate method blockOnfail() and pass
 Promise object with real result which could be getted by calling method get().
 If we get result with failure we are invocate task for blocking notification.
 
-С помощью точек определения дальнейших действий можно реализовать различные поведения процесса:
+With asynchronous points of decision you can solve a lot of scenarious, like:
+- parallel process on different branches
+- fok and join tasks of process in one point with Promise object and @NoWait annotation(see the doc TODO)
+- asynchronous recursion
+- parallel simple tasks and wait until they ends(for example: Digital signature of files bundle)
+- etc.
 
-- распараллеливание на различные ветки;
-- дальнейшее слияние независимых потоков процесса в одной точке с помощью проброса Promise и @NoWait аннотации
-(см. документацию TODO);
-- асинхронную рекурсию;
-- распараллеливание выполнения однотипных задач, например проверки ЭЦП всех файлов и ожидания результатов выполнения в
-одной точке принятия решений;
-- и т.д.
-
-P.S.: Вызов задачи blockOnFail происходит через объект decider. Это искусственный объект, перехватывающий вызов, но реально
-не вызывающий метод blockOnFail. Нам нужно поставить задачу, а не вызвать ее синхронно. Можно сделать перехват и без
-этого объекта, но это будет уже тема в четырех словах. Не будем пока углубляться в джунгли и приступим непосредственно
-к разработке...
-
+P.S.: Invocation of method blockOnFail() happens via object decider. This is interceptor which helps create us a new task,
+instead of real synchronous invocation.
 
 ## <div id="gs-create-worker">Create Workers</div>
 
-Так как по сценарию у нас уже есть Исполнители для отправки email и sms, то нам остается только создать Исполнителя для работы
-с профилем. У данного Исполнителя две задачи:
+As we told before we already have Workers for notification over email and sms. We should only create worker for user profile
+manipulation. This worker has two tasks:
 
-1. Вернуть профиль по идентификатору пользователя.
-2. Сделать в профиле отметку о невозможности отправки сообщений для конкретного пользователя.
+1.Return user profile by user ID
+2.Mark profile about failure notification via prefered transport
 
-Начинаем с объявления его интерфейса. С этим интерфейсом будет работать Координатор. Здесь и далее, для компактности
-опущены комментарии и другие не существенные части кода.
+Let's start from interface creation. With this interface would be work our Decider.
 
 ```java
     @Worker
@@ -126,11 +119,11 @@ P.S.: Вызов задачи blockOnFail происходит через объ
     }
 ```
 
-Аннотация @Worker определяет этот интерфейс как Исполнителя. У аннотации есть необязательные атрибуты определяющие аго
-имя и версию. По умолчанию, именем является полное имя интерфейса, а версия - "1.0". Исполнители различных версий могут
-одновременно работать для разных процессов без каких либо конфликтов.
+@Worker annotation mark our interface as interface of Worker. This annotation has mandatory attributes which define
+name and version of our worker. By default name of worker equals the full name of interface and version as "1.0".
+Workers of different version can works at the same time for different processes whiout conflicts.
 
-Перейдем к реализации интерфейса.
+Implementation of our interface
 
 ```java
     public class UserProfileServiceImpl implements UserProfileService {
@@ -148,11 +141,8 @@ P.S.: Вызов задачи blockOnFail происходит через объ
         }
     }
 ```
-
-Тут мы опустили инициализацию менеджера профилей (ProfileUtil). Он может работать с БД, LDAP или другим реестром. Данный
-пример нам показывает, что Исполнитель получает задачи (вызовы) и делегирует их реальному модулю.
-
-На этом создание Исполнителя завершается.
+We are don't show impleentation of ProfileUtil it could be anything. It could be works with LDAP, RDBMS, etc. In this
+example you should see this worker only delegate invocation him-self to real module.
 
 ## <div id="gs-create-worker-client">Declaration of Interaction Method</div>
 
