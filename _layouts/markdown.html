@@ -1,0 +1,41 @@
+
+{% include header.html %}
+
+{% include nav.html %}
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="bs-sidebar hidden-print" role="complementary">
+            <ul class="nav bs-sidenav">
+                {% for item in page.submenu %}
+                <li><a href="#{{ item.id }}">{{ item.title }}</a>
+                    {% if item.submenu %}
+                    <ul class="nav">
+                        {% for item1 in item.submenu %}
+                        <li><a href="#{{ item1.id }}">{{ item1.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-9" role="main">
+        <!-- Overview
+        ================================================== -->
+
+        <div class="bs-docs-section">
+
+
+            {{ path }}
+            {% capture sidebar %}{% include {{page.markdown}} %}{% endcapture %}
+            {{ sidebar | markdownify }}
+
+        </div>
+    </div>
+</div>
+
+
+
+{% include footer.html %}

@@ -126,9 +126,9 @@ body {
 .bs-sidebar .nav > .active:hover > a,
 .bs-sidebar .nav > .active:focus > a {
     font-weight: bold;
-    color: #563d7c;
+    color: #333333;
     background-color: transparent;
-    border-right: 1px solid #563d7c;
+    border-right: 1px solid #333333;
 }
 
 /* Nav: second level (shown on .active) */
