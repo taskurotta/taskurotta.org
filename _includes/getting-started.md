@@ -1,47 +1,43 @@
 ## <div id="gs-task">Task</div>
 
-Это руководство даст пошаговое представление о создании простого проекта. Представим себе, что перед нами стоит следующая
-задача:
+Let's write simple application which shows to us how all stuff works. Imagine that we got task create application:
 
-> Необходимо разработать приложение, отсылающее строковое сообщение пользователю.
-> На вход мы получаем Id пользователя и набор символов. Из его профиля (по Id) достаем
-> данные о предпочтении - получать сообщения по email или номеру телефона. Номер телефона и
-> email также доступны в профиле. Далее отправляем сообщение нужным транспортом. В случае, если
-> отправка не удалась (по причине не верного адреса или номера), необходимо отметить это в профиле
-> для предотвращения повторных попыток в будущем.
+> We should sent text message to user. We have user id and message. We should retrieve user profile by user id.
+> From user profile we should get user preferences how to receive messages(by phone or by E-mail).
+> Email and phone number we got in user profile too. After that we should try to send message through preferred transport.
+> If we couldn't send message to user we should mark this in user profile to prevent send through this transport in future.
 
-Добавим еще к этому не функциональное требование, о том, что сервисы отправляющие сообщения уже существуют,
-находятся в других подсетях и их нужно переиспользовать.
+
+Additional to these requirements imagine that you already have services for E-mail and Phone transport.
+These services situated in the other sub-networks and we want to reuse them.
 
 PS: All source code for this manual is available at GitHub
 [taskurotta-getstarted](https://github.com/taskurotta/taskurotta-getstarted) project.
 
 ## <div id="gs-overview">Overview</div>
 
-Taskurotta позволяет реализовывать компоненты системы (Актеров), взаимодействующих между собой привычным для
-разработчика способом - путем вызовов методов друг друга, но в асинхронной манере. Актеры делятся на два вида -
-Исполнителей и Координаторов. Исполнители должны четко выполнять поставленные перед ними задачи. Они
-представляют собой максимально независимые модули, и соответственно - максимально переиспользуемые. Исполнители
-могут взаимодействовать с внешним миром (любые потоки ввода вывода) выполняя задачу таким образом и так долго, как этого
-требуется. С другой стороны, Координаторы не выполняют задач, связанных с внешним миром. Они должны отрабатывать как
-можно быстрее и не спотыкаться на прямом взаимодействии с БД, сетью и другими потенциально не стабильными компонентами.
-Их обязанность ставить задачи исполнителям, координировать их действия и тем самым обеспечить реализацию (описание) процесса.
-Координаторы могут ставить задачи другим координаторам, реализуя парадигму переиспользуемых подпроцессов.
+Taskurotta helps us implement components(Actors) of our application, which can interact between each other in the familiar style.
+All interactions would be asynchronous. Actors divided on two types - Workers and Deciders. Workers - component with
+independent responsibility. Workers could interact with legacy systems, RDBMS, SNMP, etc. They can run process as long as they should.
+And the most important thing that they should be reusable. On the other hand Deciders doesn't do any job with legacy systems and unstable systems.
+They should working as fast as they can. They should only run tasks on workers and coordinate interactions between them.
+Of course coordinators can call methods of other coordinators, this feature helps us create reusable processes in taskurotta environment.
 
-Задача Координатора как можно быстрее раздать известные в данный момент задачи. Т.е. он не должен блокироваться на
-ожидании результата. Он должен построить граф зависимостей между известными ему задачами и при необходимости
-сформировать асинхронные точки определения дальнейших действий. Как этого достичь, давайте рассмотрим на синтетическом примере.
+Main responsibility of Decider to run tasks on Workers as fast as it can. In the other words it doesn't waiting result from worker.
+It just creating graph of invocations between tasks and if it necessary creating asynchronous points of decision.
+How it works? We will try to explain on simple example below.
 
 <blockquote>
+    Imagine that we need notify user by one of available transport service. If we can't notify we should block him.
     Предположим, что мы должны оповестить пользователя по одному из достпных способов. И если оповестить не удалось, то заблокировать его.
 </blockquote>
 
-В данном случае Координатор процесса должен сделать следующее:
+For this requirement our Decider should have done next steps:
 
-1. Запросить профиль пользователя
-2. Дождаться получения профиля
-3. Отправить сообщение пользователю
-4. Дождаться результата отправления
+1. Ask user profile
+2. Wait until it receives user profile
+3. Notify user
+4. Wait until it receives result of notification
 
 Кодировать данную последовательность действий с помощью автомата состояний, методами изменений одного сообщения несколькими
 исполнителями и другими привычными, но костлявыми способами мы не будем. Сделаем это просто и красиво с помощью
