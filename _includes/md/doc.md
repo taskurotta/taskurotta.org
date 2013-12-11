@@ -72,6 +72,12 @@ TODO: decider stub
 
 ### @AcceptFail
 
+### @Wait
+
+TODO: Collection<Promise>
+
+### @NoWait
+
 ## Taskurotta Bootstrap
 
 Это контейнер для актеров выполняющий следующие задачи:
