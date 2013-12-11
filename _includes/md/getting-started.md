@@ -39,14 +39,19 @@ For this requirement our Decider should have done next steps:
 3. Notify user
 4. Wait until it receives result of notification
 
-Кодировать данную последовательность действий с помощью автомата состояний, методами изменений одного сообщения несколькими
-исполнителями и другими привычными, но костлявыми способами мы не будем. Сделаем это просто и красиво с помощью
-сущности Promise и нашей системы, следящей за действиями Координатора.
+Commonly for this situation we should use a state machine, but this is ugly code with overhead. We will do this with more handy
+tools like Promise and Taskurotta.
 
 ```java
      Promise<Profile> profilePromise = userProfileService.get(userId);
      Promise<Boolean> sendResultPromise = decider.sendToTransport(profilePromise, message);
 ```
+
+In this example we see that as result of invocation of service, our service would returned just Promise not real object.
+Promise it's a link to our result and this Promise instance we can pass as argument to other services. Other services
+invocations would be intercepted by Taskurotta and this invocation would be added to our graph of invocations.
+Task for invocation on real Worker wouldn't be added until we didn't get real result for it.
+
 
 В примере видно, что в результате вызова сервисов мы получаем не реальный объект, а некий Promise - ссылку на результат
 выполнения задачи. Этот Promise мы можем передавать в качестве аргумента другим сервисам (т.е. задачам). Вызовы других
