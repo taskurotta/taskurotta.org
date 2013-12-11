@@ -29,7 +29,6 @@ How it works? We will try to explain on simple example below.
 
 <blockquote>
     Imagine that we need notify user by one of available transport service. If we can't notify we should block him.
-    Предположим, что мы должны оповестить пользователя по одному из достпных способов. И если оповестить не удалось, то заблокировать его.
 </blockquote>
 
 For this requirement our Decider should have done next steps:
@@ -50,30 +49,22 @@ tools like Promise and Taskurotta.
 In this example we see that as result of invocation of service, our service would returned just Promise not real object.
 Promise it's a link to our result and this Promise instance we can pass as argument to other services. Other services
 invocations would be intercepted by Taskurotta and this invocation would be added to our graph of invocations.
-Task for invocation on real Worker wouldn't be added until we didn't get real result for it.
+Task for invocation on real Worker wouldn't be added until it didn't get real result for it.
 
+As you see all process management delegated to Decider and taskurotta server. Decider arrange all dependencies between tasks, from the other side
+taskurotta server takes responsibility for getting real result from workers and run task which depends from that results;
 
-В примере видно, что в результате вызова сервисов мы получаем не реальный объект, а некий Promise - ссылку на результат
-выполнения задачи. Этот Promise мы можем передавать в качестве аргумента другим сервисам (т.е. задачам). Вызовы других
-сервисов будут перехвачены системой (т.е. реального синхронного вызова не произойдет) и выстроена зависимость между ними.
-Задачи не поступят на выполнение к сервисам до тех пор, пока все их аргументы типа Promise не будут готовы, т.е. пока
-не будут выполнены все необходимые предварительные задачи.
-
-Таким образом, управление процессом выполняется совместно координатором и нашей системой. Координатор выстраивает
-зависимости между задачами, а система берет на себя, кроме всего прочего, функцию ожидания выполнения предварительных задач
-и последующего запуска зависимых от них задач.
-
-Давайте теперь усложним пример и раскроем, что такое асинхронные точки определения дальнейших действий.
+Let's try to add some complications to our example, in this complication you will see how works our asynchronous decisions points.
 
 <blockquote>
-    Предположим, что в дополнение к описанному примеру необходимо убедиться в том, что оправка уведомления была успешна
-    и если нет то нужно заблокировать отправку уведомлений пользователю.
+    Imagine that we got special requirement for our example. We should got feedback that notification successfully received.
+    If notification was failed we should block notification in future for this user.
 </blockquote>
 
-В данном случае необходимо между отправкой уведомления и дальнейшими действиями проанализировать результат. Т.е.
-дождаться выполнения задачи, произвести анализ и в зависимости от результата, блокировать или нет. Для решения
-такой проблемы у координатора есть возможность создать задачу на самого себя - т.е. точку определения дальнейших действий,
-в которую передать необходимые Promise. Ниже представлено как это выглядит.
+
+As we see in this situation we should analyze result between notification and other tasks. We should wait for real result.
+If we got failure we should block user notification. To solve this problem we can create task on him-self. This is what we call
+asynchronous decisions points, in this point we can pass Promise arguments. Follow our simple example.
 
 ```java
     public void start(String userId, String message) {
@@ -91,11 +82,11 @@ Task for invocation on real Worker wouldn't be added until we didn't get real re
      }
 ```
 
-Метод start() - это старт процесса. Далее идет постановка двух задач. Первая на получение профиля, вторую задачу на отправка,
-а третью Координатор ставит сам себе для последующего анализа результата (вызов метода blockOnFail). Таким образом Координатор
-как бы ждет решения первой задачи, но без блокировки. Как только задача решена, система Taskurotta вызывает метод координатора
-blockOnFail, передавая в него готовый Promise объект, из которого можно получить реальные данные методом get().
-После определения того, что получен не отказ на отправку уведомления, мы ставим следующую задачу на блокировку.
+Method start() - this is main method of process. In the next lines we are creating two tasks. First for retrive user profile,
+second for sending notification. And in the third line decider creates task on him-self for result analyze(method blockOnFail()).
+By this trick Decider would be wait for result, but without blocking. When task will be solved, Taskurotta invocate method blockOnfail() and pass
+Promise object with real result which could be getted by calling method get().
+If we get result with failure we are invocate task for blocking notification.
 
 С помощью точек определения дальнейших действий можно реализовать различные поведения процесса:
 
