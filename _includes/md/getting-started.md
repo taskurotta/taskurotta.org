@@ -171,8 +171,8 @@ Any argument can be type of Promise if you need pass result of unfinished task a
 
 ## <div id="gs-create-decider">Create Decider</div>
 
-Теперь переходим к самому интересному - созданию координатора. Для начала ниже представлен интерфейс координатора,
-используя который клиенты Taskurotta будут запускать нужные им процессы.
+Now we are come to the most interesting part - Create Decider. First of all look at the decider interface below,
+which would be used by clients of Taskurotta to run processes.
 
 ```java
     @Decider
@@ -182,12 +182,12 @@ Any argument can be type of Promise if you need pass result of unfinished task a
         public void start(String userId, String message);
     }
 ```
-Этот интерфейс определен как @Decider - т.е. как Координатор. У этой аннотации есть те же свойства, что и у аннотации
-@Worker - имя и версия. По умолчанию за имя берется полное имя интерфейса, а за версию - "1.0".
+Interface marked as @Decider. This annoation contains the same attributes as annotation @Worker. And as worker
+by default name of decider equals the full name of interface and version as "1.0".
 
-Метод start помечен как @Execute. Это означает что через данный метод можно запускать процесс.
+Method start marked as @Execute. This means that by this method we can run  process.
 
-Теперь переходим к реализации координатора
+Now look at implementation of Decider.
 
 ```java
     public class NotificationDeciderImpl implements NotificationDecider {
@@ -239,19 +239,16 @@ Any argument can be type of Promise if you need pass result of unfinished task a
     }
 ```
 
-В данном коде мы также опустили инициализацию приватных объектов. Полный и работающий код примера можно посмотреть в
-пакете example. Тут только отметим, что значения приватных полей получаются через специальную фабрику прокси объектов
-для Координатора.
+In this code-paste we show only meaningful part of source code. For the full source code just look at the package example.
+All values of private fields resolved via special factory of proxy object for Decider.
 
-В  примере реализации есть две точки ожидания результатов выполнения незавершенных задач Координатором. Это метод
-sendToTransport и blockOnFail. Данные методы будут вызваны только тогда, когда все их аргументы типа Promise будут готовы,
-т.е. выполнены соответствующий задачи.
+In example exist two asynchronous points of decision. Method sendToTransport and blockOnFail. This methods would be invoked
+only when all arguments of type Promise will be ready. In other words - all tasks will be finished.
 
-Объекты полей типа MailServiceClient и SMSServiceClient также являются клиентскими интерфейсами к соответствующим Исполнителям.
-Их инициализацию можно также посмотреть в проекте example.
+Fields MailServiceClient and SMSServiceClient - contract interfaces to the other workers. They initialization you can
+check in source code of project example.
 
-На данный момент у нас есть все реализованные Исполнители и Координатор. Перейдем непосредственно к запуску Актеров
-(т.е. Исполнителей и Координаторов).
+Now we have decider and worker, let's go to see how to run all this stuff!
 
 ## <div id="gs-bootstrap">Bootstrap</div>
 
