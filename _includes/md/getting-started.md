@@ -51,19 +51,18 @@ Promise it's a link to our result and this Promise instance we can pass as argum
 invocations would be intercepted by Taskurotta and this invocation would be added to our graph of invocations.
 Task for invocation on real Worker wouldn't be added until it didn't get real result for it.
 
-As you see all process management delegated to Decider and taskurotta server. Decider arrange all dependencies between tasks, from the other side
-taskurotta server takes responsibility for getting real result from workers and run task which depends from that results;
+Decider arranging all dependencies between tasks, from the other side
+taskurotta server takes responsibility for getting real result from workers and executes task which depends from that results.
 
 Let's try to add some complications to our example, in this complication you will see how works our asynchronous decisions points.
 
 <blockquote>
-    Imagine that we got special requirement for our example. We should got feedback that notification successfully received.
-    If notification was failed we should block notification in future for this user.
+    Imagine that we got special requirement for our example. We should got feedback that notification successfully received.If notify was failed we should block notification in future for this user.
 </blockquote>
 
 
 As we see in this situation we should analyze result between notification and other tasks. We should wait for real result.
-If we got failure we should block user notification. To solve this problem we can create task on him-self. This is what we call
+If we got failure we should block user notification. To solve this problem we can create task on itself. This is what we call
 asynchronous decisions points, in this point we can pass Promise arguments. Follow our simple example.
 
 ```java
@@ -82,17 +81,17 @@ asynchronous decisions points, in this point we can pass Promise arguments. Foll
      }
 ```
 
-Method start() - this is the main method of process. In the next lines we are creating two tasks. First for retrive user profile,
-second for sending notification. And in the third line decider creates task on him-self for result analyze(method blockOnFail()).
-By this trick Decider would be wait for result, but without blocking. When task will be solved, Taskurotta invocate method blockOnfail() and pass
-Promise object with real result which could be getted by calling method get().
-If we get result with failure we are invocate task for blocking notification.
+Method start() - this is the main method of process. In the next lines we are creating two tasks. First for retrieve user profile,
+second for sending notification. And in the third line decider creates task on itself for analyzing result(method blockOnFail()).
+Decider would be wait for result, but without blocking. When task will be solved, Taskurotta will be invocate method blockOnfail() and pass
+Promise object with real result which can get by calling method get().
+If we get result with failure we it will invocate task for blocking notification.
 
-With asynchronous points of decision you can solve a lot of scenarious, like:
-- parallel process on different branches
-- fok and join tasks of process in one point with Promise object and @NoWait annotation(see the doc TODO)
+With asynchronous points of decision you can solve a lot of scenarios, like:
+- paralleling process on a different branches
+- fork and join tasks of process in one point with Promise object and @NoWait annotation(see the doc TODO)
 - asynchronous recursion
-- parallel simple tasks and wait until they ends(for example: Digital signature of files bundle)
+- execute paralleling simple tasks and wait until they ends(for example: Digital signature of files bundle)
 - etc.
 
 P.S.: Invocation of method blockOnFail() happens via object decider. This is interceptor which helps create us a new task,
@@ -100,11 +99,11 @@ instead of real synchronous invocation.
 
 ## <div id="gs-create-worker">Create Workers</div>
 
-As we told before we already have Workers for notification over email and sms. We should only create worker for user profile
+As we told before, we have already Workers for notification over email and sms. We should only create worker for user profile
 manipulation. This worker has two tasks:
 
-1.Return user profile by user ID
-2.Mark profile about failure notification via prefered transport
+1. Get user profile by user ID
+2. Mark profile about failure notification via prefered transport
 
 Let's start from interface creation. With this interface would be work our Decider.
 
@@ -121,7 +120,7 @@ Let's start from interface creation. With this interface would be work our Decid
 
 @Worker annotation mark our interface as interface of Worker. This annotation has mandatory attributes which define
 name and version of our worker. By default name of worker equals the full name of interface and version as "1.0".
-Workers of different version can works at the same time for different processes whiout conflicts.
+Workers of different version can works at the same time for different processes with out conflicts.
 
 Implementation of our interface
 
@@ -141,8 +140,7 @@ Implementation of our interface
         }
     }
 ```
-We are don't show impleentation of ProfileUtil it could be anything. It could be works with LDAP, RDBMS, etc. In this
-example you should see this worker only delegate invocation him-self to real module.
+Implementation of ProfileUtil it could be anything. It could be works with LDAP, RDBMS, etc. In this example you should see this worker only delegate invocation itself to real module ProfileUtil.
 
 ## <div id="gs-create-worker-client">Declaration of Interaction Method</div>
 
