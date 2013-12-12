@@ -63,7 +63,7 @@ Let's try to add some complications to our example, in this complication you wil
 
 As we see in this situation we should analyze result between notification and other tasks. We should wait for real result.
 If we got failure we should block user notification. To solve this problem we can create task on itself. This is what we call
-asynchronous decisions points, in this point we can pass Promise arguments. Follow our simple example.
+asynchronous points of decisions, in these points we can pass Promise arguments. Follow our simple example.
 
 ```java
     public void start(String userId, String message) {
