@@ -269,7 +269,7 @@ Let's check config file.
 
 ## <div id="gs-config">Config</div>
 
-Файл конфигурации для Координатора в формате YAML выглядит следующим образом:
+Configuration file for decider in YAML format looks like:
 
 ```yaml
     runtime:
@@ -311,7 +311,7 @@ Let's check config file.
           count: 1
 ```
 
-Файл конфигурации для Исполнителей в формате YAML выглядит следующим образом:
+Configuration file for workers in YAML format looks like:
 
 
 ```yaml
@@ -367,17 +367,14 @@ Let's check config file.
           profilerConfig: Profiler
           count: 1
 ```
-Секция actor определяет Актеров. По порядку элементов секции:
+Section actor defines the actors. By order of the items section:
 
-1. actorInterface - интерфейс Актера.
-2. runtimeConfig - имя конфигуратора инициализирующего и далее предоставляющего для работы экземпляр объекта Актера.
-3. spreaderConfig - конфигурация модуля взаимодействующего с серверами Taskurotta для получения задач и регистрации результата
-их выполнения.
-4. count - количество потоков, получающих задачи для актеров и запускающих их выполнение. Т.е. фактически - количество
-одновременно работающих актеров.
+1. actorInterface - actor interface
+2. runtimeConfig - Configurator for initialization of actor instance
+3. spreaderConfig - Module configuration for interaction with Taskurotta server
+4. count - amount of threads for actors
 
-Секции runtime и spreader специфичны для конкретной реализации контекста выполнения. В данном руководстве мы
-их описание опустим. См. соответствующие разделы документации (TODO).
+Sections runtime and spreader doesn't covered in this manual. See the doc (TODO).
 
 ## Fat Jar <section id="gs-fat-jar"> &nbsp;</section>
 
