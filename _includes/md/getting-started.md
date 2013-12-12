@@ -140,20 +140,19 @@ Implementation of our interface
         }
     }
 ```
-Implementation of ProfileUtil it could be anything. It could be works with LDAP, RDBMS, etc. In this example you should see this worker only delegate invocation itself to real module ProfileUtil.
+Implementation of ProfileUtil could be anything. It could be works with LDAP, RDBMS, etc. In this example you should see this worker only delegate invocation itself to real module ProfileUtil.
 
 ## <div id="gs-create-worker-client">Declaration of Interaction Method</div>
 
-Для решения поставленной перед нами задачи, Координатор должен передать ссылку на еще не полученный профиль
-(объект Promise) в точку определения дальнейших действий. Там он выберет транспорт или не будет ничего отсылать,
-если отправка сообщений для данного пользователя уже заблокирована.
+To solve this problem Decider should pass link on profile which not yet received(Promise object) to decision point for future analyze.
+Than it will choose transport or decline notification, if notification already blocked for this user.
 
-Однако интерфейс исполнителя, как и сам исполнитель, получают и отдают результат синхронно, а потому не имеют в декларации
-результатов выполнения в виде объекта Promise, а возвращают чистый объект данных. Это и правильно. Исполнитель не должен знать как его используют. Например, наш Исполнитель по получению профиля можно использовать если уже известен
-идентификатор пользователя, или если он не известен и нужно передать ссылку на другую задачу, которая этот идентификатор
-откуда-то получит. Таким образом мы приходим к интерфейсу взаимодействия с Исполнителем. Этот интерфейс определяет сам
-Координатор для своих нужд. Т.е. он определяется в пакете (проекте) Координатора. Добавим интерфейс взаимодействия
-с Исполнителем для работы с профилем:
+However interface of worker, as is a worker received and returned result in synchronous way, and therefore does not have declaration with Promise object.
+This is right way. Worker shouldn't know about how Decider works with it.
+For example, our worker which works with user profile can be used if we already know user ID, otherwise we should take
+care about how to pass link of task with user ID.
+To realize this we should create contract interface between worker and decider. This contract interface would be defined in decider package for own
+interaction with worker.
 
 ```java
     @WorkerClient(worker = UserProfileService.class)
@@ -165,7 +164,10 @@ Implementation of ProfileUtil it could be anything. It could be works with LDAP,
     }
 ```
 
-Мы видим интерфейс помеченный аннотацией @WorkerClient. Параметр аннотации ссылается на класс реального интерфейса Исполнителя. Таким образом устанавливается связь между существующим интерфейсом и необходимым интерфейсом для конкретного Координатора. Назовем этот интерфейс "клиентским интерфейсом Исполнителя". Этот клиентский интерфейс должен содержать все необходимые координатору методы (можно не объявлять не используемые) и с идентичной сигнатурой аргументов. Любой аргумент может быть типом Promise, если требуется передавать в качестве аргумента результат еще не завершенной задачи.
+Look at the @WorkerClient. Annotation attribute has reference to class of worker interface. In this way we connect exist interface
+of worker with contract interface of decider. Contract interface should contains all necessary methods for
+decider(you shouldn't declare all methods from worker interface) with identical signature of arguments.
+Any argument can be type of Promise if you need pass result of unfinished task as argument.
 
 ## <div id="gs-create-decider">Create Decider</div>
 
