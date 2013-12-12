@@ -378,14 +378,14 @@ Sections runtime and spreader doesn't covered in this manual. See the doc (TODO)
 
 ## Fat Jar <section id="gs-fat-jar"> &nbsp;</section>
 
-С помощью плагина maven-shade-plugin мы создаем единый jar файл включающий в себя все необходимые
-библиотеки. Это исполняемый jar файл, который можно просто запустить командной <code>java -jar {mainClass}</code> и
-так же легко остановить процесс средствами операционной системы.
+With handy maven-shade-plugin we are creating single jar which includes all libs.
+This is executable jar file, which you simply run with command <code>java -jar {mainClass}</code> and of course
+you can simply stop this application with tools of OS.
 
-Таким образом наши Актеры будут очень близки к обычным процессам ОС. Их можно легко перемещать по разным машинам руками,
-или автоматически для управления нагрузкой в светлом-присветлом будущем.
+Thus our Actors looks like processes of OS. You can easy to move them from one machine to another.
+Or you can automate it with tools such as Puppet.
 
-Подробнее об использовании плагинов см. в документации в разделе Fat Jar (TODO)
+For more information see the doc Fat Jar (TODO)
 
 
 ## <div id="gs-run-it">Run it!</div>
