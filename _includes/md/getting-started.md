@@ -21,7 +21,7 @@ All interactions would be asynchronous. Actors divided on two types - Workers an
 independent responsibility. Workers could interact with legacy systems, RDBMS, SNMP, etc. They can run process as long as they should.
 And the most important thing that they should be reusable. On the other hand Deciders doesn't do any job with legacy systems and unstable systems.
 They should working as fast as they can. They should only run tasks on workers and coordinate interactions between them.
-Of course coordinators can call methods of other coordinators, this feature helps us create reusable processes in taskurotta environment.
+Of course deciders can call methods of other deciders, this feature helps us create reusable processes in taskurotta environment.
 
 Main responsibility of Decider to run tasks on Workers as fast as it can. In the other words it doesn't waiting result from worker.
 It just creating graph of invocations between tasks and if it necessary creating asynchronous points of decision.
@@ -54,7 +54,7 @@ Task for invocation on real Worker wouldn't be added until it didn't get real re
 Decider arranging all dependencies between tasks, from the other side
 taskurotta server takes responsibility for getting real result from workers and executes task which depends from that results.
 
-Let's try to add some complications to our example, in this complication you will see how works our asynchronous decisions points.
+Let's try to add some complications to our example, in this complication you will see how works our asynchronous points of decisions.
 
 <blockquote>
     Imagine that we got special requirement for our example. We should got feedback that notification successfully received.If notify was failed we should block notification in future for this user.
