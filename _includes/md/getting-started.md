@@ -252,20 +252,20 @@ Now we have decider and worker, let's go to see how to run all this stuff!
 
 ## <div id="gs-bootstrap">Bootstrap</div>
 
-Выполнение задач может происходить как внутри серверов приложений, так и в виде отдельного java
-приложения (*данный пример использует вариант отдельного приложения из модуля bootstrap).
-Что делает отдельное приложение:
+Task execution can be as in the application server, or as standalone java application. This example use standalone run
+from module bootstrap.
 
-- Регистрируется на сервере Taskurotta.
-- Запускает пул из N потоков для выполнения задач.
-- Получает задачи от серверов Taskurotta.
-- Запускает их выполнение.
-- Пересылает результат серверу Taskurotta.
+Features of boostrap:
+- Registration on Taskurotta server
+- Run thread pool with N threads for task execution
+- Retreive tasks from Taskurotta server
+- Run tasks
+- Send results to the Taskurotta server
 
-Для запуска отдельного java приложения используется пакет bootstrap, а конкретнее - класс ru.taskurotta.bootstrap.Main .
-Ему в качестве аргумента нужно передать местонахождение файла конфигурации в формате YAML.
+To run as standalone java application we should use class ru.taskurotta.bootstrap.Main from package bootstrap.
+This class receive argument where we should pass path for YAML configuration file.
 
-Рассмотрим файл конфигурации.
+Let's check config file.
 
 ## <div id="gs-config">Config</div>
 
