@@ -88,6 +88,7 @@ Promise object with real result which can get by calling method get().
 If we get result with failure we it will invocate task for blocking notification.
 
 With asynchronous points of decision you can solve a lot of scenarios, like:
+
 - paralleling process on a different branches
 - fork and join tasks of process in one point with Promise object and @NoWait annotation(see the doc TODO)
 - asynchronous recursion
