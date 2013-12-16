@@ -404,7 +404,7 @@ For more information see the doc Fat Jar (TODO)
 
 Checkout last tested version
 
-    git checkout 5918c8db1a
+    git checkout e1ccb11006
 
 ### <div id="gs-ts-install">Install</div>
 
@@ -417,11 +417,11 @@ But be sure to correct the port numbers if you're going to use the same machine.
 
 Run the first node:
 
-    java -Xmx64m -Ddw.http.port=8081 -Ddw.http.adminPort=9081 -Ddw.logging.file.currentLogFilename="assemble/target/server1.log" -jar assemble/target/assemble-0.4.0-SNAPSHOT.jar server assemble/src/main/resources/hz.yml
+    java -Xmx64m -Ddw.http.port=8081 -Ddw.http.adminPort=9081 -Ddw.logging.file.currentLogFilename="assemble/target/server1.log" -jar assemble/target/assemble-0.4.0.jar server assemble/src/main/resources/hz.yml
 
 Run the second node:
 
-    java -Xmx64m -Ddw.http.port=8082 -Ddw.http.adminPort=9082 -Ddw.logging.file.currentLogFilename="assemble/target/server2.log" -jar assemble/target/assemble-0.4.0-SNAPSHOT.jar server assemble/src/main/resources/hz.yml
+    java -Xmx64m -Ddw.http.port=8082 -Ddw.http.adminPort=9082 -Ddw.logging.file.currentLogFilename="assemble/target/server2.log" -jar assemble/target/assemble-0.4.0.jar server assemble/src/main/resources/hz.yml
 
 When both servers are connected to each other, a log message like this appears:
 
@@ -445,7 +445,7 @@ backends.
 
     git clone https://github.com/taskurotta/taskurotta-getstarted.git
     cd taskurotta-getstarted/
-    git checkout 9d3b39b317
+    git checkout f676435cf2
 
 ### Example process content
 
@@ -464,7 +464,7 @@ client interfaces which are used by the decider to communicate with workers.
 
 To do the actual job actor should obtain task from the server. So lets submit some tasks for a decider to start the example process.
 
-    java -cp target/getstarted-process-1.0-SNAPSHOT.jar ru.taskurotta.example.starter.NotificationModule http://localhost:8081 91
+    java -cp target/getstarted-process-0.1.0.jar ru.taskurotta.example.starter.NotificationModule http://localhost:8081 91
 
 Check the console [http://localhost:8081/index.html](http://localhost:8081/index.html) . Select "Queues" menu item. There should be 91 tasks in the
 ru.taskurotta.example.decider.NotificationDecider#1.0 queue. They are the process starters tasks for deciders.
@@ -473,7 +473,7 @@ ru.taskurotta.example.decider.NotificationDecider#1.0 queue. They are the proces
 
 ### <div id="gs-proc-run-deciders">Run the decider</div>
 
-    java -Xmx64m -jar target/getstarted-process-1.0-SNAPSHOT.jar -f src/main/resources/config-decider.yml
+    java -Xmx64m -jar target/getstarted-process-0.1.0.jar -f src/main/resources/config-decider.yml
 
 The example decider uses server endpoint provided via YAML file and pointed to the first cluster node (port 8081).
 Check src/main/resources/config-decider.yml for configuration details.
@@ -495,7 +495,7 @@ Check the console [http://localhost:8081/index.html](http://localhost:8081/index
 
 ### <div id="gs-proc-run-actors">Run the workers</div>
 
-    java -Xmx64m -jar target/getstarted-process-1.0-SNAPSHOT.jar -f src/main/resources/config-workers.yml
+    java -Xmx64m -jar target/getstarted-process-0.1.0.jar -f src/main/resources/config-workers.yml
 
 The workers also use the endpoint provided via YAML configuration file, but they would poll the second cluster node (port 8082).
 Check src/main/resources/config.yml for details.
