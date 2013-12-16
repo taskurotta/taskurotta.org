@@ -469,7 +469,7 @@ To do the actual job actor should obtain task from the server. So lets submit so
 Check the console [http://localhost:8081/index.html](http://localhost:8081/index.html) . Select "Queues" menu item. There should be 91 tasks in the
 ru.taskurotta.example.decider.NotificationDecider#1.0 queue. They are the process starters tasks for deciders.
 
-![Image](/getting-started/img/step1.jpg)
+<img src="/getting-started/img/step1.jpg" width="400" height="262" alt="step1 image" />
 
 ### <div id="gs-proc-run-deciders">Run the decider</div>
 
