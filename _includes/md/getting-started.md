@@ -52,7 +52,7 @@ invocations would be intercepted by Taskurotta and this invocation would be adde
 Task for invocation on real Worker wouldn't be added until it didn't get real result for it.
 
 Decider arranging all dependencies between tasks, from the other side
-taskurotta server takes responsibility for getting real result from workers and executes task which depends from that results.
+taskurotta server takes responsibility for getting real result from workers and executes task which depends from this results.
 
 Let's try to add some complications to our example, in this complication you will see how works our asynchronous points of decisions.
 
