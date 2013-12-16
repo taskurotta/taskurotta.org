@@ -402,10 +402,6 @@ For more information see the doc Fat Jar (TODO)
     git clone https://github.com/taskurotta/taskurotta.git
     cd taskurotta/
 
-Checkout last tested version
-
-    git checkout release-0.4.0
-
 ### <div id="gs-ts-install">Install</div>
 
     mvn clean install -DskipTests
