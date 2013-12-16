@@ -404,7 +404,7 @@ For more information see the doc Fat Jar (TODO)
 
 Checkout last tested version
 
-    git checkout e1ccb11006
+    git checkout release-0.4.0
 
 ### <div id="gs-ts-install">Install</div>
 
@@ -445,7 +445,6 @@ backends.
 
     git clone https://github.com/taskurotta/taskurotta-getstarted.git
     cd taskurotta-getstarted/
-    git checkout f676435cf2
 
 ### Example process content
 
