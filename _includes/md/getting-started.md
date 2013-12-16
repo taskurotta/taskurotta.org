@@ -469,7 +469,7 @@ To do the actual job actor should obtain task from the server. So lets submit so
 Check the console [http://localhost:8081/index.html](http://localhost:8081/index.html) . Select "Queues" menu item. There should be 91 tasks in the
 ru.taskurotta.example.decider.NotificationDecider#1.0 queue. They are the process starters tasks for deciders.
 
-<img src="/getting-started/img/step1.jpg" width="533" height="350" alt="step1 image" />
+<img src="/getting-started/img/step1.jpg" width="646" height="289" alt="step1 image" />
 
 ### <div id="gs-proc-run-deciders">Run the decider</div>
 
@@ -491,7 +491,7 @@ The result of example decider execution is a task for the worker that would appe
 Every taskurotta actor is bind to the corresponding server queue and executes tasks from it.
 Check the console [http://localhost:8081/index.html](http://localhost:8081/index.html) . On "Queues" menu item there should be 91 tasks in ru.taskurotta.example.worker.profile.UserProfileService#1.0 queue.
 
-<img src="/getting-started/img/step2.jpg" width="533" height="350" alt="step2 image" />
+<img src="/getting-started/img/step2.jpg" width="640" height="317" alt="step2 image" />
 
 ### <div id="gs-proc-run-actors">Run the workers</div>
 
@@ -516,6 +516,6 @@ But the **actors** execute processes by getting them from the second node [http:
 If you open the web console on [http://localhost:8081/index.html](http://localhost:8081/index.html) or [http://localhost:8082/index.html](http://localhost:8082/index.html), you will see that all
 queues have now zero tasks because all tasks have already been executed after actors run.
 
-<img src="/getting-started/img/step3.jpg" width="533" height="350" alt="step3 image" />
+<img src="/getting-started/img/step3.jpg" width="643" height="380" alt="step3 image" />
 
 Try to change the configuration and you will see that two taskurotta servers can be used vice versa.
