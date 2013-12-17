@@ -268,9 +268,9 @@ them is described below in details.
 
   A few words about status icon: there can be three different icons based depending on task execution result.
 
-  - <i class="icon-question-sign" /> - task have not been released yet and result is unknown
-  - <i class="icon-question-sign" /> - executed worker have thrown an exception, so workflow execution has an error
-  - <i class="icon-question-ok" /> - task has been successfully released.
+  - <i class="icon-question-sign"> </i> - task have not been released yet and result is unknown
+  - <i class="icon-question-sign"> </i> - executed worker have thrown an exception, so workflow execution has an error
+  - <i class="icon-question-ok"> </i> - task has been successfully released.
 
 #### Tasks list
   It is a paginated list of all tasks similar to the previous one except for addition of some columns with task properties. Arguments are shown
