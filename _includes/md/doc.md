@@ -190,6 +190,7 @@ console. It can be open in a web browser and provides friendly UI for accessing 
   - Displays information on current state of the actor's queues
   - Displays information on actors activity
   - Displays current workflows data: tasks, arguments, properties and return values
+  - Uses AngularJS as client-side app engine, backed with angular-ui and bootstrap libs
 
 Console UI consists of a set of tabbed views: *"Queues"*, *"Actors"*, *"Processes"*, *"Monitoring"*, *"Schedule"*. Each of
 them is described below in details.
@@ -224,7 +225,7 @@ them is described below in details.
 
   Provides list of all actors registered in a cluster. It also enables you to block or unblock actors and compare metrics data for them.
 
-  <img src="/doc/img/console/actors_list.jpg" width="924" height="724" />
+  <img src="../../doc/img/console/actors_list.jpg" width="924" height="724" />
 
   Displayed fields are:
 
@@ -244,15 +245,37 @@ them is described below in details.
 
 ### Processes view
 
-  Processes view is designed to provide data on workflows splitted into separate subviews.
+  Processes view is designed to provide data on workflows. It is splitted into separate subviews described below.
 
-  #### List views
+#### Processes list
+  Paginated list of all processes (workflows) currently managed by taskurotta. It is a simple table view listing
+  *processes UUIDs*, *custom names* (if any defined in their deciders), *start task UUIDs* and *start/end times*. All UUIDs are clickable and refers to
+  the corresponding entity detailed views.
 
-  #### Search views
+  The view for process contains a set of its properties and a *"Process tree"* block. This block conveys the task chain created by process deciders. As it represents a
+  very important bit of information lets look into it in more detail. Every process starts with a decider, so on top of the tree there is always an UUID link to the starter
+  decider task. Format of the tree line is like this: &lt;Status icon&gt;-&lt;task UUID&gt;-&lt;Actor ID&gt;-&lt;Method name&gt;. The result of decider execution is a set of
+  tasks for other actors (including itself) so multiple invocations of deciders produce tree-like task structure of the process.
 
-  #### Create process view
+  On the example picture below there are two second-level tasks bordered with dotted line and one of them is a decider task again. That task creates
+  new set of two tasks. The important part is that decider could have created tasks for different kinds of workers based on obtained return values
+  thus changing the workflow behaviour on the fly. In example process decider could have created task for summarizer worker instead of multiplier if
+  the returned value of a getNumber worker were even and not odd.
 
-  #### Broken processes views
+  <img src="../../doc/img/console/tree.jpg" width="1278" height="378" />
+
+  Note: "process tree" does not consider any task dependencies, i.e. the task execution order information is omitted.
+
+
+#### Tasks list
+
+#### Search views (processes or tasks)
+
+
+#### Create process view
+
+
+#### Broken processes views
 
 
 ### Monitoring view
