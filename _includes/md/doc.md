@@ -200,6 +200,8 @@ them is described below in details.
   can be delayed by a few seconds from the actual one. Console uses Taskurotta's metrics service as a source for the information, and it
   requires some time for the data to be updated. Also, all metrics data for the node is lost when is JVM shutting down or reloads.
 
+  <img src="/doc/img/console/queues_list.jpg" width="958" height="568" />
+
   Displayed fields are:
 
   - *"Name"* - task queue name (Note that hazelcast backing collection prefix is omitted). It generally matches the actor ID bind to the queue.
@@ -221,6 +223,9 @@ them is described below in details.
 ### Actors view
 
   Provides list of all actors registered in a cluster. It also enables you to block or unblock actors and compare metrics data for them.
+
+  <img src="/doc/img/console/actors_list.jpg" width="924" height="724" />
+
   Displayed fields are:
 
   - *"Actor ID"* - ID of a registered actor
