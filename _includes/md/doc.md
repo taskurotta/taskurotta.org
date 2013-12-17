@@ -178,14 +178,14 @@ TODO: Зачем. Особенности работы\не работы в ра�
 
 ## Web console
 
-To monitor and manage your processes workflow every taskurotta server has an embedded web
-console. It can be open in a web browser and provides friendly UI for accessing cluster data.
+Every taskurotta server has an embedded web console to monitor and manage your processes workflow. It can be
+opened in a web browser to provide friendly UI for accessing cluster data.
 
 ### Features
 
-  - UI is web based - accessible via browser
-  - Every cluster's node console provide the same cluster wide information
-  - REST based - data can be extracted directly as JSON objects (simplifies integration with 3d party systems)
+  - UI is web based: accessible via browser
+  - Every cluster's node console provides the same cluster wide information
+  - REST based: data can be extracted directly as JSON objects (simplifies integration with 3d party systems)
   - Provides possibility to register and launch tasks on schedule
   - Displays information on current state of the actor's queues
   - Displays information on actors activity
@@ -197,7 +197,7 @@ them is described below in details.
 
 ### Queues view
 
-  Provides a paginated list of all actors's task queues registered in a cluster. It is important to know that the information presented
+  The view provides a paginated list of all actors's task queues registered in a cluster. It is important to know that the information presented
   can be delayed by a few seconds from the actual one. Console uses Taskurotta's metrics service as a source for the information, and it
   requires some time for the data to be updated. Also, all metrics data for the node is lost when is JVM shutting down or reloads.
 
@@ -248,7 +248,7 @@ them is described below in details.
   Processes view is designed to provide data on workflows. It is splitted into separate subviews described below.
 
 #### Processes list
-  Paginated list of all processes (workflows) currently managed by taskurotta. It is a simple table view listing
+  It is a paginated list of all processes (workflows) currently managed by taskurotta. It is a simple table view listing
   *processes UUIDs*, *custom names* (if any defined in their deciders), *start task UUIDs* and *start/end times*. All UUIDs are clickable and refers to
   the corresponding entity detailed views.
 
@@ -268,11 +268,13 @@ them is described below in details.
 
   A few words about status icon: there can be three different icons based depending on task execution result.
 
-  - <span class="icon-question-sign" /> - task have not been released yet and result is unknown
-  - <span class="icon-question-sign" /> - executed worker have thrown an exception, so workflow execution has an error
-  - <span class="icon-question-ok" /> - task has been successfully released.
+  - <i class="icon-question-sign" /> - task have not been released yet and result is unknown
+  - <i class="icon-question-sign" /> - executed worker have thrown an exception, so workflow execution has an error
+  - <i class="icon-question-ok" /> - task has been successfully released.
 
 #### Tasks list
+  It is a paginated list of all tasks
+
 
 #### Search views (processes or tasks)
 
