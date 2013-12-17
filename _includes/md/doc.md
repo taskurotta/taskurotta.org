@@ -278,13 +278,18 @@ them is described below in details.
   of a task or a process. Example view for a task is shown on the picture, it contains all the task properties and return values along with the familiar
   tree view starting with the current task this time. If the task is a simple worker, only itself task would appear there.
 
-  <img src="../../doc/img/console/task_card.jpg" width="968px" height="824px" />
+  <img src="../../doc/img/console/task_card.jpg" width="863px" height="781px" />
 
 #### Processes search and Tasks search
+  These two views make it possible to find tasks/processes by UUID or process custom ID specified by decider implementation. By submitting the search form data
+  one can obtain list of processes or tasks satisfying search conditions. Every form input is a "starts with" condition, if more than one input is set, the results
+  would be evaluated via AND conditions for all inputs. Example with results is presented below.
 
+  <img src="../../doc/img/console/search_result.jpg" width="853px" height="666px" />
 
 #### Create process view
-
+  This view is designed for development/testing usage only. It enables you to create new processes by passing decider's actor ID, execute method name and valid
+  JSONs for task arguments to taskurotta server. Arguments should correspond to the array of JSON-converted ArgContainer objects.
 
 #### Broken processes views
 
