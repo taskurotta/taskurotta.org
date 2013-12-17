@@ -184,8 +184,8 @@ opened in a web browser to provide friendly UI for accessing cluster data.
 ### Features
 
   - UI is web based: accessible via browser
-  - Every cluster's node console provides the same cluster wide information
-  - REST based: data can be extracted directly as JSON objects (simplifies integration with 3d party systems)
+  - Every node's consoles provide identical information for entire cluster (data are cluster-wide)
+  - REST based: data can be extracted directly as JSON objects (simplified integration with 3d party systems)
   - Provides possibility to register and launch tasks on schedule
   - Displays information on current state of the actor's queues
   - Displays information on actors activity
@@ -273,10 +273,14 @@ them is described below in details.
   - <i class="icon-question-ok" /> - task has been successfully released.
 
 #### Tasks list
-  It is a paginated list of all tasks
+  It is a paginated list of all tasks similar to the previous one except for addition of some columns with task properties. Arguments are shown
+  as a plain JSON strings (cause they actually exist as JSON strings on a server). Click on the UUID link would lead to the emerging of a detailed view
+  of a task or a process. Example view for a task is shown on the picture, it contains all the task properties and return values along with the familiar
+  tree view starting with the current task this time. If the task is a simple worker, only itself task would appear there.
 
+  <img src="../../doc/img/console/task_card.jpg" width="968px" height="824px" />
 
-#### Search views (processes or tasks)
+#### Processes search and Tasks search
 
 
 #### Create process view
