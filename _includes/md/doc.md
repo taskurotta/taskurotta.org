@@ -262,7 +262,7 @@ them is described below in details.
   thus changing the workflow behaviour on the fly. In example process decider could have created task for summarizer worker instead of multiplier if
   the returned value of a getNumber worker were even and not odd.
 
-  <img src="../../doc/img/console/tree.jpg" width="1278" height="378" />
+  <img src="../../doc/img/console/tree.jpg" width="900" height="266" />
 
   Note: "process tree" does not consider any task dependencies, i.e. the task execution order information is omitted.
 
