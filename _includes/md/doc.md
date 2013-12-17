@@ -266,6 +266,11 @@ them is described below in details.
 
   Note: "process tree" does not consider any task dependencies, i.e. the task execution order information is omitted.
 
+  A few words about status icon: there can be three different icons based depending on task execution result.
+
+  - <span class="icon-question-sign" /> - task have not been released yet and result is unknown
+  - <span class="icon-question-sign" /> - executed worker have thrown an exception, so workflow execution has an error
+  - <span class="icon-question-ok" /> - task has been successfully released.
 
 #### Tasks list
 
