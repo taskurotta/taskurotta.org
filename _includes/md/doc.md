@@ -203,7 +203,7 @@ them is described below in details.
 
   <img src="../../doc/img/console/queues_list.jpg" width="958" height="568" />
 
-  Displayed fields are:
+  Displayed ields are:
 
   - *"Name"* - task queue name (Note that hazelcast backing collection prefix is omitted). It generally matches the actor ID bind to the queue.
   - *"Last polled"* - last date and time (on the server) when an actor polled task from the queue. It could be any actor polled any node.
@@ -247,7 +247,7 @@ them is described below in details.
 
   Processes view is designed to provide data on workflows. It is splitted into separate subviews described below.
 
-#### Processes list
+#### Processes List
   It is a paginated list of all processes (workflows) currently managed by taskurotta. It is a simple table view listing
   *processes UUIDs*, *custom names* (if any defined in their deciders), *start task UUIDs* and *start/end times*. All UUIDs are clickable and refers to
   the corresponding entity detailed views.
@@ -280,14 +280,14 @@ them is described below in details.
 
   <img src="../../doc/img/console/task_card.jpg" width="863px" height="781px" />
 
-#### Processes search and Tasks search
+#### Processes Search and Tasks Search
   These two views make it possible to find tasks/processes by UUID or process custom ID specified by decider implementation. By submitting the search form data
   one can obtain list of processes or tasks satisfying search conditions. Every form input is a "starts with" condition, if more than one input is set, the results
   would be evaluated via AND conditions for all inputs. Example with results is presented below.
 
   <img src="../../doc/img/console/search_result.jpg" width="853px" height="666px" />
 
-#### Create process view
+#### Create Process View
   This view is designed for development/testing usage only. It enables you to create new processes by passing decider's actor ID, execute method name and valid
   JSONs for task arguments to taskurotta server. Arguments should correspond to the array of JSON-converted ArgContainer objects.
 
@@ -296,7 +296,9 @@ them is described below in details.
 
 ### Monitoring view
 
-
+
 ### Schedule view
 
+
+## Spring integration
   
