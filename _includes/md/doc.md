@@ -200,7 +200,7 @@ them is described below in details.
   can be delayed by a few seconds from the actual one. Console uses Taskurotta's metrics service as a source for the information, and it
   requires some time for the data to be updated. Also, all metrics data for the node is lost when is JVM shutting down or reloads.
 
-  <img src="/doc/img/console/queues_list.jpg" width="958" height="568" />
+  <img src="../../doc/img/console/queues_list.jpg" width="958" height="568" />
 
   Displayed fields are:
 
