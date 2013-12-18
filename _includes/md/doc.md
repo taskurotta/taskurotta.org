@@ -290,6 +290,7 @@ them is described below in details.
 ##### Create Process subview
   This view is designed for development/testing usage only. It enables you to create new processes by passing decider's actor ID, execute method name and valid
   JSONs for task arguments to taskurotta server. Arguments should correspond to the array of JSON-converted ArgContainer objects. Example ArgContainer JSON:
+
   ```json
       {
         "className": "java.lang.Long",
@@ -302,6 +303,7 @@ them is described below in details.
         "ready": true
       }
   ...
+  &nbsp;
 
 ##### Broken processes subviews
   If a process's actor exits with an exception the whole workflow just stops. All such stopped processes are presented in the view as broken ones. It is
