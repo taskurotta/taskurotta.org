@@ -247,7 +247,7 @@ them is described below in details.
 
   Processes view is designed to provide data on workflows. It is splitted into separate subviews described below.
 
-##### Processes list subview
+##### Processes List subview
   It is a paginated list of all processes (workflows) currently managed by taskurotta. It is a simple table view listing
   *processes UUIDs*, *custom names* (if any defined in their deciders), *start task UUIDs* and *start/end times*. All UUIDs are clickable and refers to
   the corresponding entity detailed views.
@@ -268,9 +268,9 @@ them is described below in details.
 
   A few words about status icon: there can be three different icons based depending on task execution result.
 
-  - <i class="icon-question-sign" /> - task have not been released yet and result is unknown
-  - <i class="icon-question-sign" /> - executed worker have thrown an exception, so workflow execution has an error
-  - <i class="icon-question-ok" /> - task has been successfully released.
+  - <i class="icon-question-sign"> </i> - task have not been released yet and result is unknown
+  - <i class="icon-question-sign"> </i> - executed worker have thrown an exception, so workflow execution has an error
+  - <i class="icon-question-ok"> </i> - task has been successfully released.
 
 ##### Tasks list subview
   It is a paginated list of all tasks similar to the previous one except for addition of some columns with task properties. Arguments are shown
@@ -280,14 +280,14 @@ them is described below in details.
 
   <img src="../../doc/img/console/task_card.jpg" width="863px" height="781px" />
 
-##### Processes search subview and Tasks search subview
+##### Processes Search subview and Tasks Search subview
   These two views make it possible to find tasks/processes by UUID or process custom ID specified by decider implementation. By submitting the search form data
   one can obtain list of processes or tasks satisfying search conditions. Every form input is a "starts with" condition, if more than one input is set, the results
   would be evaluated via AND conditions for all inputs. Example with results is presented below.
 
   <img src="../../doc/img/console/search_result.jpg" width="853px" height="666px" />
 
-##### Create process subview
+##### Create Process subview
   This view is designed for development/testing usage only. It enables you to create new processes by passing decider's actor ID, execute method name and valid
   JSONs for task arguments to taskurotta server. Arguments should correspond to the array of JSON-converted ArgContainer objects. Example ArgContainer JSON:
   ```json
@@ -324,8 +324,8 @@ them is described below in details.
 ### Monitoring view
 
 
-
 ### Schedule view
 
 
+## Spring integration
   
