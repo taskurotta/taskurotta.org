@@ -247,7 +247,7 @@ them is described below in details.
 
   Processes view is designed to provide data on workflows. It is splitted into separate subviews described below.
 
-#### Processes list
+##### Processes list subview
   It is a paginated list of all processes (workflows) currently managed by taskurotta. It is a simple table view listing
   *processes UUIDs*, *custom names* (if any defined in their deciders), *start task UUIDs* and *start/end times*. All UUIDs are clickable and refers to
   the corresponding entity detailed views.
@@ -272,7 +272,7 @@ them is described below in details.
   - <i class="icon-question-sign" /> - executed worker have thrown an exception, so workflow execution has an error
   - <i class="icon-question-ok" /> - task has been successfully released.
 
-#### Tasks list
+##### Tasks list subview
   It is a paginated list of all tasks similar to the previous one except for addition of some columns with task properties. Arguments are shown
   as a plain JSON strings (cause they actually exist as JSON strings on a server). Click on the UUID link would lead to the emerging of a detailed view
   of a task or a process. Example view for a task is shown on the picture, it contains all the task properties and return values along with the familiar
@@ -280,23 +280,52 @@ them is described below in details.
 
   <img src="../../doc/img/console/task_card.jpg" width="863px" height="781px" />
 
-#### Processes search and Tasks search
+##### Processes search subview and Tasks search subview
   These two views make it possible to find tasks/processes by UUID or process custom ID specified by decider implementation. By submitting the search form data
   one can obtain list of processes or tasks satisfying search conditions. Every form input is a "starts with" condition, if more than one input is set, the results
   would be evaluated via AND conditions for all inputs. Example with results is presented below.
 
   <img src="../../doc/img/console/search_result.jpg" width="853px" height="666px" />
 
-#### Create process view
+##### Create process subview
   This view is designed for development/testing usage only. It enables you to create new processes by passing decider's actor ID, execute method name and valid
-  JSONs for task arguments to taskurotta server. Arguments should correspond to the array of JSON-converted ArgContainer objects.
+  JSONs for task arguments to taskurotta server. Arguments should correspond to the array of JSON-converted ArgContainer objects. Example ArgContainer JSON:
+  ```json
+      {
+        "className": "java.lang.Long",
+        "taskId": null,
+        "type": "PLAIN",
+        "compositeValue": null,
+        "promise": false,
+        "errorContainer": null,
+        "jsonvalue": "1387260495377",
+        "ready": true
+      }
+  ...
 
-#### Broken processes views
+##### Broken processes subviews
+  If a process's actor exits with an exception the whole workflow just stops. All such stopped processes are presented in the view as broken ones. It is
+  up to user to decide for further actions. Whether it is to fix some possible environment or network issues and resume processes by restarting the tasks or just
+  delete them. See an example screenshot below:
+
+  <img src="../../doc/img/console/broken_list.jpg" width="850px" height="530px" />
+
+  View is designed with a thought in mind that you are interested not in each broken process itself but the groups of them having common issues. So it enables you to
+  operate on processes groups and execute group actions. Or you can of course just inspect group content for individual process actions. Processes can be grouped by several
+  attributes: *exception class*, *broken actor ID* and *process starter decider ID*. Also, group content can be filtered by applying same attributes. For instance, it is
+  possible to find the group of processes containing only the *java.lang.NullPointerException* exceptions in a processes started by *com.example.ProcessStarterDecider#1.0*
+  decider.
+
+  There is also a search form presented that can be used to find processes by some attributes of interest. As always, every form input is an optional *"starts with"*
+  condition and all inputs are imposed via *"AND"* operator during the search. The result of the search action is a list of broken processes with the ability to restart or
+  delete them.
 
 
 ### Monitoring view
 
 
+
 ### Schedule view
+
 
   
