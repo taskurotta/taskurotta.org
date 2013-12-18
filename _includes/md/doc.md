@@ -176,15 +176,157 @@ Exist several implementation of GarbageCollectorService interface, which use dif
 
 TODO: Зачем. Особенности работы\не работы в различных конфигурациях. Как настраивается.
 
-# Web Console
+## Web console
 
-## Queues
+Every taskurotta server has an embedded web console to monitor and manage your processes workflow. It can be
+opened in a web browser to provide friendly UI for accessing cluster data.
 
-## View particular processes and tasks
+### Features
 
-## Management of dead processes
+  - UI is web based: accessible via browser
+  - Every node's consoles provide identical information for entire cluster (data are cluster-wide)
+  - REST based: data can be extracted directly as JSON objects (simplified integration with 3d party systems)
+  - Provides possibility to register and launch tasks on schedule
+  - Displays information on current state of the actor's queues
+  - Displays information on actors activity
+  - Displays current workflows data: tasks, arguments, properties and return values
+  - Uses AngularJS as client-side app engine, backed with angular-ui and bootstrap libs
 
-## Metrics
+Console UI consists of a set of tabbed views: *"Queues"*, *"Actors"*, *"Processes"*, *"Monitoring"*, *"Schedule"*. Each of
+them is described below in details.
 
-## Process Scheduler
+### Queues view
+
+  The view provides a paginated list of all actors's task queues registered in a cluster. It is important to know that the information presented
+  can be delayed by a few seconds from the actual one. Console uses Taskurotta's metrics service as a source for the information, and it
+  requires some time for the data to be updated. Also, all metrics data for the node is lost when is JVM shutting down or reloads.
+
+  <img src="../../doc/img/console/queues_list.jpg" width="958" height="568" />
+
+  Displayed fields are:
+
+  - *"Name"* - task queue name (Note that hazelcast backing collection prefix is omitted). It generally matches the actor ID bind to the queue.
+  - *"Last polled"* - last date and time (on the server) when an actor polled task from the queue. It could be any actor polled any node.
+  - *"Balance"* - estimate data on task income/outcome of the queue. Income is a summed up number of enqueue invocations for all nodes,
+  outcome is a summed up number of task polled from the queue. You can switch between last hour and last 24hours
+  - *"Size"* - size of the queue by metrics data. By clicking eye-button ("Show current size") you can get an actual current size by requesting
+  the queue itself. Due to performance issues that value cannot be auto updated.
+
+  Note that:
+
+  - It is possible to use *name filter* for filtering queues list. In that case, only queues with names starting with filter value would remain.
+  - Pagination and auto refresh properties are stored as a browser cookies. It enables view to keep its state unchanged on browser page
+  refresh (and it can be reset by deleting cookies *"queue.list.pagination"* and *"queue.controller.selection"*).
+
+  By clicking queue name link you would be navigated to the list of task UUIDs currently contained at the queue. For large queues this operation
+  can take significant amount of time and is not recommended to use.
+
+### Actors view
+
+  Provides list of all actors registered in a cluster. It also enables you to block or unblock actors and compare metrics data for them.
+
+  <img src="../../doc/img/console/actors_list.jpg" width="924" height="724" />
+
+  Displayed fields are:
+
+  - *"Actor ID"* - ID of a registered actor
+  - *"Queue balance"* - shows queue task income and outcome similar to Queues view. It also estimates rate of task income as:
+   <div style="margin:10px;padding:10px; border: 1px dotted #777;">
+       [number of polled task]/[last - first poll time for period] - [number of new enqueued tasks]/[last - first enqueue time for period]
+   </div>
+   Red arrow in general means that queue is overflowing with task, green arrow means that queue is OK.
+  - *"Last activity"* - last date and time (on the server) when an actor of this type polled for task and released task decision. It could be any actor on any node.
+  - *"Actions"* - there are two user actions available at the moment: actor *blocking/unblocking* and performance *comparison by metrics* data. When actor is blocked,
+  it would get *null* on every poll request, as if it has no task in the queue. By checking two or more actors and clicking "Compare" link actor comparison view is
+  showed. There are two main areas on the view: available metrics checkbox list and comparison table. Every metrics checkbox corresponds to the table column. Two
+  metrics are checked by default, it is successfulPoll and enqueue metrics. You are free to check as many metrics as you need.
+
+  Note: actor IDs selected for comparison are stored as browser cookie with name *"actors.compare.actorIds"*. So actors stay selected on browser page reload.
+
+### Processes view
+
+  Processes view is designed to provide data on workflows. It is splitted into separate subviews described below.
+
+##### Processes List subview
+  It is a paginated list of all processes (workflows) currently managed by taskurotta. It is a simple table view listing
+  *processes UUIDs*, *custom names* (if any defined in their deciders), *start task UUIDs* and *start/end times*. All UUIDs are clickable and refers to
+  the corresponding entity detailed views.
+
+  The view for process contains a set of its properties and a *"Process tree"* block. This block conveys the task chain created by process deciders. As it represents a
+  very important bit of information lets look into it in more detail. Every process starts with a decider, so on top of the tree there is always an UUID link to the starter
+  decider task. Format of the tree line is like this: &lt;Status icon&gt;-&lt;task UUID&gt;-&lt;Actor ID&gt;-&lt;Method name&gt;. The result of decider execution is a set of
+  tasks for other actors (including itself) so multiple invocations of deciders produce tree-like task structure of the process.
+
+  On the example picture below there are two second-level tasks bordered with dotted line and one of them is a decider task again. That task creates
+  new set of two tasks. The important part is that decider could have created tasks for different kinds of workers based on obtained return values
+  thus changing the workflow behaviour on the fly. In example process decider could have created task for summarizer worker instead of multiplier if
+  the returned value of a getNumber worker were even and not odd.
+
+  <img src="../../doc/img/console/tree.jpg" width="900" height="266" />
+
+  Note: "process tree" does not consider any task dependencies, i.e. the task execution order information is omitted.
+
+  A few words about status icon: there can be three different icons based depending on task execution result.
+
+  - <i class="icon-question-sign"> </i> - task have not been released yet and result is unknown
+  - <i class="icon-question-sign"> </i> - executed worker have thrown an exception, so workflow execution has an error
+  - <i class="icon-question-ok"> </i> - task has been successfully released.
+
+##### Tasks list subview
+  It is a paginated list of all tasks similar to the previous one except for addition of some columns with task properties. Arguments are shown
+  as a plain JSON strings (cause they actually exist as JSON strings on a server). Click on the UUID link would lead to the emerging of a detailed view
+  of a task or a process. Example view for a task is shown on the picture, it contains all the task properties and return values along with the familiar
+  tree view starting with the current task this time. If the task is a simple worker, only itself task would appear there.
+
+  <img src="../../doc/img/console/task_card.jpg" width="863px" height="781px" />
+
+##### Processes Search subview and Tasks Search subview
+  These two views make it possible to find tasks/processes by UUID or process custom ID specified by decider implementation. By submitting the search form data
+  one can obtain list of processes or tasks satisfying search conditions. Every form input is a "starts with" condition, if more than one input is set, the results
+  would be evaluated via AND conditions for all inputs. Example with results is presented below.
+
+  <img src="../../doc/img/console/search_result.jpg" width="853px" height="666px" />
+
+##### Create Process subview
+  This view is designed for development/testing usage only. It enables you to create new processes by passing decider's actor ID, execute method name and valid
+  JSONs for task arguments to taskurotta server. Arguments should correspond to the array of JSON-converted ArgContainer objects. Example ArgContainer JSON:
+
+  <blockquote>
+      {
+        "className": "java.lang.Long",
+        "taskId": null,
+        "type": "PLAIN",
+        "compositeValue": null,
+        "promise": false,
+        "errorContainer": null,
+        "jsonvalue": "1387260495377",
+        "ready": true
+      }
+  </blockquote>
+
+##### Broken processes subviews
+  If a process's actor exits with an exception the whole workflow just stops. All such stopped processes are presented in the view as broken ones. It is
+  up to user to decide for further actions. Whether it is to fix some possible environment or network issues and resume processes by restarting the tasks or just
+  delete them. See an example screenshot below:
+
+  <img src="../../doc/img/console/broken_list.jpg" width="850px" height="530px" />
+
+  View is designed with a thought in mind that you are interested not in each broken process itself but the groups of them having common issues. So it enables you to
+  operate on processes groups and execute group actions. Or you can of course just inspect group content for individual process actions. Processes can be grouped by several
+  attributes: *exception class*, *broken actor ID* and *process starter decider ID*. Also, group content can be filtered by applying same attributes. For instance, it is
+  possible to find the group of processes containing only the *java.lang.NullPointerException* exceptions in a processes started by *com.example.ProcessStarterDecider#1.0*
+  decider.
+
+  There is also a search form presented that can be used to find processes by some attributes of interest. As always, every form input is an optional *"starts with"*
+  condition and all inputs are imposed via *"AND"* operator during the search. The result of the search action is a list of broken processes with the ability to restart or
+  delete them.
+
+
+### Monitoring view
+
+
+### Schedule view
+
+
+## Spring integration
   

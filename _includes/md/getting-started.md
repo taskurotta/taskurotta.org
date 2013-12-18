@@ -402,10 +402,6 @@ For more information see the doc Fat Jar (TODO)
     git clone https://github.com/taskurotta/taskurotta.git
     cd taskurotta/
 
-Checkout last tested version
-
-    git checkout 5918c8db1a
-
 ### <div id="gs-ts-install">Install</div>
 
     mvn clean install -DskipTests
@@ -417,11 +413,11 @@ But be sure to correct the port numbers if you're going to use the same machine.
 
 Run the first node:
 
-    java -Xmx64m -Ddw.http.port=8081 -Ddw.http.adminPort=9081 -Ddw.logging.file.currentLogFilename="assemble/target/server1.log" -jar assemble/target/assemble-0.4.0-SNAPSHOT.jar server assemble/src/main/resources/hz.yml
+    java -Xmx64m -Ddw.http.port=8081 -Ddw.http.adminPort=9081 -Ddw.logging.file.currentLogFilename="assemble/target/server1.log" -jar assemble/target/assemble-0.4.0.jar server assemble/src/main/resources/hz.yml
 
 Run the second node:
 
-    java -Xmx64m -Ddw.http.port=8082 -Ddw.http.adminPort=9082 -Ddw.logging.file.currentLogFilename="assemble/target/server2.log" -jar assemble/target/assemble-0.4.0-SNAPSHOT.jar server assemble/src/main/resources/hz.yml
+    java -Xmx64m -Ddw.http.port=8082 -Ddw.http.adminPort=9082 -Ddw.logging.file.currentLogFilename="assemble/target/server2.log" -jar assemble/target/assemble-0.4.0.jar server assemble/src/main/resources/hz.yml
 
 When both servers are connected to each other, a log message like this appears:
 
@@ -445,7 +441,6 @@ backends.
 
     git clone https://github.com/taskurotta/taskurotta-getstarted.git
     cd taskurotta-getstarted/
-    git checkout 9d3b39b317
 
 ### Example process content
 
@@ -464,16 +459,16 @@ client interfaces which are used by the decider to communicate with workers.
 
 To do the actual job actor should obtain task from the server. So lets submit some tasks for a decider to start the example process.
 
-    java -cp target/getstarted-process-1.0-SNAPSHOT.jar ru.taskurotta.example.starter.NotificationModule http://localhost:8081 91
+    java -cp target/getstarted-process-0.1.0.jar ru.taskurotta.example.starter.NotificationModule http://localhost:8081 91
 
 Check the console [http://localhost:8081/index.html](http://localhost:8081/index.html) . Select "Queues" menu item. There should be 91 tasks in the
 ru.taskurotta.example.decider.NotificationDecider#1.0 queue. They are the process starters tasks for deciders.
 
-![Image](/getting-started/img/step1.jpg)
+<img src="/getting-started/img/step1.jpg" width="646" height="289" alt="step1 image" />
 
 ### <div id="gs-proc-run-deciders">Run the decider</div>
 
-    java -Xmx64m -jar target/getstarted-process-1.0-SNAPSHOT.jar -f src/main/resources/config-decider.yml
+    java -Xmx64m -jar target/getstarted-process-0.1.0.jar -f src/main/resources/config-decider.yml
 
 The example decider uses server endpoint provided via YAML file and pointed to the first cluster node (port 8081).
 Check src/main/resources/config-decider.yml for configuration details.
@@ -491,11 +486,11 @@ The result of example decider execution is a task for the worker that would appe
 Every taskurotta actor is bind to the corresponding server queue and executes tasks from it.
 Check the console [http://localhost:8081/index.html](http://localhost:8081/index.html) . On "Queues" menu item there should be 91 tasks in ru.taskurotta.example.worker.profile.UserProfileService#1.0 queue.
 
-![Image](/getting-started/img/step2.jpg)
+<img src="/getting-started/img/step2.jpg" width="640" height="317" alt="step2 image" />
 
 ### <div id="gs-proc-run-actors">Run the workers</div>
 
-    java -Xmx64m -jar target/getstarted-process-1.0-SNAPSHOT.jar -f src/main/resources/config-workers.yml
+    java -Xmx64m -jar target/getstarted-process-0.1.0.jar -f src/main/resources/config-workers.yml
 
 The workers also use the endpoint provided via YAML configuration file, but they would poll the second cluster node (port 8082).
 Check src/main/resources/config.yml for details.
@@ -516,6 +511,6 @@ But the **actors** execute processes by getting them from the second node [http:
 If you open the web console on [http://localhost:8081/index.html](http://localhost:8081/index.html) or [http://localhost:8082/index.html](http://localhost:8082/index.html), you will see that all
 queues have now zero tasks because all tasks have already been executed after actors run.
 
-![Image](/getting-started/img/step3.jpg)
+<img src="/getting-started/img/step3.jpg" width="643" height="380" alt="step3 image" />
 
 Try to change the configuration and you will see that two taskurotta servers can be used vice versa.
