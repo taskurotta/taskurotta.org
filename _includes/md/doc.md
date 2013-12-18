@@ -157,20 +157,20 @@ TODO: вставить примеры из проекта getstarted. По ка�
 
 ## Использование памяти
 
-## Сборка мусора
-Задачей сборщика мусора является удаление данных, созданных во время работы процесса. Такими данными являются: решения, задачи, граф процесса и сам процесс.
-Удаление осуществляется спустя период, заданный в параметрах сборщика мусора.
+## Garbage collector
+Goal of garbage collector is deleting process data (e.g. decisions, tasks, graph and process).
+Deleting process start after period, which set in garbage collector properties.
 
-Существуют несколько имплиментаций интерфейса GarbageCollectorService, использующих разные параметры настройки:
+Exist several implementation of GarbageCollectorService interface, which use different properties.
 
 - MemoryGarbageCollectorService:
-    - gc.poolSize=1 - размера пула задач, которые запускают процесс сборки мусора;
-    - gc.time.before.delete=1 days - период, в течение которого данные будут храниться, до того, как их удалит сборщик мусора.
+    - gc.pool-size=1 - pool size of tasks, which start garbage collector process for current processId;
+    - gc.time-before-delete=1 days - period of storing process, before it will be deleted.
 
 - HzGarbageCollectorService:
-    - все параметры MemoryGarbageCollectorService;
-    - gc.queueName=GarbageCollector - имя очереди, в которой хранятся идентификаторы процессов, готовых к удалению;
-    - gc.enabled=true - указатель на то, включён сборщик мусора или нет.
+    - all parameter of MemoryGarbageCollectorService;
+    - gc.queue-name=GarbageCollector - queue name, where store identifier of processes, which ready for delete;
+    - gc.enabled=true - the index for enabled or disabled garbage collector.
 
 ## Recovery
 
