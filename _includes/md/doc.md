@@ -199,14 +199,14 @@ them is described below in details.
 
   The view provides a paginated list of all actors's task queues registered in a cluster. It is important to know that the information presented
   can be delayed by a few seconds from the actual one. Console uses Taskurotta's metrics service as a source for the information, and it
-  requires some time for the data to be updated. Also, all metrics data for the node is lost when is JVM shutting down or reloads.
+  requires some time for the data to be updated. Also, all metrics data for the node is lost when the JVM is shutting down or reloads.
 
   <img src="../../doc/img/console/queues_list.jpg" width="958" height="568" />
 
   Displayed fields are:
 
   - *"Name"* - task queue name (Note that hazelcast backing collection prefix is omitted). It generally matches the actor ID bind to the queue.
-  - *"Last polled"* - last date and time (on the server) when an actor polled task from the queue. It could be any actor polled any node.
+  - *"Last polled"* - last date and time (server side) when an actor polled task from the queue. It could be any actor polled on any node.
   - *"Balance"* - estimate data on task income/outcome of the queue. Income is a summed up number of enqueue invocations for all nodes,
   outcome is a summed up number of task polled from the queue. You can switch between last hour and last 24hours
   - *"Size"* - size of the queue by metrics data. By clicking eye-button ("Show current size") you can get an actual current size by requesting
@@ -231,15 +231,15 @@ them is described below in details.
 
   - *"Actor ID"* - ID of a registered actor
   - *"Queue balance"* - shows queue task income and outcome similar to Queues view. It also estimates rate of task income as:
-   <div style="margin:10px;padding:10px; border: 1px dotted #777;">
+   <blockquote>
        [number of polled task]/[last - first poll time for period] - [number of new enqueued tasks]/[last - first enqueue time for period]
-   </div>
-   Red arrow in general means that queue is overflowing with task, green arrow means that queue is OK.
+   </blockquote>
+   Red arrow in general means that queue is overflowing with tasks, green arrow means that queue is OK.
   - *"Last activity"* - last date and time (on the server) when an actor of this type polled for task and released task decision. It could be any actor on any node.
   - *"Actions"* - there are two user actions available at the moment: actor *blocking/unblocking* and performance *comparison by metrics* data. When actor is blocked,
   it would get *null* on every poll request, as if it has no task in the queue. By checking two or more actors and clicking "Compare" link actor comparison view is
   showed. There are two main areas on the view: available metrics checkbox list and comparison table. Every metrics checkbox corresponds to the table column. Two
-  metrics are checked by default, it is successfulPoll and enqueue metrics. You are free to check as many metrics as you need.
+  metrics are checked by default, it is *successfulPoll* and *enqueue* metrics. You are free to check as many metrics as you need.
 
   Note: actor IDs selected for comparison are stored as browser cookie with name *"actors.compare.actorIds"*. So actors stay selected on browser page reload.
 
@@ -254,19 +254,23 @@ them is described below in details.
 
   The view for process contains a set of its properties and a *"Process tree"* block. This block conveys the task chain created by process deciders. As it represents a
   very important bit of information lets look into it in more detail. Every process starts with a decider, so on top of the tree there is always an UUID link to the starter
-  decider task. Format of the tree line is like this: &lt;Status icon&gt;-&lt;task UUID&gt;-&lt;Actor ID&gt;-&lt;Method name&gt;. The result of decider execution is a set of
-  tasks for other actors (including itself) so multiple invocations of deciders produce tree-like task structure of the process.
+  decider task. Format of the tree line is like this:
+  <blockquote>
+      &lt;Status icon&gt;-&lt;task UUID&gt;-&lt;Actor ID&gt;-&lt;Method name&gt;
+  </blockquote>
+  The result of decider execution is a set of tasks for other actors (including itself) so multiple invocations of deciders produce tree-like task
+  structure of the process.
 
   On the example picture below there are two second-level tasks bordered with dotted line and one of them is a decider task again. That task creates
   new set of two tasks. The important part is that decider could have created tasks for different kinds of workers based on obtained return values
   thus changing the workflow behaviour on the fly. In example process decider could have created task for summarizer worker instead of multiplier if
-  the returned value of a getNumber worker were even and not odd.
+  the returned value of a getNumber worker was even and not odd.
 
   <img src="../../doc/img/console/tree.jpg" width="900" height="266" />
 
   Note: "process tree" does not consider any task dependencies, i.e. the task execution order information is omitted.
 
-  A few words about status icon: there can be three different icons based depending on task execution result.
+  A few words about status icon: there can be three different icons depending on task execution result.
 
   - <i class="icon-question-sign"> </i> - task have not been released yet and result is unknown
   - <i class="icon-question-sign"> </i> - executed worker have thrown an exception, so workflow execution has an error
@@ -304,7 +308,7 @@ them is described below in details.
       }
   </blockquote>
 
-##### Broken processes subviews
+##### Broken processes subview
   If a process's actor exits with an exception the whole workflow just stops. All such stopped processes are presented in the view as broken ones. It is
   up to user to decide for further actions. Whether it is to fix some possible environment or network issues and resume processes by restarting the tasks or just
   delete them. See an example screenshot below:
