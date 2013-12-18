@@ -272,9 +272,9 @@ them is described below in details.
 
   A few words about status icon: there can be three different icons depending on task execution result.
 
-  - <i class="icon-question-sign"> </i> - task have not been released yet and result is unknown
-  - <i class="icon-question-sign"> </i> - executed worker have thrown an exception, so workflow execution has an error
-  - <i class="icon-question-ok"> </i> - task has been successfully released.
+  - <img src="../../doc/img/console/glyphs/unknown.png" class="icon-question-sign" /> - task have not been released yet and result is unknown
+  - <img src="../../doc/img/console/glyphs/err.png" class="icon-ban-circle" /> - executed worker have thrown an exception, so workflow execution has an error
+  - <img src="../../doc/img/console/glyphs/ok.png" class="icon-question-ok" /> - task has been successfully released.
 
 ##### Tasks list subview
   It is a paginated list of all tasks similar to the previous one except for addition of some columns with task properties. Arguments are shown
