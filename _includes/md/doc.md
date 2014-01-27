@@ -116,6 +116,8 @@ TODO:
 ### @Wait
 
 ### @RetryPolicy
+This annotation describe mechanism of retry invoke function, if it catch error. Now exists two implements of it policy: LinearRetryPolicy and ExponentialRetryPolicy.
+Obviously, that LinearRetryPolicy make try over equal timeout and ExponentialRetryPolicy try over timeout according by exponent.
 
 ### Additional task dependencies
 
