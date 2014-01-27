@@ -175,8 +175,20 @@ Exist several implementation of GarbageCollectorService interface, which use dif
     - gc.enabled=true - the index for enabled or disabled garbage collector.
 
 ## Recovery
+Recovery - it's a mechanism that monitors the uncompleted process and restores them, if necessary.
 
-TODO: Зачем. Особенности работы\не работы в различных конфигурациях. Как настраивается.
+ - If process created, but never runs, this process will be started as new
+ - If process runs and some tasks are completed, but process uncompleted, recovery find incomplete tasks and send it to workers.
+
+If all infrastructure failed, recovery helps to restart all processes from last state.
+Recovery has some properties:
+
+ - recovery.process.change-timeout - if the process worked in during the this timeout, it will not be restored;
+ - recovery.find-incomplete-process-period - the frequency with which will be searched unfinished processes;
+ - recovery.process.incomplete-timeout - period through which the incomplete process will be sent to recovery;
+ - recovery.operation.pool-size - number of threads, which find incomplete process;
+ - recovery.operation.queue.name - name of query with incomplete processes id's;
+ - recovery.enabled - the index for enabled or disabled garbage collector.
 
 ## Web console
 
