@@ -123,6 +123,19 @@ Obviously, that LinearRetryPolicy make try over equal timeout and ExponentialRet
 
 ### TaskOptions
 
+## ActorSchedulingOptions
+
+### TaskList
+The essence of this option is to put a task in a separate queue which is treated with the same actors
+functionality as the common queue. Thus, you can raise the priority of tasks specified taskList.
+
+For example, we have a queue that includes notification of a credit card transaction, and which processes its actor.
+But there are transactions that may seem suspicious and should be warned about them as soon as possible.
+If put them in the same place, the efficiency we get, but if you put them in a separate queue,
+which handles a single actor, this notification will be sent faster due to the smaller size of the queue.
+
+Examples of use can be found in ActorSchedulingOptions package ru.taskurotta.recipes.custom.
+
 ### AssertFlow
 
 TODO: Collection<Promise>
