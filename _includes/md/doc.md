@@ -134,7 +134,44 @@ But there are transactions that may seem suspicious and should be warned about t
 If put them in the same place, the efficiency we get, but if you put them in a separate queue,
 which handles a single actor, this notification will be sent faster due to the smaller size of the queue.
 
-Examples of use can be found in ActorSchedulingOptions package ru.taskurotta.recipes.custom.
+First, need to describe the actor interface methods that support designation tasklist:
+
+```java
+@WorkerClient(worker = CustomWorker.class)
+public interface CustomWorkerClient {
+    public Promise<Integer> sum(int a, int b);
+
+    public Promise<Integer> sum(int a, int b, ActorSchedulingOptions actorSchedulingOptions);
+}
+```
+
+After, in actor's class need to describe the method call indicating tasklist:
+
+```java
+ActorSchedulingOptions workerActorSchedulingOptions = new ActorSchedulingOptionsImpl(null, 0l, "workerTaskList");
+
+Promise<Integer> sum0 = customWorker.sum(a, b);
+asynchronous.show(a, b, sum0, "Invoke worker");
+
+Promise<Integer> sum1 = customWorker.sum(a, b, workerActorSchedulingOptions);
+asynchronous.show(a, b, sum1, "Invoke worker with ActorSchedulingOptions");
+```
+
+And in the end in the configuration file to specify which actors will work with this taskList:
+
+```java
+actor:
+  - CustomWorker:
+      actorInterface: ru.taskurotta.recipes.custom.workers.CustomWorker
+      count: 1
+
+  - CustomWorkerWithTaskList:
+      actorInterface: ru.taskurotta.recipes.custom.workers.CustomWorker
+      taskList: workerTaskList
+      count: 1
+```
+
+Full examples of use can be found in ActorSchedulingOptions package ru.taskurotta.recipes.custom.
 
 ### AssertFlow
 
