@@ -1,5 +1,5 @@
 REST API for remote services
-==========
+============================
 
 ##Resources description
 
