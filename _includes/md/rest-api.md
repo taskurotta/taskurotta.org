@@ -73,39 +73,40 @@ JSON describing each of the task method invocation arguments as well as its retu
 
 Fields:
 
+- **dataType** : string. Description for the value data type. For instance, value class name in java implementation
 - **taskId** : UUID string(optional for real values). Identifier for the task responsible for resolving
 this argument (in case it is a Promise not a real value).
-- **type** : enumeration PLAIN(default)|ARRAY|COLLECTION (optional). Type of the argument or return value - simple object,
+- **valueType** : enumeration PLAIN(default)|ARRAY|COLLECTION (optional). Type of the argument or return value - simple object,
 collection of objects or an array.
 - **compositeValue** : *ArgContainer* array(optional). Contains argument value in case of a collection or an array argument type.
 - **promise** : boolean. Indicates that the argument is a promise or a real value.
 - **errorContainer** : *ErrorContainer* object(optional). Error stack spawned during the execution of the task providing argument.
 - **ready** : boolean. Indicates that the argument value is ready.
-- **jsonvalue** : string(optional). JSON representation for the PLAIN-type argument value.
+- **jsonvalue** : JSON object(optional). JSON representation for the PLAIN-type argument value.
 
 
 Example JSON:
 <pre class="brush: js;">
 {
-  "className": "ru.rr.monbaz.data.provider.model.DataRequest",
+  "dataType": "ru.rr.monbaz.data.provider.model.DataRequest",
   "taskId": null,
-  "type": "PLAIN",
+  "valueType": "PLAIN",
   "compositeValue": null,
   "promise": false,
   "errorContainer": null,
   "ready": true,
-  "jsonvalue": "{
-    \"userId\":\"John Smith\",
-    \"requestId\":\"TSK-341\",
-    \"period\":null,
-    \"type\":4,
-    \"nsl\":[
-      \"Item-1\",
-      \"Item-2\",
-      \"Item-3\",
-      \"Item-4\"
+  "jsonvalue": {
+    "userId": "John Smith",
+    "requestId": "TSK-341",
+    "period": null,
+    "type":4,
+    "nsl": [
+      "Item-1",
+      "Item-2",
+      "Item-3",
+      "Item-4"
     ]
-  }"
+  }
 }
 </pre>
 
@@ -144,26 +145,26 @@ Example JSON (PLAIN-type argument):
   "numberOfAttempts": 1,
   "args": [
     {
-      "className": "ru.rr.monbaz.data.provider.model.DataRequest",
+      "dataType": "ru.rr.monbaz.data.provider.model.DataRequest",
       "taskId": null,
-      "type": "PLAIN",
+      "valueType": "PLAIN",
       "compositeValue": null,
       "promise": false,
       "errorContainer": null,
       "ready": true,
-      "jsonvalue": "{
-        \"userId\":\"John Smith\",
-        \"requestId\":\"TSK-341\",
-        \"period\":null,
-        \"format\":null,
-        \"type\":null,
-        \"nsl\":[
-          \"Item-1\",
-          \"Item-2\",
-          \"Item-3\",
-          \"Item-4\"
+      "jsonvalue": {
+        "userId": "John Smith",
+        "requestId": "TSK-341",
+        "period": null,
+        "format": null,
+        "type": null,
+        "nsl":[
+          "Item-1",
+          "Item-2",
+          "Item-3",
+          "Item-4"
         ]
-      }"
+      }
     }
   ],
   "options": null,
@@ -184,45 +185,45 @@ Example JSON (ready promise argument):
   "numberOfAttempts":1,
   "args": [
     {
-      "className": "ru.rr.monbaz.data.provider.model.ExposeResult",
+      "dataType": "ru.rr.monbaz.data.provider.model.ExposeResult",
       "taskId": "442bfde9-6dd5-455e-adf5-20a4394b5a6b",
-      "type": "PLAIN",
+      "valueType": "PLAIN",
       "compositeValue": null,
       "promise": true,
       "errorContainer": null,
       "ready": true,
-      "jsonvalue": "{
-        \"files\":[
-          {\"fileName\":\"readme.txt\",\"link\":\"http://host/dmz/readme.txt\",\"size\":6},
-          {\"fileName\":\"readme-1.txt\",\"link\":\"http://host/dmz/readme-1.txt\",\"size\":8},
-          {\"fileName\":\"readme-2.txt\",\"link\":\"http://host/dmz/readme-2.txt\",\"size\":12}
+      "jsonvalue": {
+        "files": [
+          {"fileName":"readme.txt","link":"http://host/dmz/readme.txt","size":6},
+          {"fileName":"readme-1.txt","link":"http://host/dmz/readme-1.txt","size":8},
+          {"fileName":"readme-2.txt","link":"http://host/dmz/readme-2.txt","size":12}
         ],
-        \"exposeGuid\":\"b354c052-21ed-4a49-be4e-f13858b51915\",
-        \"exposeDate\":1396601657476
-      }"
+        "exposeGuid":"b354c052-21ed-4a49-be4e-f13858b51915",
+        "exposeDate":1396601657476
+      }
     },
     {
-      "className": "ru.rr.monbaz.data.provider.model.RequestVO",
+      "dataType": "ru.rr.monbaz.data.provider.model.RequestVO",
       "taskId": null,
-      "type": "PLAIN",
+      "valueType": "PLAIN",
       "compositeValue": null,
       "promise": false,
       "errorContainer": null,
       "ready": true,
-      "jsonvalue": "{
-        \"id\":181,
-        \"requestNum\":\"TSK-321\",
-        \"price\":\"unknown\",
-        \"declarant\":\"Some sort of string\",
-        \"status\":0,
-        \"email\":\"username@example.com\",
-        \"nls\":[
-          \"Item-1\",
-          \"Item-2\",
-          \"Item-3\",
-          \"Item-4\"
+      "jsonvalue": {
+        "id":181,
+        "requestNum":"TSK-321",
+        "price":"unknown",
+        "declarant":"Some sort of string",
+        "status":0,
+        "email":"username@example.com",
+        "nls":[
+          "Item-1",
+          "Item-2",
+          "Item-3",
+          "Item-4"
         ]
-      }"
+      }
     }
   ],
   "options": null,
@@ -259,22 +260,22 @@ Example JSON (worker case):
   "processId": "85726c28-85ae-4978-8b29-1108c4b5c622",
   "value":
     {
-      "className": "ru.rr.monbaz.data.provider.model.DataResponse",
+      "dataType": "ru.rr.monbaz.data.provider.model.DataResponse",
       "taskId": null,
-      "type": "PLAIN",
+      "valueType": "PLAIN",
       "compositeValue": null,
       "promise": false,
       "errorContainer": null,
       "ready": true,
-      "jsonvalue": "{
-        \"requestId\":\"mnb-341\",
-        \"data\":[
-          \"file:/taskurotta/dataprovider/files/1.data\",
-          \"file:/taskurotta/dataprovider/files/2.data\",
-          \"file:/taskurotta/dataprovider/files/3.data\",
-          \"file:/taskurotta/dataprovider/files/4.data\"
+      "jsonvalue": {
+        "requestId": "mnb-341",
+        "data": [
+          "file:/taskurotta/dataprovider/files/1.data",
+          "file:/taskurotta/dataprovider/files/2.data",
+          "file:/taskurotta/dataprovider/files/3.data",
+          "file:/taskurotta/dataprovider/files/4.data"
         ]
-      }"
+      }
     },
   "errorContainer": null,
   "restartTime": -1,
@@ -290,14 +291,14 @@ Example JSON (decider case):
   "taskId": "7c1e8619-0736-4c94-ad3f-999fccada3fc",
   "processId": "85726c28-85ae-4978-8b29-1108c4b5c622",
   "value": {
-    "className": "java.lang.Object",
+    "dataType": "java.lang.Object",
     "taskId": null,
-    "type": null,
+    "valueType": null,
     "compositeValue": null,
     "promise": false,
     "errorContainer": null,
     "ready": true,
-    "jsonvalue": "null"
+    "jsonvalue": null
   },
   "errorContainer": null,
   "restartTime": -1,
@@ -311,26 +312,26 @@ Example JSON (decider case):
       "numberOfAttempts": 1,
       "args": [
         {
-          "className": "ru.rr.monbaz.data.provider.model.DataRequest",
+          "dataType": "ru.rr.monbaz.data.provider.model.DataRequest",
           "taskId": null,
-          "type": "PLAIN",
+          "valueType": "PLAIN",
           "compositeValue": null,
           "promise": false,
           "errorContainer": null,
           "ready": true,
-          "jsonvalue": "{
-            \"userId\":\"John Smith\",
-            \"requestId\":\"MNB-341\",
-            \"period\":null,
-            \"format\":null,
-            \"type\":null,
-            \"nsl\":[
-              \"Item-1\",
-              \"Item-2\",
-              \"Item-3\",
-              \"Item-4\"
+          "jsonvalue": {
+            "userId":"John Smith",
+            "requestId":"MNB-341",
+            "period":null,
+            "format":null,
+            "type":null,
+            "nsl":[
+              "Item-1",
+              "Item-2",
+              "Item-3",
+              "Item-4"
             ]
-          }"
+          }
         }
       ],
       "options": null,
@@ -347,9 +348,9 @@ Example JSON (decider case):
       "numberOfAttempts": 1,
       "args": [
         {
-          "className": null,
+          "dataType": null,
           "taskId": "09dcc2a2-f5f8-46c4-a37f-5b05cd76b265",
-          "type": null,
+          "valueType": null,
           "compositeValue": null,
           "promise": true,
           "errorContainer": null,
@@ -357,27 +358,27 @@ Example JSON (decider case):
           "jsonvalue": null
         },
         {
-          "className": "ru.rr.monbaz.data.provider.model.RequestVO",
+          "dataType": "ru.rr.monbaz.data.provider.model.RequestVO",
           "taskId": null,
-          "type": "PLAIN",
+          "valueType": "PLAIN",
           "compositeValue": null,
           "promise": false,
           "errorContainer": null,
           "ready": true,
-          "jsonvalue": "{
-            \"id\":201,
-            \"requestNum\":\"TSK-341\",
-            \"price\":\"unknown\",
-            \"declarant\":\"Some string value\",
-            \"status\":0,
-            \"email\":\"user@example.com\",
-            \"nls\":[
-              \"Item-1\",
-              \"Item-2\",
-              \"Item-3\",
-              \"Item-4\"
+          "jsonvalue": {
+            "id":201,
+            "requestNum": "TSK-341",
+            "price": "unknown",
+            "declarant": "Some string value",
+            "status":0,
+            "email": "user@example.com",
+            "nls":[
+              "Item-1",
+              "Item-2",
+              "Item-3",
+              "Item-4"
             ]
-          }"
+          }
         }
       ],
       "options": null,
@@ -394,8 +395,7 @@ Example JSON (decider case):
 
 ### 5. ErrorContainer
 JSON describing execution error. Used by a web console for displaying information on broken processes.
-Standard workflow behaviour is to break on actor execution error.
-
+Standard workflow behaviour is to break and hold on actor execution error.
 
 Fields:
 
@@ -405,9 +405,14 @@ Fields:
 
 Example JSON:
 <pre class="brush: js;">
-  {
-    //TODO
-  }
+{
+  "classNames": [
+    "javax.xml.ws.WebServiceException",
+    "java.lang.RuntimeException"
+  ],
+  "message": "Could not send Message.",
+  "stackTrace": "javax.xml.ws.WebServiceException: Could not send Message.\n\tat org.apache.cxf.jaxws.JaxWsClientProxy.invoke(JaxWsClientProxy.java:146)\n\t... 10 more\nCaused by: java.net.UnknownHostException: example.com"
+}
 </pre>
 
 
@@ -426,9 +431,32 @@ Fields:
 - **promisesWaitFor**: *ArgContainer* array (optional). List of *Promise* arguments of some other tasks, which must be
 executed (and their return values ready) before this task starts.
 
-Example JSON:
+Example JSON (with only process custom ID specified):
 <pre class="brush: js;">
-  //TODO
+{
+  "argTypes": [
+    "NONE",
+    "WAIT",
+    "NONE"
+  ],
+  "actorSchedulingOptions": {
+      "customId": "mnb-415",
+      "startTime":-1,
+      "taskList": null
+  },
+  "promisesWaitFor": [
+    {
+      "dataType": "ru.rr.monbaz.data.provider.model.DataResponse",
+      "taskId": "85726c28-85ae-4978-8b29-1108c4b5c633",
+      "valueType": "PLAIN",
+      "compositeValue": null,
+      "promise": true,
+      "errorContainer": null,
+      "ready": false,
+      "jsonvalue": null
+    }
+  ]
+}
 </pre>
 
 ### 7. ActorSchedulingOptionsContainer
@@ -441,5 +469,9 @@ Fields:
 
 Example JSON:
 <pre class="brush: js;">
-  //TODO
+{
+  "customId": "p-567-an-ty-6z",
+  "startTime": 1399874451935,
+  "taskList": "server_8"
+}
 </pre>
